@@ -6,6 +6,7 @@
 #include <math.h>
 #include <cmath>
 #include <ctime>
+#include "Simplexnoise.h"
 
 #define PI 3.1415926535897932384626433832
 #define TAN22p5 0.414213562373095 
@@ -19,7 +20,7 @@ void DrawCube(float size);
 void DrawGround(float height, float width, float length);
 void GenGround();
 
-const int ground_size = 200;
+const int ground_size = 1600;
 const int ground_detail = 1;
 float ground[ground_size][ground_size];
 
@@ -184,7 +185,7 @@ void Display()
     glPopMatrix();
     glPushMatrix();
         glTranslatef(0.0, -0.9, 0);
-        DrawGround(0.05, 0.06*ground_size, 0.06*ground_size);
+        DrawGround(0.05, 0.03*ground_size, 0.03*ground_size);
     glPopMatrix();
     
     glutSwapBuffers();
@@ -229,18 +230,9 @@ void DrawGround(float height, float width, float length){
 }
 
 void GenGround(){
-    float temp[ground_size][ground_size];
-    for(int k = 0; k < ground_detail; k++){
-        for(int i = 0; i < ground_size; i++){
-            for(int n = 0; n < ground_size; n++){
-                float avg = 0;
-                if(i>0 && n>0){
-                    avg = (ground[i][n-1] + ground[i-1][n])/2.0;
-                }
-                ground[i][n] = (rand()%1000 - 500)*0.0001 + avg;
-            }
+    for(int i = 0; i < ground_size; i++){
+        for(int n = 0; n < ground_size; n++){
+            ground[i][n] = octave_noise_3d(15.0, 0.5, 1, (float)i/200.0,(float)n/200.0,0);
         }
-        
     }
-    
 }
