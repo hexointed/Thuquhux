@@ -1,41 +1,27 @@
-#include <GL/glew.h>
 #include <GL/freeglut.h>
-#include <cstdlib>
-#include <iostream>
-#include <stdio.h>
-#include <math.h>
-#include <cmath>
 #include <ctime>
+#include <math.h>
 #include "Simplexnoise.h"
 
 #define PI 3.1415926535897932384626433832
 #define TAN22p5 0.414213562373095 
+#define ground_size 1600
+#define ground_detail 1
 
 void Initialize();
 void KeyboardHandler(unsigned char key, int x, int y);
 void Display();
 void Animate();
-void Reshape(int width, int height);
 void DrawCube(float size);
 void DrawGround(float height, float width, float length);
 void GenGround();
-
-const int ground_size = 1600;
-const int ground_detail = 1;
-float ground[ground_size][ground_size];
 
 float posy = 0.0f;
 float posx = 0.0f;
 float rot = -1.0f;
 float lpos = 0.0f;
-float trotx = 0.0;
-float troty = 0.0;
 
-unsigned char *img;
-
-GLfloat pos[] = {0,0,0,1};
-GLfloat dir[] = {0,-1,0};
-GLfloat color[] = {0,1,0,1};
+static float ground[ground_size][ground_size];
 
 int main(int argc, char **argv)
 {
@@ -48,10 +34,7 @@ int main(int argc, char **argv)
     glutCreateWindow("Wooo!");
     glutDisplayFunc(Display);
     glutKeyboardFunc(KeyboardHandler);
-    //glutReshapeFunc(Reshape);
     glutIdleFunc(Animate);
-    
-    GLenum res = glewInit();
     
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -74,15 +57,10 @@ int main(int argc, char **argv)
     glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 1.0f);
     glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, 0.25f);
     
-    //glEnable(GL_COLOR_MATERIAL);
-    
-    
-    
     gluLookAt(0,0,3, 0,0,1, 0,1,0);
     glMatrixMode(GL_PROJECTION);
     gluPerspective(50,1,1,-1000);
     glMatrixMode(GL_MODELVIEW);
-    
     
     glClearColor(0,0,0,0);
     glPointSize(10);
@@ -100,7 +78,7 @@ void KeyboardHandler(unsigned char key, int x, int y)
 {
   switch (key)
   {
-      case 's':  // exit
+      case 's':
       {
           posy = posy + 0.31;
       } break;
@@ -132,25 +110,10 @@ void KeyboardHandler(unsigned char key, int x, int y)
       {
           lpos -= 0.03;
       } break;
-      trotx = x;
-      troty = y;
       default:
       {} break;
   }
   glutPostRedisplay();
-}
-
-void Reshape(int width, int height)
-{
-  if (height == 0)
-    return;
-
-  //glViewport(0, 0, (GLsizei) width, (GLsizei) height);
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  //gluPerspective(90.0, width/height, 1.0, 100.0);
-
-  glMatrixMode(GL_MODELVIEW);
 }
 
 void Display()
@@ -164,11 +127,9 @@ void Display()
         glRotatef(rot, 0,0,1);
         glRotatef(posx, 1,0,0);
         glRotatef(posy, 0,1,0);
-        //glColor3f(1,1,0);
         DrawCube(0.5);
     glPopMatrix();
     
-    GLfloat color2[] = {1,0,0};
     GLfloat position[] = {cos(lpos),sin(lpos),0,1};
     GLfloat position2[] = {-cos(lpos),-sin(lpos),0,1};
     glPushMatrix();
