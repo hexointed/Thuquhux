@@ -14,11 +14,17 @@
 class TerrainGenerator{
 public:
     TerrainGenerator();
-    void genGround();
+    void genGround(double width, double height, double depth, double detail, double result[][3]);
     float getGround(int x, int y);
     
-//private:
+private:
     float ground[ground_size][ground_size];
+    
+    double noise_size;
+    float noise_octaves;
+    float noise_persistence;
+    float noise_frequency;
+    double (*height_scale)(float);
 };
 
 #endif	/* TERRAINGENERATOR_H */

@@ -16,6 +16,8 @@ float posx = 0.0f;
 float rot = -1.0f;
 float lpos = 0.0f;
 
+//float vertecies[] = {0,0.7,-0.3,0.1,0.7,-0.4,0.2,0.7,-0.3,0.3,0.7,-0.4,0.4,0.7,-0.3,0.5,0.7,-0.4,0.6,0.7,-0.3,0.7,0.7,-0.4};
+float vertecies[][3] = {{0,0.7,-0.3},{0.1,0.7,-0.4},{0.2,0.7,-0.3},{0.3,0.7,-0.4},{0.4,0.7,-0.3},{0.5,0.7,-0.4},{0.6,0.7,-0.3},{0.7,0.7,-0.4}};
 TerrainGenerator *a = new TerrainGenerator();
 
 int main(int argc, char **argv)
@@ -32,7 +34,8 @@ int main(int argc, char **argv)
     glutIdleFunc(Animate);
     
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
+    glDisable(GL_CULL_FACE);
+    glEnableClientState(GL_VERTEX_ARRAY);
     
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
@@ -144,7 +147,9 @@ void Display()
         glTranslatef(0.0, -0.9, 0);
         DrawGround(0.05, 0.03*ground_size, 0.03*ground_size);
     glPopMatrix();
-    
+    glVertexPointer(3,GL_FLOAT,0,vertecies);
+    glDrawArrays(GL_TRIANGLE_STRIP,0,24);
+        
     glutSwapBuffers();
     
 }
