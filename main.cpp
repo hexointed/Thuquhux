@@ -1,32 +1,27 @@
 #include <GL/freeglut.h>
+#include <iostream>
 #include <ctime>
 #include <math.h>
 #include "Simplexnoise.h"
+#include "TerrainGenerator.h"
 
-#define PI 3.1415926535897932384626433832
-#define TAN22p5 0.414213562373095 
-#define ground_size 1600
-#define ground_detail 1
-
-void Initialize();
 void KeyboardHandler(unsigned char key, int x, int y);
 void Display();
 void Animate();
 void DrawCube(float size);
 void DrawGround(float height, float width, float length);
-void GenGround();
 
 float posy = 0.0f;
 float posx = 0.0f;
 float rot = -1.0f;
 float lpos = 0.0f;
 
-static float ground[ground_size][ground_size];
+TerrainGenerator *a = new TerrainGenerator();
 
 int main(int argc, char **argv)
 {
     srand(time(0));
-    GenGround();
+    a->genGround();
     
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB );
@@ -38,6 +33,7 @@ int main(int argc, char **argv)
     
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
+    
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
     GLfloat color[] = {0,1,0};
@@ -183,17 +179,9 @@ void DrawGround(float height, float width, float length){
     for(int z = 0; z < ground_size - 1; z++){
         glBegin(GL_TRIANGLE_STRIP);
             for(int x = 0; x < ground_size; x++){
-                glVertex3f((((float)x)/ground_size)*width -width/2, ground[x][z + 1], ((z+1.0)/ground_size)*(-length) + length/2);
-                glVertex3f((((float)x)/ground_size)*width -width/2, ground[x][z], (((float)z)/ground_size)*(-length) + length/2);
+                glVertex3f((((float)x)/ground_size)*width -width/2, a->getGround(x,z+1), ((z+1.0)/ground_size)*(-length) + length/2);
+                glVertex3f((((float)x)/ground_size)*width -width/2, a->getGround(x,z), (((float)z)/ground_size)*(-length) + length/2);
             }
         glEnd();
-    }
-}
-
-void GenGround(){
-    for(int i = 0; i < ground_size; i++){
-        for(int n = 0; n < ground_size; n++){
-            ground[i][n] = octave_noise_3d(15.0, 0.5, 1, (float)i/200.0,(float)n/200.0,0);
-        }
     }
 }
