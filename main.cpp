@@ -16,14 +16,32 @@ float posx = 0.0f;
 float rot = -1.0f;
 float lpos = 0.0f;
 
-//float vertecies[] = {0,0.7,-0.3,0.1,0.7,-0.4,0.2,0.7,-0.3,0.3,0.7,-0.4,0.4,0.7,-0.3,0.5,0.7,-0.4,0.6,0.7,-0.3,0.7,0.7,-0.4};
-float vertecies[][3] = {{0,0.7,-0.3},{0.1,0.7,-0.4},{0.2,0.7,-0.3},{0.3,0.7,-0.4},{0.4,0.7,-0.3},{0.5,0.7,-0.4},{0.6,0.7,-0.3},{0.7,0.7,-0.4}};
+#define g_width 5
+#define g_depth 5
+
 TerrainGenerator *a = new TerrainGenerator();
+double vertecies[(int)((g_width/0.3)*(g_depth/0.3)*2 - (g_depth/0.3)*2)][3];
+
+
 
 int main(int argc, char **argv)
 {
     srand(time(0));
-    a->genGround();
+    //a->genGround();
+    std::cout<<(int)((g_width/0.3)*(g_depth/0.3)*2 - (g_depth/0.3)*2)<<std::endl;
+    a->genGround(g_width, g_depth, vertecies);
+    
+    
+    
+    std::cout<<vertecies[180][0]<<std::endl;
+    std::cout<<vertecies[180][1]<<std::endl;
+    std::cout<<vertecies[180][2]<<std::endl;
+    std::cout<<vertecies[181][0]<<std::endl;
+    std::cout<<vertecies[181][1]<<std::endl;
+    std::cout<<vertecies[181][2]<<std::endl;
+    std::cout<<vertecies[182][0]<<std::endl;
+    std::cout<<vertecies[182][1]<<std::endl;
+    std::cout<<vertecies[182][2]<<std::endl;
     
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB );
@@ -145,11 +163,15 @@ void Display()
     glPopMatrix();
     glPushMatrix();
         glTranslatef(0.0, -0.9, 0);
-        DrawGround(0.05, 0.03*ground_size, 0.03*ground_size);
+        //DrawGround(0.05, 0.03*ground_size, 0.03*ground_size);
     glPopMatrix();
-    glVertexPointer(3,GL_FLOAT,0,vertecies);
-    glDrawArrays(GL_TRIANGLE_STRIP,0,24);
-        
+    
+    glPushMatrix();
+        glTranslatef(0.0, -0.9, 0);
+        glVertexPointer(3,GL_DOUBLE,0,vertecies);
+        glDrawArrays(GL_TRIANGLE_STRIP,0,(int)((g_width/0.3)*(g_depth/0.3)*2 - (g_depth/0.3)*2));
+    glPopMatrix();    
+    
     glutSwapBuffers();
     
 }
@@ -180,7 +202,7 @@ void DrawCube(float size){
     glEnd();
 }
 
-void DrawGround(float height, float width, float length){
+void DrawGround(float depth, float width, float length){
     for(int z = 0; z < ground_size - 1; z++){
         glBegin(GL_TRIANGLE_STRIP);
             for(int x = 0; x < ground_size; x++){
