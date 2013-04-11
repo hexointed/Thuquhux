@@ -27,6 +27,7 @@ private:
     float noise_frequency;
     
     double ground_detail;
+    double planet_radius;
     double (*height_scale)(float);
 };
 

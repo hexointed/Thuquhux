@@ -20,7 +20,7 @@ float lpos = 0.0f;
 #define g_depth 5
 
 TerrainGenerator *a = new TerrainGenerator();
-double vertecies[(int)((g_width/0.3)*(g_depth/0.3)*2 - (g_depth/0.3)*2)][3];
+double vertecies[16384 * 2][3];
 
 
 
@@ -144,7 +144,7 @@ void Display()
         glRotatef(rot, 0,0,1);
         glRotatef(posx, 1,0,0);
         glRotatef(posy, 0,1,0);
-        DrawCube(0.5);
+        //DrawCube(0.5);
     glPopMatrix();
     
     GLfloat position[] = {cos(lpos),sin(lpos),0,1};
@@ -154,12 +154,12 @@ void Display()
         
         glColorMaterial(GL_FRONT, GL_DIFFUSE);
         glTranslatef(cos(lpos),sin(lpos),0);
-        DrawCube(0.05);
+        //DrawCube(0.05);
     glPopMatrix();
     glPushMatrix();
         glLightfv(GL_LIGHT1, GL_POSITION, position2);
         glTranslatef(-cos(lpos),-sin(lpos),0);
-        DrawCube(0.05);
+        //DrawCube(0.05);
     glPopMatrix();
     glPushMatrix();
         glTranslatef(0.0, -0.9, 0);
@@ -167,9 +167,9 @@ void Display()
     glPopMatrix();
     
     glPushMatrix();
-        glTranslatef(0.0, -0.9, 0);
+        //glTranslatef(0.0, -0.9, 0);
         glVertexPointer(3,GL_DOUBLE,0,vertecies);
-        glDrawArrays(GL_TRIANGLE_STRIP,0,(int)((g_width/0.3)*(g_depth/0.3)*2 - (g_depth/0.3)*2));
+        glDrawArrays(GL_POINTS,0,16384);
     glPopMatrix();    
     
     glutSwapBuffers();
