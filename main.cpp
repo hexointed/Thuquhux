@@ -5,6 +5,7 @@
 #include "Simplexnoise.h"
 #include "TerrainGenerator.h"
 
+void InitLight();
 void KeyboardHandler(unsigned char key, int x, int y);
 void Display();
 void Animate();
@@ -34,24 +35,7 @@ int main(int argc, char **argv)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    GLfloat color[] = {0,1,0};
-    glLightfv(GL_LIGHT0, GL_AMBIENT, color);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, color);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, color);
-    glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1.0f);
-    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 1.0f);
-    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.25f);
-    
-    glEnable(GL_LIGHT1);
-    GLfloat color2[] = {1,0,0};
-    glLightfv(GL_LIGHT1, GL_AMBIENT, color2);
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, color2);
-    glLightfv(GL_LIGHT1, GL_SPECULAR, color2);
-    glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 1.0f);
-    glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 1.0f);
-    glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, 0.25f);
+    InitLight();
     
     gluLookAt(0,0,3, 0,0,1, 0,1,0);
     glMatrixMode(GL_PROJECTION);
@@ -184,4 +168,25 @@ void DrawGround(float height, float width, float length){
             }
         glEnd();
     }
+}
+
+void InitLight(){
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    GLfloat color[] = {0,1,0};
+    glLightfv(GL_LIGHT0, GL_AMBIENT, color);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, color);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, color);
+    glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1.0f);
+    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 1.0f);
+    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.25f);
+    
+    glEnable(GL_LIGHT1);
+    GLfloat color2[] = {1,0,0};
+    glLightfv(GL_LIGHT1, GL_AMBIENT, color2);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, color2);
+    glLightfv(GL_LIGHT1, GL_SPECULAR, color2);
+    glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 1.0f);
+    glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 1.0f);
+    glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, 0.25f);
 }
