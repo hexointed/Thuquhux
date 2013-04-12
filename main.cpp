@@ -27,21 +27,7 @@ double vertecies[16384 * 2][3];
 int main(int argc, char **argv)
 {
     srand(time(0));
-    //a->genGround();
-    std::cout<<(int)((g_width/0.3)*(g_depth/0.3)*2 - (g_depth/0.3)*2)<<std::endl;
     a->genGround(g_width, g_depth, vertecies);
-    
-    
-    
-    std::cout<<vertecies[180][0]<<std::endl;
-    std::cout<<vertecies[180][1]<<std::endl;
-    std::cout<<vertecies[180][2]<<std::endl;
-    std::cout<<vertecies[181][0]<<std::endl;
-    std::cout<<vertecies[181][1]<<std::endl;
-    std::cout<<vertecies[181][2]<<std::endl;
-    std::cout<<vertecies[182][0]<<std::endl;
-    std::cout<<vertecies[182][1]<<std::endl;
-    std::cout<<vertecies[182][2]<<std::endl;
     
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB );
@@ -52,7 +38,7 @@ int main(int argc, char **argv)
     glutIdleFunc(Animate);
     
     glEnable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
     glEnableClientState(GL_VERTEX_ARRAY);
     
     glEnable(GL_LIGHTING);
@@ -137,15 +123,6 @@ void Display()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
-
-    
-    glRotatef(.05,0,1,0);
-    glPushMatrix();
-        glRotatef(rot, 0,0,1);
-        glRotatef(posx, 1,0,0);
-        glRotatef(posy, 0,1,0);
-        //DrawCube(0.5);
-    glPopMatrix();
     
     GLfloat position[] = {cos(lpos),sin(lpos),0,1};
     GLfloat position2[] = {-cos(lpos),-sin(lpos),0,1};
@@ -154,22 +131,21 @@ void Display()
         
         glColorMaterial(GL_FRONT, GL_DIFFUSE);
         glTranslatef(cos(lpos),sin(lpos),0);
-        //DrawCube(0.05);
+        DrawCube(0.05);
     glPopMatrix();
     glPushMatrix();
         glLightfv(GL_LIGHT1, GL_POSITION, position2);
         glTranslatef(-cos(lpos),-sin(lpos),0);
-        //DrawCube(0.05);
-    glPopMatrix();
-    glPushMatrix();
-        glTranslatef(0.0, -0.9, 0);
-        //DrawGround(0.05, 0.03*ground_size, 0.03*ground_size);
+        DrawCube(0.05);
     glPopMatrix();
     
     glPushMatrix();
-        //glTranslatef(0.0, -0.9, 0);
+        glTranslatef(0.0, -71, 0);
+        glRotatef(rot, 0,0,1);
+        glRotatef(posx, 1,0,0);
+        glRotatef(posy, 0,1,0);
         glVertexPointer(3,GL_DOUBLE,0,vertecies);
-        glDrawArrays(GL_POINTS,0,16384);
+        glDrawArrays(GL_TRIANGLE_STRIP,0,19600);
     glPopMatrix();    
     
     glutSwapBuffers();

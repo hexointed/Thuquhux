@@ -9,7 +9,8 @@
 #define	TERRAINGENERATOR_H
 
 #define ground_size 1600
-//#define ground_detail 1
+
+double def_height_scale(float height);
 
 class TerrainGenerator{
 public:
