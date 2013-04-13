@@ -10,11 +10,10 @@ void KeyboardHandler(unsigned char key, int x, int y);
 void Display();
 void Animate();
 void DrawCube(float size);
-void DrawGround(float height, float width, float length);
 
 float posy = 0.0f;
 float posx = 0.0f;
-float rot = -1.0f;
+float rot = 0.0f;
 float lpos = 0.0f;
 
 TerrainGenerator *a = new TerrainGenerator();
@@ -157,17 +156,6 @@ void DrawCube(float size){
         glVertex3f(-size,size,-size);
         glVertex3f(size,size,-size);
     glEnd();
-}
-
-void DrawGround(float height, float width, float length){
-    for(int z = 0; z < ground_size - 1; z++){
-        glBegin(GL_TRIANGLE_STRIP);
-            for(int x = 0; x < ground_size; x++){
-                glVertex3f((((float)x)/ground_size)*width -width/2, a->getGround(x,z+1), ((z+1.0)/ground_size)*(-length) + length/2);
-                glVertex3f((((float)x)/ground_size)*width -width/2, a->getGround(x,z), (((float)z)/ground_size)*(-length) + length/2);
-            }
-        glEnd();
-    }
 }
 
 void InitLight(){
