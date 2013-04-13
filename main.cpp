@@ -16,12 +16,18 @@ float posx = 0.0f;
 float rot = 0.0f;
 float lpos = 0.0f;
 
+#define g_width 14.0
+#define g_depth 14.0
+
 TerrainGenerator *a = new TerrainGenerator();
+double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];
+
+
 
 int main(int argc, char **argv)
 {
     srand(time(0));
-    a->genGround();
+    a->genGround(g_width, g_depth, vertecies);
     
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB );
@@ -33,6 +39,7 @@ int main(int argc, char **argv)
     
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
+    glEnableClientState(GL_VERTEX_ARRAY);
     
     InitLight();
     
@@ -99,15 +106,6 @@ void Display()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
-
-    
-    glRotatef(.05,0,1,0);
-    glPushMatrix();
-        glRotatef(rot, 0,0,1);
-        glRotatef(posx, 1,0,0);
-        glRotatef(posy, 0,1,0);
-        DrawCube(0.5);
-    glPopMatrix();
     
     GLfloat position[] = {cos(lpos),sin(lpos),0,1};
     GLfloat position2[] = {-cos(lpos),-sin(lpos),0,1};
@@ -123,10 +121,15 @@ void Display()
         glTranslatef(-cos(lpos),-sin(lpos),0);
         DrawCube(0.05);
     glPopMatrix();
+    
     glPushMatrix();
-        glTranslatef(0.0, -0.9, 0);
-        DrawGround(0.05, 0.03*ground_size, 0.03*ground_size);
-    glPopMatrix();
+        glTranslatef(0.0, -71, 0);
+        glRotatef(rot, 0,0,1);
+        glRotatef(posx, 1,0,0);
+        glRotatef(posy, 0,1,0);
+        glVertexPointer(3,GL_DOUBLE,0,vertecies);
+        glDrawArrays(GL_TRIANGLE_STRIP,0,a->getGroundVertexSize());
+    glPopMatrix();    
     
     glutSwapBuffers();
     
