@@ -16,11 +16,11 @@ float posx = 0.0f;
 float rot = -1.0f;
 float lpos = 0.0f;
 
-#define g_width 5
-#define g_depth 5
+#define g_width 14.0
+#define g_depth 14.0
 
 TerrainGenerator *a = new TerrainGenerator();
-double vertecies[16384 * 2][3];
+double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];
 
 
 
@@ -145,7 +145,7 @@ void Display()
         glRotatef(posx, 1,0,0);
         glRotatef(posy, 0,1,0);
         glVertexPointer(3,GL_DOUBLE,0,vertecies);
-        glDrawArrays(GL_TRIANGLE_STRIP,0,19600);
+        glDrawArrays(GL_TRIANGLE_STRIP,0,a->getGroundVertexSize());
     glPopMatrix();    
     
     glutSwapBuffers();

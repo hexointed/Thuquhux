@@ -18,6 +18,7 @@ public:
     void genGround();
     void genGround(double width, double depth, double result[][3]);
     float getGround(int x, int y);
+    const int getGroundVertexSize();
     
 private:
     float ground[ground_size][ground_size];
