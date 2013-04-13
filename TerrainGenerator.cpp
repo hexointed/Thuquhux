@@ -24,14 +24,6 @@ TerrainGenerator::TerrainGenerator():
 {
 }
 
-void TerrainGenerator::genGround(){
-    for(int i = 0; i < ground_size; i++){
-        for(int n = 0; n < ground_size; n++){
-            ground[i][n] = octave_noise_3d(noise_octaves, noise_persistence, noise_frequency, (float)i/noise_size,(float)n/noise_size,0);
-        }
-    }
-}
-
 void TerrainGenerator::genGround(double fov_near, double fov_length, double result[][3]){
     double d_phi = fov_near/planet_radius/ground_detail;
     double d_theta = fov_length/planet_radius/ground_detail;
@@ -101,10 +93,6 @@ void TerrainGenerator::genGround(double fov_near, double fov_length, double resu
             count += 2;
         }
     }
-}
-
-float TerrainGenerator::getGround(int x, int y){
-    return this->ground[x][y];
 }
 
 const int TerrainGenerator::getGroundVertexSize(){

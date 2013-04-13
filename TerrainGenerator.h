@@ -15,14 +15,10 @@ double def_height_scale(float height);
 class TerrainGenerator{
 public:
     TerrainGenerator();
-    void genGround();
     void genGround(double width, double depth, double result[][3]);
-    float getGround(int x, int y);
     const int getGroundVertexSize();
     
 private:
-    float ground[ground_size][ground_size];
-    
     double noise_size;
     float noise_octaves;
     float noise_persistence;
