@@ -19,6 +19,8 @@ public:
     const int getGroundVertexSize();
     
 private:
+    Simplexnoise *noise_object;
+    
     double noise_size;
     float noise_octaves;
     float noise_persistence;
