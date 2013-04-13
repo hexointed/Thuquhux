@@ -10,18 +10,16 @@
 
 class Simplexnoise{
 public:
-    Simplexnoise();
+    Simplexnoise(int seed);
     float octave_noise_3d(const float octaves, const float persistence, const float scale,
                         const float x, const float y, const float z);
     float raw_noise_3d(const float x, const float y, const float z);
 
 private:
-    const int perm[512];
-
+    int perm[512];
     const int grad3[12][3];
-
+    
     float dot(const int* g, const float x, const float y, const float z);
-
     int fastfloor(const float x);
 
 };

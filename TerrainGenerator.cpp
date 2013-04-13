@@ -9,6 +9,7 @@
 #include "TerrainGenerator.h"
 #include <math.h>
 #include <iostream>
+#include <ctime>
 
 
 #define PI 3.1415926535897932
@@ -22,7 +23,7 @@ TerrainGenerator::TerrainGenerator():
         planet_radius(70.0),
         height_scale(def_height_scale)
 {
-    noise_object = new Simplexnoise();
+    noise_object = new Simplexnoise(time(0));
 }
 
 void TerrainGenerator::genGround(double fov_near, double fov_length, double result[][3]){
