@@ -38,7 +38,6 @@ void TerrainGenerator::genGround(double fov_near, double fov_length, double resu
     double r_fov = (PI - fov_near/planet_radius)/2;
     double l_fov = fov_near/planet_radius + (PI - fov_near/planet_radius)/2;
     int count = 0;
-    std::cout<<4*ground_detail*ground_detail + 8 * ground_detail + 4<<std::endl;
     
     for(double theta = PI/2; theta <= fov_length/planet_radius + PI/2; theta += d_theta){
         for(double phi = r_fov; phi <= l_fov; phi += d_phi){
@@ -102,7 +101,6 @@ void TerrainGenerator::genGround(double fov_near, double fov_length, double resu
             count += 2;
         }
     }
-    std::cout<<count<<std::endl;
 }
 
 float TerrainGenerator::getGround(int x, int y){
