@@ -15,9 +15,10 @@ float posy = 0.0f;
 float posx = 0.0f;
 float rot = 0.0f;
 float lpos = 0.0f;
+float height = 0.0f;
 
-#define g_width 14.0
-#define g_depth 14.0
+#define g_width 40.0
+#define g_depth 40.0
 
 TerrainGenerator *a = new TerrainGenerator();
 double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];
@@ -96,6 +97,14 @@ void KeyboardHandler(unsigned char key, int x, int y)
       {
           lpos -= 0.03;
       } break;
+      case 'z':
+      {
+          height -= 0.1;
+      } break;
+      case 'x':
+      {
+          height += 0.1;
+      }
       default:
       {} break;
   }
@@ -123,7 +132,7 @@ void Display()
     glPopMatrix();
     
     glPushMatrix();
-        glTranslatef(0.0, -71, 0);
+        glTranslatef(0.0, -71 + height, 0);
         glRotatef(rot, 0,0,1);
         glRotatef(posx, 1,0,0);
         glRotatef(posy, 0,1,0);

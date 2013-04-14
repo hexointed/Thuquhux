@@ -17,9 +17,9 @@
 TerrainGenerator::TerrainGenerator():
         noise_octaves(8.0),
         noise_persistence(0.5),
-        noise_frequency(0.1),
+        noise_frequency(0.06),
         noise_size(200.0),
-        ground_detail(800),
+        ground_detail(2000),
         planet_radius(70.0),
         height_scale(def_height_scale)
 {
@@ -102,5 +102,5 @@ const int TerrainGenerator::getGroundVertexSize(){
 }
 
 double def_height_scale(float height){
-    return (double) height * 2;
+    return (double) height * 3;
 }
