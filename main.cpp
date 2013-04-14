@@ -125,10 +125,10 @@ void Display()
     glPopMatrix();
     
     glPushMatrix();
-        glTranslated(0.0, -71 + height, 0);
-        glRotatef(rot, 0,0,1);
-        glRotatef(arot + posx, 1,0,0);
-        glRotatef(posy, 0,1,0);
+        glTranslated(0.0, -1 + height, 0);
+        glRotatef(rot, 0,1,0);
+        glTranslatef(posx,0,0);
+        glTranslatef(0,0,posy);
         glVertexPointer(3,GL_DOUBLE,0,vertecies);
         glDrawArrays(GL_TRIANGLE_STRIP,0,a->getGroundVertexSize());
     glPopMatrix();    

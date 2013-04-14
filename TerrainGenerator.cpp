@@ -21,7 +21,7 @@ TerrainGenerator::TerrainGenerator():
         noise_frequency(0.06),
         noise_size(200.0),
         ground_detail(1000),
-        planet_radius(70.0),
+        planet_radius(695.0),
         height_scale(def_height_scale)
 {
     noise_object = new Simplexnoise(time(0));
@@ -47,7 +47,7 @@ void TerrainGenerator::genGround(double fov_near, double fov_length, double alph
                                          unit_z * planet_radius * cos(alpha) + unit_y * planet_radius *-sin(alpha)));
             
             result[count][0] = unit_x * planet_radius + height * unit_x;
-            result[count][1] = unit_y * planet_radius + height * unit_y;
+            result[count][1] = unit_y * planet_radius + height * unit_y - planet_radius;
             result[count][2] = unit_z * planet_radius + height * unit_z;
                     
             unit_x = sin(theta + d_theta) * cos(phi);
@@ -60,7 +60,7 @@ void TerrainGenerator::genGround(double fov_near, double fov_length, double alph
                                          unit_z * planet_radius * cos(alpha) + unit_y * planet_radius *-sin(alpha)));
             
             result[count + 1][0] = unit_x * planet_radius + height * unit_x;
-            result[count + 1][1] = unit_y * planet_radius + height * unit_y;
+            result[count + 1][1] = unit_y * planet_radius + height * unit_y - planet_radius;
             result[count + 1][2] = unit_z * planet_radius + height * unit_z;
             
             count += 2;
@@ -77,7 +77,7 @@ void TerrainGenerator::genGround(double fov_near, double fov_length, double alph
                                          unit_z * planet_radius * cos(alpha) + unit_y * planet_radius *-sin(alpha)));
             
             result[count][0] = unit_x * planet_radius + height * unit_x;
-            result[count][1] = unit_y * planet_radius + height * unit_y;
+            result[count][1] = unit_y * planet_radius + height * unit_y - planet_radius;
             result[count][2] = unit_z * planet_radius + height * unit_z;
                     
             unit_x = sin(theta + d_theta) * cos(phi);
@@ -90,7 +90,7 @@ void TerrainGenerator::genGround(double fov_near, double fov_length, double alph
                                          unit_z * planet_radius * cos(alpha) + unit_y * planet_radius *-sin(alpha)));
             
             result[count + 1][0] = unit_x * planet_radius + height * unit_x;
-            result[count + 1][1] = unit_y * planet_radius + height * unit_y;
+            result[count + 1][1] = unit_y * planet_radius + height * unit_y - planet_radius;
             result[count + 1][2] = unit_z * planet_radius + height * unit_z;
             
             count += 2;
