@@ -10,12 +10,12 @@
 
 #define ground_size 1600
 
-double def_height_scale(float height);
+double def_height_scale(double height);
 
 class TerrainGenerator{
 public:
     TerrainGenerator();
-    void genGround(double width, double depth, double result[][3]);
+    void genGround(double width, double depth, double alpha, double beta, double result[][3]);
     const int getGroundVertexSize();
     
 private:
@@ -28,7 +28,7 @@ private:
     
     double ground_detail;
     double planet_radius;
-    double (*height_scale)(float);
+    double (*height_scale)(double);
 };
 
 #endif	/* TERRAINGENERATOR_H */

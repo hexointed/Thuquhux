@@ -20,6 +20,7 @@ float height = 0.0f;
 
 #define g_width 40.0
 #define g_depth 40.0
+#define arot 0.0
 
 TerrainGenerator *a = new TerrainGenerator();
 double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];
@@ -27,7 +28,7 @@ double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];
 int main(int argc, char **argv)
 {
     srand(time(0));
-    a->genGround(g_width, g_depth, vertecies);
+    a->genGround(g_width, g_depth,arot,0, vertecies);
     
     InitGlut(argc, argv);
     InitLight();
@@ -67,11 +68,11 @@ void KeyboardHandler(unsigned char key, int x, int y)
       } break;
       case 'a':
       {
-          posx = posx + 0.31;
+          posx = posx + 0.09;
       } break;
       case 'd':
       {
-          posx = posx - 0.31;
+          posx = posx - 0.09;
       } break;
       case 'q':
       {
@@ -124,9 +125,9 @@ void Display()
     glPopMatrix();
     
     glPushMatrix();
-        glTranslatef(0.0, -71 + height, 0);
+        glTranslated(0.0, -71 + height, 0);
         glRotatef(rot, 0,0,1);
-        glRotatef(posx, 1,0,0);
+        glRotatef(arot + posx, 1,0,0);
         glRotatef(posy, 0,1,0);
         glVertexPointer(3,GL_DOUBLE,0,vertecies);
         glDrawArrays(GL_TRIANGLE_STRIP,0,a->getGroundVertexSize());
