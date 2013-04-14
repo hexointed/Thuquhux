@@ -6,6 +6,7 @@
 #include "TerrainGenerator.h"
 
 void InitLight();
+void InitGlut(int argc, char **argv);
 void KeyboardHandler(unsigned char key, int x, int y);
 void Display();
 void Animate();
@@ -23,26 +24,17 @@ float height = 0.0f;
 TerrainGenerator *a = new TerrainGenerator();
 double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];
 
-
-
 int main(int argc, char **argv)
 {
     srand(time(0));
     a->genGround(g_width, g_depth, vertecies);
     
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB );
-    glutInitWindowSize(1024, 1024);
-    glutCreateWindow("Wooo!");
-    glutDisplayFunc(Display);
-    glutKeyboardFunc(KeyboardHandler);
-    glutIdleFunc(Animate);
+    InitGlut(argc, argv);
+    InitLight();
     
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glEnableClientState(GL_VERTEX_ARRAY);
-    
-    InitLight();
     
     gluLookAt(0,0,3, 0,0,1, 0,1,0);
     glMatrixMode(GL_PROJECTION);
@@ -189,4 +181,14 @@ void InitLight(){
     glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 1.0f);
     glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 1.0f);
     glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, 0.25f);
+}
+
+void InitGlut(int argc, char **argv){
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB );
+    glutInitWindowSize(1024, 1024);
+    glutCreateWindow("Wooo!");
+    glutDisplayFunc(Display);
+    glutKeyboardFunc(KeyboardHandler);
+    glutIdleFunc(Animate);
 }
