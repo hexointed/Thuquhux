@@ -19,9 +19,9 @@ TerrainGenerator::TerrainGenerator():
         noise_octaves(8.0),
         noise_persistence(0.5),
         noise_frequency(0.06),
-        noise_size(200.0),
-        ground_detail(1000),
-        planet_radius(695.0),
+        noise_size(400.0),
+        ground_detail(100),
+        planet_radius(20.0),
         height_scale(def_height_scale)
 {
     noise_object = new Simplexnoise(time(0));
@@ -42,9 +42,9 @@ void TerrainGenerator::genGround(double fov_near, double fov_length, double alph
             double unit_z = cos(theta);
             
             double height = height_scale(noise_object->octave_noise_3d(noise_octaves, noise_persistence, noise_frequency, 
-                                         unit_x * planet_radius,
-                                         unit_y * planet_radius * cos(alpha) + unit_z * planet_radius * sin(alpha),
-                                         unit_z * planet_radius * cos(alpha) + unit_y * planet_radius *-sin(alpha)));
+                                         unit_x * planet_radius * cos(beta) + unit_y * planet_radius * sin(beta),
+                                         (unit_y * planet_radius * cos(alpha) + unit_z * planet_radius * sin(alpha)) * cos(beta) + unit_x * planet_radius * -sin(beta),
+                                         unit_z * planet_radius * cos(alpha) + unit_y * planet_radius *-sin(alpha) ));
             
             result[count][0] = unit_x * planet_radius + height * unit_x;
             result[count][1] = unit_y * planet_radius + height * unit_y - planet_radius;
@@ -55,9 +55,9 @@ void TerrainGenerator::genGround(double fov_near, double fov_length, double alph
             unit_z = cos(theta + d_theta);
             
             height = height_scale(noise_object->octave_noise_3d(noise_octaves, noise_persistence, noise_frequency, 
-                                         unit_x * planet_radius,
-                                         unit_y * planet_radius * cos(alpha) + unit_z * planet_radius * sin(alpha),
-                                         unit_z * planet_radius * cos(alpha) + unit_y * planet_radius *-sin(alpha)));
+                                         unit_x * planet_radius * cos(beta) + unit_y * planet_radius * sin(beta),
+                                         (unit_y * planet_radius * cos(alpha) + unit_z * planet_radius * sin(alpha)) * cos(beta) + unit_x * planet_radius * -sin(beta),
+                                         unit_z * planet_radius * cos(alpha) + unit_y * planet_radius *-sin(alpha) ));
             
             result[count + 1][0] = unit_x * planet_radius + height * unit_x;
             result[count + 1][1] = unit_y * planet_radius + height * unit_y - planet_radius;
@@ -72,9 +72,9 @@ void TerrainGenerator::genGround(double fov_near, double fov_length, double alph
             double unit_z = cos(theta);
             
             double height = height_scale(noise_object->octave_noise_3d(noise_octaves, noise_persistence, noise_frequency, 
-                                         unit_x * planet_radius,
-                                         unit_y * planet_radius * cos(alpha) + unit_z * planet_radius * sin(alpha),
-                                         unit_z * planet_radius * cos(alpha) + unit_y * planet_radius *-sin(alpha)));
+                                         unit_x * planet_radius * cos(beta) + unit_y * planet_radius * sin(beta),
+                                         (unit_y * planet_radius * cos(alpha) + unit_z * planet_radius * sin(alpha)) * cos(beta) + unit_x * planet_radius * -sin(beta),
+                                         unit_z * planet_radius * cos(alpha) + unit_y * planet_radius *-sin(alpha) ));
             
             result[count][0] = unit_x * planet_radius + height * unit_x;
             result[count][1] = unit_y * planet_radius + height * unit_y - planet_radius;
@@ -85,9 +85,9 @@ void TerrainGenerator::genGround(double fov_near, double fov_length, double alph
             unit_z = cos(theta + d_theta);
             
             height = height_scale(noise_object->octave_noise_3d(noise_octaves, noise_persistence, noise_frequency, 
-                                         unit_x * planet_radius,
-                                         unit_y * planet_radius * cos(alpha) + unit_z * planet_radius * sin(alpha),
-                                         unit_z * planet_radius * cos(alpha) + unit_y * planet_radius *-sin(alpha)));
+                                         unit_x * planet_radius * cos(beta) + unit_y * planet_radius * sin(beta),
+                                         (unit_y * planet_radius * cos(alpha) + unit_z * planet_radius * sin(alpha)) * cos(beta) + unit_x * planet_radius * -sin(beta),
+                                         unit_z * planet_radius * cos(alpha) + unit_y * planet_radius *-sin(alpha) ));
             
             result[count + 1][0] = unit_x * planet_radius + height * unit_x;
             result[count + 1][1] = unit_y * planet_radius + height * unit_y - planet_radius;

@@ -18,8 +18,8 @@ float rot = 0.0f;
 float lpos = 0.0f;
 float height = 0.0f;
 
-#define g_width 40.0
-#define g_depth 40.0
+#define g_width 7.0
+#define g_depth 14.0
 #define arot 0.0
 
 TerrainGenerator *a = new TerrainGenerator();
@@ -60,19 +60,19 @@ void KeyboardHandler(unsigned char key, int x, int y)
   {
       case 's':
       {
-          posy = posy + 0.31;
+          posy = posy + 0.001;
       } break;
       case 'w':
       {
-          posy = posy - 0.31;
+          posy = posy - 0.001;
       } break;
       case 'a':
       {
-          posx = posx + 0.09;
+          posx = posx + 0.001;
       } break;
       case 'd':
       {
-          posx = posx - 0.09;
+          posx = posx - 0.001;
       } break;
       case 'q':
       {
@@ -124,11 +124,13 @@ void Display()
         DrawCube(0.05);
     glPopMatrix();
     
+    a->genGround(g_width, g_depth,posy,posx, vertecies);
+    
     glPushMatrix();
         glTranslated(0.0, -1 + height, 0);
         glRotatef(rot, 0,1,0);
-        glTranslatef(posx,0,0);
-        glTranslatef(0,0,posy);
+        //glTranslatef(posx,0,0);
+        //glTranslatef(0,0,posy);
         glVertexPointer(3,GL_DOUBLE,0,vertecies);
         glDrawArrays(GL_TRIANGLE_STRIP,0,a->getGroundVertexSize());
     glPopMatrix();    
