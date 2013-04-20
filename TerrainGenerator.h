@@ -21,11 +21,6 @@ public:
 private:
     Simplexnoise *noise_object;
     
-    double noise_size;
-    float noise_octaves;
-    float noise_persistence;
-    float noise_frequency;
-    
     double ground_detail;
     double planet_radius;
     double (*height_scale)(double);

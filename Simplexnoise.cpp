@@ -23,9 +23,12 @@
 #include <stdlib.h>
 
 Simplexnoise::Simplexnoise(int seed):
-            grad3({{1,1,0}, {-1,1,0}, {1,-1,0}, {-1,-1,0},
-                   {1,0,1}, {-1,0,1}, {1,0,-1}, {-1,0,-1},
-                   {0,1,1}, {0,-1,1}, {0,1,-1}, {0,-1,-1} })
+        grad3({{1,1,0}, {-1,1,0}, {1,-1,0}, {-1,-1,0},
+               {1,0,1}, {-1,0,1}, {1,0,-1}, {-1,0,-1},
+               {0,1,1}, {0,-1,1}, {0,1,-1}, {0,-1,-1} }),
+        noise_octaves(8.0),
+        noise_persistence(0.5),
+        noise_frequency(0.09)
 {
     srand(seed);
     for(int i = 0; i < 256; i++){
@@ -38,21 +41,21 @@ Simplexnoise::Simplexnoise(int seed):
 //
 // For each octave, a higher frequency/lower amplitude function will be added to the original.
 // The higher the persistence [0-1], the more of each succeeding octave will be added.
-double Simplexnoise::octave_noise_3d( const double octaves, const double persistence, const double scale, const double x, const double y, const double z ) {
+double Simplexnoise::octave_noise_3d(const double x, const double y, const double z ) {
     double total = 0;
-    double frequency = scale;
+    double frequency = noise_frequency;
     double amplitude = 1;
 
     // We have to keep track of the largest possible amplitude,
     // because each octave adds more, and we need a value in [-1, 1].
     double maxAmplitude = 0;
 
-    for( int i=0; i < octaves; i++ ) {
+    for( int i=0; i < noise_octaves; i++ ) {
         total += raw_noise_3d( x * frequency, y * frequency, z * frequency ) * amplitude;
 
         frequency *= 2;
         maxAmplitude += amplitude;
-        amplitude *= persistence;
+        amplitude *= noise_persistence;
     }
 
     return total / maxAmplitude;

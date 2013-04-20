@@ -19,7 +19,7 @@ float lpos = 0.0f;
 float height = 0.0f;
 
 #define g_width 8.0
-#define g_depth 20.0
+#define g_depth 12.0
 #define arot 0.0
 
 TerrainGenerator *a = new TerrainGenerator();
@@ -60,19 +60,19 @@ void KeyboardHandler(unsigned char key, int x, int y)
   {
       case 's':
       {
-          posy = posy + 0.001;
+          posy = posy - 0.001;
       } break;
       case 'w':
       {
-          posy = posy - 0.001;
+          posy = posy + 0.001;
       } break;
       case 'a':
       {
-          posx = posx + 0.001;
+          posx = posx - 0.001;
       } break;
       case 'd':
       {
-          posx = posx - 0.001;
+          posx = posx + 0.001;
       } break;
       case 'q':
       {
@@ -127,7 +127,7 @@ void Display()
     a->genGround(g_width, g_depth,posy,posx, vertecies);
     
     glPushMatrix();
-        glTranslated(0.0, -1 + height, 0);
+        glTranslated(0.0,height -1, 0);
         glRotatef(rot, 0,1,0);
         //glTranslatef(posx,0,0);
         //glTranslatef(0,0,posy);
