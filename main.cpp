@@ -17,8 +17,9 @@ float rot = 0.0f;
 float lpos = 0.0f;
 float height = 0.0f;
 
-#define g_width 40.0
-#define g_depth 40.0
+#define g_width 8.0
+#define g_depth 20.0
+#define arot 0.0
 
 TerrainGenerator *a = new TerrainGenerator();
 double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];

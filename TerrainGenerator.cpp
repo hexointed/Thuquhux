@@ -18,9 +18,9 @@ TerrainGenerator::TerrainGenerator():
         noise_octaves(8.0),
         noise_persistence(0.5),
         noise_frequency(0.06),
-        noise_size(200.0),
-        ground_detail(2000),
-        planet_radius(70.0),
+        noise_size(400.0),
+        ground_detail(800),
+        planet_radius(80.0),
         height_scale(def_height_scale)
 {
     noise_object = new Simplexnoise(time(0));
