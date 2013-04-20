@@ -6,6 +6,7 @@
 #include "TerrainGenerator.h"
 
 void InitLight();
+void InitGlut(int argc, char **argv);
 void KeyboardHandler(unsigned char key, int x, int y);
 void Display();
 void Animate();
@@ -15,33 +16,26 @@ float posy = 0.0f;
 float posx = 0.0f;
 float rot = 0.0f;
 float lpos = 0.0f;
+float height = 0.0f;
 
-#define g_width 14.0
-#define g_depth 14.0
+#define g_width 8.0
+#define g_depth 12.0
+#define arot 0.0
 
 TerrainGenerator *a = new TerrainGenerator();
 double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];
 
-
-
 int main(int argc, char **argv)
 {
     srand(time(0));
-    a->genGround(g_width, g_depth, vertecies);
+    a->genGround(g_width, g_depth,arot,0, vertecies);
     
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB );
-    glutInitWindowSize(1024, 1024);
-    glutCreateWindow("Wooo!");
-    glutDisplayFunc(Display);
-    glutKeyboardFunc(KeyboardHandler);
-    glutIdleFunc(Animate);
+    InitGlut(argc, argv);
+    InitLight();
     
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glEnableClientState(GL_VERTEX_ARRAY);
-    
-    InitLight();
     
     gluLookAt(0,0,3, 0,0,1, 0,1,0);
     glMatrixMode(GL_PROJECTION);
@@ -66,19 +60,19 @@ void KeyboardHandler(unsigned char key, int x, int y)
   {
       case 's':
       {
-          posy = posy + 0.31;
+          posy = posy - 0.001;
       } break;
       case 'w':
       {
-          posy = posy - 0.31;
+          posy = posy + 0.001;
       } break;
       case 'a':
       {
-          posx = posx + 0.31;
+          posx = posx - 0.001;
       } break;
       case 'd':
       {
-          posx = posx - 0.31;
+          posx = posx + 0.001;
       } break;
       case 'q':
       {
@@ -96,6 +90,14 @@ void KeyboardHandler(unsigned char key, int x, int y)
       {
           lpos -= 0.03;
       } break;
+      case 'z':
+      {
+          height -= 0.1;
+      } break;
+      case 'x':
+      {
+          height += 0.1;
+      }
       default:
       {} break;
   }
@@ -122,11 +124,13 @@ void Display()
         DrawCube(0.05);
     glPopMatrix();
     
+    a->genGround(g_width, g_depth,posy,posx, vertecies);
+    
     glPushMatrix();
-        glTranslatef(0.0, -71, 0);
-        glRotatef(rot, 0,0,1);
-        glRotatef(posx, 1,0,0);
-        glRotatef(posy, 0,1,0);
+        glTranslated(0.0,height -1, 0);
+        glRotatef(rot, 0,1,0);
+        //glTranslatef(posx,0,0);
+        //glTranslatef(0,0,posy);
         glVertexPointer(3,GL_DOUBLE,0,vertecies);
         glDrawArrays(GL_TRIANGLE_STRIP,0,a->getGroundVertexSize());
     glPopMatrix();    
@@ -180,4 +184,14 @@ void InitLight(){
     glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 1.0f);
     glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 1.0f);
     glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, 0.25f);
+}
+
+void InitGlut(int argc, char **argv){
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB );
+    glutInitWindowSize(1024, 1024);
+    glutCreateWindow("Wooo!");
+    glutDisplayFunc(Display);
+    glutKeyboardFunc(KeyboardHandler);
+    glutIdleFunc(Animate);
 }
