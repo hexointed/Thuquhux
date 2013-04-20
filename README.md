@@ -1,11 +1,5 @@
 Thuquhux
 ========
-Thuqunux is an experiment in creating a highly customizable sandbox 
-game. It is only capable of displaying a small patch of procedurally
-generated terrain, but I will try to add more features when I've got
-time.
-
-========
 Copyright (c) 2013 Elias Forsberg
 
 This program is free software: you can redistribute it and/or modify
@@ -20,4 +14,10 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
+========
+Thuqunux is an experiment in creating a highly customizable sandbox 
+game. It is only capable of displaying procedurally on a planet of
+arbitrary size (no larger than the sun) and rotating the planet so 
+that differant parts of the terrain can be seen. 
 
+I will try to add more features when I have time.
