@@ -21,10 +21,11 @@ public:
     
     NURBSSEV& operator=(NURBSSEV v) const;
     
+    bool operator&&(const NURBSSEV& v) const;   //Intersection check
     bool operator==(const NURBSSEV& v) const;
     bool operator!=(const NURBSSEV& v) const;
-    bool operator< (const NURBSSEV& v) const;
-    bool operator> (const NURBSSEV& v) const;
+    bool operator< (const NURBSSEV& v) const;   //Subset of
+    bool operator> (const NURBSSEV& v) const;   //Superset of
     bool operator<=(const NURBSSEV& v) const;
     bool operator>=(const NURBSSEV& v) const;
     
