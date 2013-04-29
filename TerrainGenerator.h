@@ -9,6 +9,7 @@
 #define	TERRAINGENERATOR_H
 
 #include <vector>
+#include "PhysObject.h"
 
 #define TERRAIN_TREES 0
 #define TERRAIN_RIVERS 1
@@ -23,7 +24,7 @@ public:
     void genGround(double width, double depth, double alpha, double beta, double result[][3]);
     const int getGroundVertexSize();
     
-    std::vector<int>        operator()(double alpha, double beta);
+    std::vector<PhysObject> operator()(double alpha, double beta);
     const TerrainGenerator& operator= (const TerrainGenerator& v) const;
     
     void enable (int TERRAIN_TYPE);

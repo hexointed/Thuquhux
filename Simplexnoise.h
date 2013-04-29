@@ -17,7 +17,10 @@ public:
 private:
     double raw_noise_3d(const double x, const double y, const double z);
     double raw_noise_4d(const double x, const double y, const double z, const double w);
+    
     double dot(const int* g, const double x, const double y, const double z);
+    double dot(const int* g, const double x, const double y, const double z, const double w);
+    
     int fastfloor(const double x);
     
 private:
