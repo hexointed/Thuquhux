@@ -23,7 +23,7 @@
 #include <stdlib.h>
 #include <cmath>
 
-Simplexnoise::Simplexnoise(int seed):
+Simplexnoise::Simplexnoise(int seed, double frequency, int octaves):
         grad3({{1,1,0}, {-1,1,0}, {1,-1,0}, {-1,-1,0},
                {1,0,1}, {-1,0,1}, {1,0,-1}, {-1,0,-1},
                {0,1,1}, {0,-1,1}, {0,1,-1}, {0,-1,-1} }),
@@ -44,9 +44,9 @@ Simplexnoise::Simplexnoise(int seed):
                  {2,0,1,3},{0,0,0,0},{0,0,0,0},{0,0,0,0},{3,0,1,2},{3,0,2,1},{0,0,0,0},{3,1,2,0},
                  {2,1,0,3},{0,0,0,0},{0,0,0,0},{0,0,0,0},{3,1,0,2},{0,0,0,0},{3,2,0,1},{3,2,1,0}
 }),
-        noise_octaves(8.0),
+        noise_octaves(octaves),
         noise_persistence(0.5),
-        noise_frequency(0.09)
+        noise_frequency(frequency)
 {
     srand(seed);
     for(int i = 0; i < 256; i++){
@@ -55,11 +55,7 @@ Simplexnoise::Simplexnoise(int seed):
     
 }
 
-// 3D Multi-octave Simplex noise.
-//
-// For each octave, a higher frequency/lower amplitude function will be added to the original.
-// The higher the persistence [0-1], the more of each succeeding octave will be added.
-double Simplexnoise::octave_noise_3d(const double x, const double y, const double z ) {
+double Simplexnoise::operator()(double x, double y, double z){
     double total = 0;
     double frequency = noise_frequency;
     double amplitude = 1;
@@ -79,7 +75,7 @@ double Simplexnoise::octave_noise_3d(const double x, const double y, const doubl
     return total / maxAmplitude;
 }
 
-double Simplexnoise::octave_noise_4d(const double x, const double y, const double z, const double w) {
+double Simplexnoise::operator()(double x, double y, double z, double w) {
     double total = 0;
     double frequency = noise_frequency;
     double amplitude = 1;
@@ -196,8 +192,7 @@ double Simplexnoise::raw_noise_4d( const double x, const double y, const double 
     // The skewing and unskewing factors are hairy again for the 4D case
     double F4 = (sqrt(5.0)-1.0)/4.0;
     double G4 = (5.0-sqrt(5.0))/20.0;
-    double n0, n1, n2, n3, n4; // Noise contributions from the five corners
-
+    
     // Skew the (x,y,z,w) space to determine which cell of 24 simplices we're in
     double s = (x + y + z + w) * F4; // Factor for 4D skewing
     int i = fastfloor(x + s);
@@ -283,6 +278,8 @@ double Simplexnoise::raw_noise_4d( const double x, const double y, const double 
     int gi2 = perm[ii+i2+perm[jj+j2+perm[kk+k2+perm[ll+l2]]]] % 32;
     int gi3 = perm[ii+i3+perm[jj+j3+perm[kk+k3+perm[ll+l3]]]] % 32;
     int gi4 = perm[ii+1+perm[jj+1+perm[kk+1+perm[ll+1]]]] % 32;
+    
+    double n0, n1, n2, n3, n4; // Noise contributions from the five corners
 
     // Calculate the contribution from the five corners
     double t0 = 0.6 - x0*x0 - y0*y0 - z0*z0 - w0*w0;
