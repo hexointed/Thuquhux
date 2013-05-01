@@ -8,9 +8,13 @@
 #ifndef NURBSSEV_H
 #define	NURBSSEV_H
 
+#include "PointVector.h"
+
+double def_param_axis_func(double t, double u);
+
 class NURBSSEV {    //Non Uniform Rational B-Spline Surface Encapsulated Volume
 public:
-    NURBSSEV();
+    NURBSSEV(double (*x)(double, double) = def_param_axis_func, double (*y)(double, double) = def_param_axis_func, double (*z)(double, double) = def_param_axis_func);
     NURBSSEV(const NURBSSEV& orig);
     virtual ~NURBSSEV();
     
@@ -30,17 +34,15 @@ public:
     bool operator>=(const NURBSSEV& v) const;
     
 private:
-    void re_calculate_mesh();
-    
-public:
-    double (*mesh_vertecies)[3];
+    void calculate_mesh();
+	void use_hq_mesh();
     
 private:
-    double * knots;
-    double (*ctrlpoints)[3];
-    double * weights;
-    int ctrlpts_width;
-    int ctrlpts_depth;
+    double (*mesh_vertecies)[3];
+	double (*hq_mesh)[3];
+	
+	bool param_func_valid;
+	double (*pfucs[3])(double, double);
 };
 
 #endif	/* NURBSSEV_H */
