@@ -24,15 +24,17 @@ public:
     NURBSSEV Differatiate(NURBSSEV a);
     
     NURBSSEV& operator=(NURBSSEV v) const;
-    
-    bool operator&&(const NURBSSEV& v) const;   //Intersection check
-    bool operator==(const NURBSSEV& v) const;
-    bool operator!=(const NURBSSEV& v) const;
-    bool operator< (const NURBSSEV& v) const;   //Subset of
-    bool operator> (const NURBSSEV& v) const;   //Superset of
-    bool operator<=(const NURBSSEV& v) const;
-    bool operator>=(const NURBSSEV& v) const;
-    
+	
+    bool is_equal_to(const NURBSSEV& v);
+	bool is_subset_of(const NURBSSEV& v);
+	bool is_superset_of(const NURBSSEV& v);
+	bool isIntersecting(const NURBSSEV& v);
+	
+	double distance_between(const NURBSSEV& v);
+	
+	double getVolume();
+    double getSurfaceArea();
+	
 private:
     void calculate_mesh();
 	void use_hq_mesh();
