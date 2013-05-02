@@ -11,19 +11,21 @@
 class PointVector{
     
 public:
-    PointVector(long double x, long double y, long double z);
+    PointVector(double x, double y, double z);
     
 private:
     double dx, dy, dz;
     
 public:
-    long double getdx();
-    long double getdy();
-    long double getdz();
+    double getdx();
+    double getdy();
+    double getdz();
     
     PointVector* add(PointVector *p);
     PointVector* sub(PointVector *p);
     PointVector* mul(PointVector *p);
+	double mul_dot(PointVector *p);
+	PointVector* mul_cross(PointVector *p);
     PointVector* mul(long double d);
     PointVector* div(PointVector *p);
     

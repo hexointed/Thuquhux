@@ -7,21 +7,21 @@
 
 #include "PointVector.h"
 
-PointVector::PointVector(long double x, long double y, long double z){
+PointVector::PointVector(double x, double y, double z){
     this->dx = x;
     this->dy = y;
     this->dz = z;
 }
 
-long double PointVector::getdx(){
+double PointVector::getdx(){
     return this->dx;
 }
 
-long double PointVector::getdy(){
+double PointVector::getdy(){
     return this->dy;
 }
 
-long double PointVector::getdz(){
+double PointVector::getdz(){
     return this->dz;
 }
 
@@ -35,6 +35,14 @@ PointVector* PointVector::sub(PointVector *p){
 
 PointVector* PointVector::mul(PointVector *p){
     return new PointVector(this->dx * p->getdx(), this->dy * p->getdy(), this->dz * p->getdz());
+}
+
+double PointVector::mul_dot(PointVector* p){
+	return this->dx * p->getdx() + this->dy * p->getdy() + this->dz * p->getdz();
+}
+
+PointVector* PointVector::mul_cross(PointVector* p){
+	return new PointVector(this->dy * p->getdz() - this->dz * p->getdy(), this->dz * p->getdx() - this->dx * p->getdz(), this->dx * p->getdy() - this->dy * p->dx);
 }
 
 PointVector* PointVector::mul(long double d){
