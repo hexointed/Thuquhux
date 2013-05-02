@@ -34,10 +34,9 @@ private:
     
     int perm[512];
     
-    int grad3[12][3];
-    int grad4[32][4];
-    
-    int simplex[64][4];
+    static const int grad3[12][3];
+    static const int grad4[32][4];
+    static const int simplex[64][4];
 };
 
 #endif	/* SIMPLEXNOISE_H */
