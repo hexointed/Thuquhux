@@ -25,30 +25,55 @@ double PointVector::getdz(){
     return this->dz;
 }
 
-PointVector* PointVector::add(PointVector *p){
-    return new PointVector(this->dx + p->getdx(), this->dy + p->getdy(), this->dz + p->getdz());
+PointVector* PointVector::add(PointVector& p){
+	this->dx += p.getdx();
+	this->dy += p.getdy();
+	this->dz += p.getdz();
+	return this;
 }
 
-PointVector* PointVector::sub(PointVector *p){
-    return new PointVector(this->dx - p->getdx(), this->dy - p->getdy(), this->dz - p->getdz());
+PointVector* PointVector::sub(PointVector& p){
+    this->dx -= p.getdx();
+	this->dy -= p.getdy();
+	this->dz -= p.getdz();
+	return this;
 }
 
-PointVector* PointVector::mul(PointVector *p){
-    return new PointVector(this->dx * p->getdx(), this->dy * p->getdy(), this->dz * p->getdz());
+PointVector* PointVector::mul_comp(PointVector& p){
+    this->dx *= p.getdx();
+	this->dy *= p.getdy();
+	this->dz *= p.getdz();
+	return this;
 }
 
-double PointVector::mul_dot(PointVector* p){
-	return this->dx * p->getdx() + this->dy * p->getdy() + this->dz * p->getdz();
-}
-
-PointVector* PointVector::mul_cross(PointVector* p){
-	return new PointVector(this->dy * p->getdz() - this->dz * p->getdy(), this->dz * p->getdx() - this->dx * p->getdz(), this->dx * p->getdy() - this->dy * p->dx);
+PointVector* PointVector::mul_cross(PointVector& p){
+	this->dx = this->dy * p.getdz() - this->dz * p.getdy();
+	this->dy = this->dz * p.getdx() - this->dx * p.getdz();
+	this->dz = this->dx * p.getdy() - this->dy * p.getdx();
+	return this;
 }
 
 PointVector* PointVector::mul(long double d){
-    return new PointVector(this->dx * d, this->dy * d, this->dz * d);
+	this->dx *= d;
+	this->dy *= d;
+	this->dz *= d;
+	return this;
 }
 
-PointVector* PointVector::div(PointVector *p){
-    return new PointVector(this->dx / p->getdx(), this->dy / p->getdy(), this->dz / p->getdz());
+double PointVector::mul_dot(PointVector& p, PointVector& q){
+	return q.getdx() * p.getdx() + q.getdy() * p.getdy() + q.getdz() * p.getdz();
+}
+
+PointVector* PointVector::div_comp(PointVector& p){
+    this->dx /= p.getdx();
+	this->dy /= p.getdy();
+	this->dz /= p.getdz();
+	return this;
+}
+
+PointVector* PointVector::div(double d){
+	this->dx /= d;
+	this->dy /= d;
+	this->dz /= d;
+	return this;
 }
