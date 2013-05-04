@@ -4,6 +4,7 @@
 #include <math.h>
 #include "Simplexnoise.h"
 #include "TerrainGenerator.h"
+#include "NURBSSEV.h"
 
 void InitLight();
 void InitGlut(int argc, char **argv);
@@ -23,12 +24,14 @@ float height = 0.0f;
 #define arot 0.0
 
 TerrainGenerator *a = new TerrainGenerator();
+NURBSSEV *b = new NURBSSEV();
 double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];
 
 int main(int argc, char **argv)
 {
     srand(time(0));
     a->genGround(g_width, g_depth,arot,0, vertecies);
+	b->calculate_mesh();
     
     InitGlut(argc, argv);
     InitLight();
@@ -131,7 +134,8 @@ void Display()
         glRotatef(rot, 0,1,0);
         glVertexPointer(3,GL_DOUBLE,0,vertecies);
         glDrawArrays(GL_TRIANGLE_STRIP,0,a->getGroundVertexSize());
-    glPopMatrix();    
+		b->drawMesh();
+    glPopMatrix();
     
     glutSwapBuffers();
     
