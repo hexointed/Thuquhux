@@ -14,6 +14,13 @@ public:
     PhysObject(const PhysObject& orig);
     virtual ~PhysObject();
     
+    void Unite(PhysObject a);
+    void Intersect(PhysObject a);
+    void Complement(PhysObject a);
+    void Differentiate(PhysObject);
+    
+    bool isInObject(PointVector a);
+    
 private:
 };
 
