@@ -21,6 +21,10 @@ public:
     double getdx();
     double getdy();
     double getdz();
+	
+	double setdx(double d);
+	double setdy(double d);
+	double setdz(double d);
     
     PointVector* add(PointVector& p);
     PointVector* sub(PointVector& p);

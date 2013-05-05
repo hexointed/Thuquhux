@@ -8,6 +8,8 @@
 #ifndef PHYSOBJECT_H
 #define	PHYSOBJECT_H
 
+#include "PointVector.h"
+
 class PhysObject {
 public:
     PhysObject();

@@ -10,39 +10,55 @@
 
 #include "PointVector.h"
 
-double def_param_axis_func(double t, double u);
+double def_param_axis_func_x(double t, double u);
+double def_param_axis_func_y(double t, double u);
+double def_param_axis_func_z(double t, double u);
 
 class NURBSSEV {    //Non Uniform Rational B-Spline Surface Encapsulated Volume
 public:
-    NURBSSEV(double (*x)(double, double) = def_param_axis_func, double (*y)(double, double) = def_param_axis_func, double (*z)(double, double) = def_param_axis_func);
+    NURBSSEV(double (*x)(double, double) = def_param_axis_func_x, double (*y)(double, double) = def_param_axis_func_y, double (*z)(double, double) = def_param_axis_func_z);
     NURBSSEV(const NURBSSEV& orig);
     virtual ~NURBSSEV();
     
-    NURBSSEV Unite(NURBSSEV a);
-    NURBSSEV Intersect(NURBSSEV a);
-    NURBSSEV Complement(NURBSSEV a);
-    NURBSSEV Differatiate(NURBSSEV a);
+    NURBSSEV Unite(NURBSSEV a, PointVector pos);
+    NURBSSEV Intersect(NURBSSEV a, PointVector pos);
+    NURBSSEV Complement(NURBSSEV a, PointVector pos);
+    NURBSSEV Differatiate(NURBSSEV a, PointVector pos);
     
     NURBSSEV& operator=(NURBSSEV v) const;
-    
-    bool operator&&(const NURBSSEV& v) const;   //Intersection check
-    bool operator==(const NURBSSEV& v) const;
-    bool operator!=(const NURBSSEV& v) const;
-    bool operator< (const NURBSSEV& v) const;   //Subset of
-    bool operator> (const NURBSSEV& v) const;   //Superset of
-    bool operator<=(const NURBSSEV& v) const;
-    bool operator>=(const NURBSSEV& v) const;
-    
-private:
-    void calculate_mesh();
+	
+    bool is_equal_to(const NURBSSEV& v);
+	bool is_subset_of(const NURBSSEV& v);
+	bool is_superset_of(const NURBSSEV& v);
+	bool isIntersecting(const NURBSSEV& v);
+	
+	double distance_between(const NURBSSEV& v);
+	bool pointIsWithin(PointVector p);
+	bool lineIsWithin(PointVector p);
+	
+	double getVolume();
+    double getSurfaceArea();
+	
+	void drawMesh();
+	void calculate_mesh();
 	void use_hq_mesh();
     
 private:
     double (*mesh_vertecies)[3];
 	double (*hq_mesh)[3];
 	
+	int mesh_detail;
+	int hq_mesh_detail;
+	
 	bool param_func_valid;
-	double (*pfucs[3])(double, double);
+	double (*pfuncs[3])(double, double);
+	
+	bool prop_updated;
+	double volume;
+	
+public:
+	PointVector * bound_box[2];
+	PointVector * position;
 };
 
 #endif	/* NURBSSEV_H */
