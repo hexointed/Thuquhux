@@ -8,15 +8,28 @@
 #ifndef TERRAINGENERATOR_H
 #define	TERRAINGENERATOR_H
 
-#define ground_size 1600
+#include <vector>
+#include "PhysObject.h"
+
+#define TERRAIN_TREES 0
+#define TERRAIN_RIVERS 1
+#define TERRAIN_MOUNTAINS 2
 
 double def_height_scale(double height);
 
 class TerrainGenerator{
 public:
     TerrainGenerator();
+    
     void genGround(double width, double depth, double alpha, double beta, double result[][3]);
     const int getGroundVertexSize();
+	void get_distrib_points(int points, double result[][3], double solid_angle = 2 * 3.141592653589793);
+    
+    std::vector<PhysObject> operator()(double alpha, double beta);
+    const TerrainGenerator& operator= (const TerrainGenerator& v) const;
+    
+    void enable (int TERRAIN_TYPE);
+    void disable(int TERRAIN_TYPE);
     
 private:
     Simplexnoise *noise_object;
@@ -24,6 +37,10 @@ private:
     double ground_detail;
     double planet_radius;
     double (*height_scale)(double);
+    
+    double generate_length;
+    double generate_width;
+    double generate_depth;
 };
 
 #endif	/* TERRAINGENERATOR_H */

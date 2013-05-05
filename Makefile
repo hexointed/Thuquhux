@@ -1,4 +1,4 @@
 all: thuquhux
 
 thuquhux: main.cpp 
-	g++ -mcmodel=large main.cpp Simplexnoise.cpp TerrainGenerator.cpp -lglut -lGLU -lGLEW -o ./dist/Debug/GNU-Linux-x86/thuquhux
+	g++ main.cpp Simplexnoise.cpp TerrainGenerator.cpp Parametric_Surface.cpp PhysObject.cpp PointVector.cpp -lglut -lGLU -o ./dist/Debug/GNU-Linux-x86/thuquhux

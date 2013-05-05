@@ -10,21 +10,33 @@
 
 class Simplexnoise{
 public:
-    Simplexnoise(int seed);
-    double octave_noise_3d(const double x, const double y, const double z);
+    Simplexnoise(int seed, double frequency=0.09, int octaves=8);
+    
+    double operator()(double x, double y, double z);
+    double operator()(double x, double y, double z, double w);
+    
+    void setOctaves(double o);
+    void setFrequency(double f);
     
 private:
     double raw_noise_3d(const double x, const double y, const double z);
+    double raw_noise_4d(const double x, const double y, const double z, const double w);
+    
     double dot(const int* g, const double x, const double y, const double z);
+    double dot(const int* g, const double x, const double y, const double z, const double w);
+    
     int fastfloor(const double x);
     
 private:
-    double noise_octaves;
+    int noise_octaves;
     double noise_persistence;
     double noise_frequency;
     
     int perm[512];
-    const int grad3[12][3];
+    
+    static const int grad3[12][3];
+    static const int grad4[32][4];
+    static const int simplex[64][4];
 };
 
 #endif	/* SIMPLEXNOISE_H */
