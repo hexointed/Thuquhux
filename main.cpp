@@ -18,13 +18,17 @@ float posx = 0.0f;
 float rot = 0.0f;
 float lpos = 0.0f;
 float height = 0.0f;
+float cpos = 0.0f;
 
 #define g_width 8.0
 #define g_depth 12.0
 #define arot 0.0
 
 TerrainGenerator *a = new TerrainGenerator();
+
 NURBSSEV *b = new NURBSSEV();
+NURBSSEV *c = new NURBSSEV();
+
 double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];
 
 int main(int argc, char **argv)
@@ -32,6 +36,7 @@ int main(int argc, char **argv)
     srand(time(0));
     a->genGround(g_width, g_depth,arot,0, vertecies);
 	b->calculate_mesh();
+	c->calculate_mesh();
     
     InitGlut(argc, argv);
     InitLight();
@@ -100,7 +105,15 @@ void KeyboardHandler(unsigned char key, int x, int y)
       case 'x':
       {
           height += 0.1;
-      }
+      } break;
+	  case 'f':
+	  {
+		  cpos -= 0.125;
+	  } break;
+	  case 'g':
+	  {
+		  cpos += 0.125;
+	  } break;
       default:
       {} break;
   }
@@ -111,6 +124,13 @@ void Display()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
+	
+	if(b->isIntersecting(*c)){
+		glClearColor(1,0,0,0);
+	}else{
+		glClearColor(0,0,1,0);
+	}
+	c->position->setdx(cpos);
     
     GLfloat position[] = {cos(lpos),sin(lpos),0,1};
     GLfloat position2[] = {-cos(lpos),-sin(lpos),0,1};
@@ -134,8 +154,15 @@ void Display()
         glRotatef(rot, 0,1,0);
         glVertexPointer(3,GL_DOUBLE,0,vertecies);
         glDrawArrays(GL_TRIANGLE_STRIP,0,a->getGroundVertexSize());
-		b->drawMesh();
     glPopMatrix();
+	
+	glPushMatrix();
+		glTranslated(-1.0, 1, 0);
+        glRotatef(rot, 0,1,0);
+		glScalef(0.125, 0.125, 0.125);
+		b->drawMesh();
+		c->drawMesh();
+	glPopMatrix();
     
     glutSwapBuffers();
     

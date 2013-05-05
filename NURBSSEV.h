@@ -55,7 +55,10 @@ private:
 	
 	bool prop_updated;
 	double volume;
+	
+public:
 	PointVector * bound_box[2];
+	PointVector * position;
 };
 
 #endif	/* NURBSSEV_H */

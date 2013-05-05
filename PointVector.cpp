@@ -25,6 +25,18 @@ long double PointVector::getdz(){
     return this->dz;
 }
 
+double PointVector::setdx(double d){
+	this->dx = d;
+}
+
+double PointVector::setdy(double d){
+	this->dy = d;
+}
+
+double PointVector::setdz(double d){
+	this->dz = d;
+}
+
 PointVector* PointVector::add(PointVector *p){
     return new PointVector(this->dx + p->getdx(), this->dy + p->getdy(), this->dz + p->getdz());
 }
