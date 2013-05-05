@@ -4,7 +4,7 @@
 #include <math.h>
 #include "Simplexnoise.h"
 #include "TerrainGenerator.h"
-#include "NURBSSEV.h"
+#include "Parametric_Surface.h"
 
 void InitLight();
 void InitGlut(int argc, char **argv);
@@ -26,8 +26,8 @@ float cpos = 0.0f;
 
 TerrainGenerator *a = new TerrainGenerator();
 
-NURBSSEV *b = new NURBSSEV();
-NURBSSEV *c = new NURBSSEV();
+Parametric_Surface *b = new Parametric_Surface();
+Parametric_Surface *c = new Parametric_Surface();
 
 double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];
 

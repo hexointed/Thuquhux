@@ -5,7 +5,7 @@
  * Created on April 24, 2013, 4:42 PM
  */
 
-#include "NURBSSEV.h"
+#include "Parametric_Surface.h"
 #include <math.h>
 #include "PointVector.h"
 #include "GL/freeglut.h"
@@ -13,7 +13,7 @@
 
 double PI = 3.14159265358979;
 
-NURBSSEV::NURBSSEV(double (*x)(double, double), double (*y)(double, double), double (*z)(double, double)):
+Parametric_Surface::Parametric_Surface(double (*x)(double, double), double (*y)(double, double), double (*z)(double, double)):
 	mesh_detail(80)
 {
 	int length = mesh_detail*mesh_detail*2*mesh_detail;
@@ -29,7 +29,7 @@ NURBSSEV::NURBSSEV(double (*x)(double, double), double (*y)(double, double), dou
 	this->position = new PointVector(0,0,0);
 }
 
-bool NURBSSEV::isIntersecting(const NURBSSEV& v){
+bool Parametric_Surface::isIntersecting(const Parametric_Surface& v){
 	return	this->bound_box[1]->getdx() + this->position->getdx() > v.bound_box[0]->getdx() + v.position->getdx() &&
 			this->bound_box[1]->getdy() + this->position->getdy() > v.bound_box[0]->getdy() + v.position->getdy() &&
 			this->bound_box[1]->getdz() + this->position->getdz() > v.bound_box[0]->getdz() + v.position->getdz() &&
@@ -39,10 +39,10 @@ bool NURBSSEV::isIntersecting(const NURBSSEV& v){
 			this->bound_box[0]->getdz() + this->position->getdz() < v.bound_box[1]->getdz() + v.position->getdz();
 }
 
-NURBSSEV::NURBSSEV(const NURBSSEV& orig) {
+Parametric_Surface::Parametric_Surface(const Parametric_Surface& orig) {
 }
 
-NURBSSEV::~NURBSSEV() {
+Parametric_Surface::~Parametric_Surface() {
 }
 
 double def_param_axis_func_x(double t, double u){
@@ -57,7 +57,7 @@ double def_param_axis_func_z(double t, double u){
 	return 0.25*sin(u*2*PI);
 }
 
-void NURBSSEV::calculate_mesh(){
+void Parametric_Surface::calculate_mesh(){
 	int count = 0;
 	for(double t = 0; t <= 1 + 1.0/mesh_detail; t += 1.0/mesh_detail){
 		for(double u = 0; u <= 1; u += 1.0/mesh_detail){
@@ -78,10 +78,9 @@ void NURBSSEV::calculate_mesh(){
 			count += 2;
 		}
 	}
-	std::cout<<count<<std::endl;
 }
 
-void NURBSSEV::drawMesh(){
+void Parametric_Surface::drawMesh(){
 	for(int i = 0; i < 1; i++){
 		glPushMatrix();
 			glTranslatef(position->getdx(), position->getdy(), position->getdz());
