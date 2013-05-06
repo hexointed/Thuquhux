@@ -29,6 +29,32 @@ Parametric_Surface::Parametric_Surface(double (*x)(double, double), double (*y)(
 	this->position = new PointVector(0,0,0);
 }
 
+Parametric_Surface::Parametric_Surface(const Parametric_Surface& orig) {
+}
+
+Parametric_Surface::~Parametric_Surface() {
+}
+
+bool Parametric_Surface::is_subset_of(const Parametric_Surface& v){
+	return	this->bound_box[1]->getdx() + this->position->getdx() < v.bound_box[1]->getdx() + v.position->getdx() &&
+			this->bound_box[1]->getdy() + this->position->getdy() < v.bound_box[1]->getdy() + v.position->getdy() &&
+			this->bound_box[1]->getdz() + this->position->getdz() < v.bound_box[1]->getdz() + v.position->getdz() &&
+			
+			this->bound_box[0]->getdx() + this->position->getdx() > v.bound_box[0]->getdx() + v.position->getdx() &&
+			this->bound_box[0]->getdy() + this->position->getdy() > v.bound_box[0]->getdy() + v.position->getdy() &&
+			this->bound_box[0]->getdz() + this->position->getdz() > v.bound_box[0]->getdz() + v.position->getdz();
+}
+
+bool Parametric_Surface::is_superset_of(const Parametric_Surface& v){
+	return	this->bound_box[1]->getdx() + this->position->getdx() > v.bound_box[1]->getdx() + v.position->getdx() &&
+			this->bound_box[1]->getdy() + this->position->getdy() > v.bound_box[1]->getdy() + v.position->getdy() &&
+			this->bound_box[1]->getdz() + this->position->getdz() > v.bound_box[1]->getdz() + v.position->getdz() &&
+			
+			this->bound_box[0]->getdx() + this->position->getdx() < v.bound_box[0]->getdx() + v.position->getdx() &&
+			this->bound_box[0]->getdy() + this->position->getdy() < v.bound_box[0]->getdy() + v.position->getdy() &&
+			this->bound_box[0]->getdz() + this->position->getdz() < v.bound_box[0]->getdz() + v.position->getdz();
+}
+
 bool Parametric_Surface::isIntersecting(const Parametric_Surface& v){
 	return	this->bound_box[1]->getdx() + this->position->getdx() > v.bound_box[0]->getdx() + v.position->getdx() &&
 			this->bound_box[1]->getdy() + this->position->getdy() > v.bound_box[0]->getdy() + v.position->getdy() &&
@@ -37,12 +63,6 @@ bool Parametric_Surface::isIntersecting(const Parametric_Surface& v){
 			this->bound_box[0]->getdx() + this->position->getdx() < v.bound_box[1]->getdx() + v.position->getdx() &&
 			this->bound_box[0]->getdy() + this->position->getdy() < v.bound_box[1]->getdy() + v.position->getdy() &&
 			this->bound_box[0]->getdz() + this->position->getdz() < v.bound_box[1]->getdz() + v.position->getdz();
-}
-
-Parametric_Surface::Parametric_Surface(const Parametric_Surface& orig) {
-}
-
-Parametric_Surface::~Parametric_Surface() {
 }
 
 double def_param_axis_func_x(double t, double u){

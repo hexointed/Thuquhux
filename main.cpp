@@ -132,8 +132,8 @@ void Display()
 	}
 	c->position->setdx(cpos);
     
-    GLfloat position[] = {cos(lpos),sin(lpos),0,1};
-    GLfloat position2[] = {-cos(lpos),-sin(lpos),0,1};
+    GLfloat position[] = {(float)cos(lpos),(float)sin(lpos),0,1};
+    GLfloat position2[] = {(float)-cos(lpos),(float)-sin(lpos),0,1};
     glPushMatrix();
         glLightfv(GL_LIGHT0, GL_POSITION, position);
         
