@@ -33,7 +33,17 @@ Parametric_Surface::Parametric_Surface(const Parametric_Surface& orig) {
 }
 
 Parametric_Surface::~Parametric_Surface() {
+	delete position;
+	delete[] bound_box[0];
+	delete[] bound_box[1];
+	
+	for(int i = 0; i < 3; i++){
+		delete[] mesh_vertecies[i];
+		delete[] hq_mesh[i];
+	}
 }
+
+
 
 bool Parametric_Surface::is_subset_of(const Parametric_Surface& v){
 	return	this->bound_box[1]->getdx() + this->position->getdx() < v.bound_box[1]->getdx() + v.position->getdx() &&

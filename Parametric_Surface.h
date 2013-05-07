@@ -24,6 +24,11 @@ public:
     Parametric_Surface Intersect(Parametric_Surface a, PointVector pos);
     Parametric_Surface Complement(Parametric_Surface a, PointVector pos);
     Parametric_Surface Differatiate(Parametric_Surface a, PointVector pos);
+	
+	void Unite(Parametric_Surface a, PointVector pos);
+    void Intersect(Parametric_Surface a, PointVector pos);
+    void Complement(Parametric_Surface a, PointVector pos);
+    void Differatiate(Parametric_Surface a, PointVector pos);
     
     Parametric_Surface& operator=(Parametric_Surface v) const;
 	
