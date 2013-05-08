@@ -9,6 +9,7 @@
 #define	PARAMETRIC_SURFACE_H
 
 #include "PointVector.h"
+#include <vector>
 
 double def_param_axis_func_x(double t, double u);
 double def_param_axis_func_y(double t, double u);
@@ -20,10 +21,10 @@ public:
     Parametric_Surface(const Parametric_Surface& orig);
     virtual ~Parametric_Surface();
     
-    Parametric_Surface Unite(Parametric_Surface a, PointVector pos);
-    Parametric_Surface Intersect(Parametric_Surface a, PointVector pos);
-    Parametric_Surface Complement(Parametric_Surface a, PointVector pos);
-    Parametric_Surface Differatiate(Parametric_Surface a, PointVector pos);
+    friend Parametric_Surface Unite(Parametric_Surface a, Parametric_Surface b, PointVector pos);
+    friend Parametric_Surface Intersect(Parametric_Surface a, Parametric_Surface b, PointVector pos);
+    friend Parametric_Surface Complement(Parametric_Surface a, Parametric_Surface b, PointVector pos);
+    friend Parametric_Surface Differatiate(Parametric_Surface a, Parametric_Surface b, PointVector pos);
 	
 	void Unite(Parametric_Surface a, PointVector pos);
     void Intersect(Parametric_Surface a, PointVector pos);
@@ -49,7 +50,7 @@ public:
 	void use_hq_mesh();
     
 private:
-    double (*mesh_vertecies)[3];
+	std::vector<PointVector (*)> mesh_vertecies;
 	double (*hq_mesh)[3];
 	
 	int mesh_detail;

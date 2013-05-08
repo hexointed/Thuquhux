@@ -7,6 +7,12 @@
 
 #include "PointVector.h"
 
+PointVector::PointVector(){
+	this->dx = 0;
+	this->dy = 0;
+	this->dz = 0;
+}
+
 PointVector::PointVector(double x, double y, double z){
     this->dx = x;
     this->dy = y;

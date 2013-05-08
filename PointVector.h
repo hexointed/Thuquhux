@@ -11,7 +11,8 @@
 class PointVector{
     
 public:
-    PointVector(double x, double y, double z);
+    PointVector();
+	PointVector(double x, double y, double z);
 	PointVector(const PointVector& orig);
     
 private:
