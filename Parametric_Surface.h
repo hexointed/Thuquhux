@@ -18,7 +18,6 @@ double def_param_axis_func_z(double t, double u);
 class Parametric_Surface {    //Non Uniform Rational B-Spline Surface Encapsulated Volume
 public:
     Parametric_Surface(double (*x)(double, double) = def_param_axis_func_x, double (*y)(double, double) = def_param_axis_func_y, double (*z)(double, double) = def_param_axis_func_z);
-    Parametric_Surface(const Parametric_Surface& orig);
     virtual ~Parametric_Surface();
     
     friend Parametric_Surface Unite(Parametric_Surface a, Parametric_Surface b, PointVector pos);
@@ -26,7 +25,7 @@ public:
     friend Parametric_Surface Complement(Parametric_Surface a, Parametric_Surface b, PointVector pos);
     friend Parametric_Surface Differatiate(Parametric_Surface a, Parametric_Surface b, PointVector pos);
 	
-	void Unite(Parametric_Surface a, PointVector pos);
+	void Unite(Parametric_Surface a);
     void Intersect(Parametric_Surface a, PointVector pos);
     void Complement(Parametric_Surface a, PointVector pos);
     void Differatiate(Parametric_Surface a, PointVector pos);
@@ -55,6 +54,8 @@ private:
 	
 	int mesh_detail;
 	int hq_mesh_detail;
+	
+	const int mesh_length;
 	
 	bool param_func_valid;
 	double (*pfuncs[3])(double, double);

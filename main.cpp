@@ -5,6 +5,7 @@
 #include "Simplexnoise.h"
 #include "TerrainGenerator.h"
 #include "Parametric_Surface.h"
+#include "PointVector.h"
 
 void InitLight();
 void InitGlut(int argc, char **argv);
@@ -113,6 +114,10 @@ void KeyboardHandler(unsigned char key, int x, int y)
 	  case 'g':
 	  {
 		  cpos += 0.125;
+	  } break;
+	  case 'c':
+	  {
+		  c->Unite(*b);
 	  } break;
       default:
       {} break;
