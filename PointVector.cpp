@@ -6,6 +6,7 @@
  */
 
 #include "PointVector.h"
+#include <math.h>
 
 PointVector::PointVector(double x, double y, double z){
     this->dx = x;
@@ -23,6 +24,10 @@ double PointVector::getdy(){
 
 double PointVector::getdz(){
     return this->dz;
+}
+
+double PointVector::getMagnitude(){
+	return sqrt(dx*dx + dy*dy + dz*dz);
 }
 
 double PointVector::setdx(double d){
@@ -88,4 +93,26 @@ PointVector* PointVector::div(double d){
 	this->dy /= d;
 	this->dz /= d;
 	return this;
+}
+
+PointVector* PointVector::set_min_comp(PointVector& p){
+	for(int i = 0; i < 3; i++){
+		*((&this->dx)+i) = *((&this->dx)+i) < *((&p.dx)+i) ? *((&this->dx)+i) : *((&p.dx)+i);
+	}
+	return this;
+}
+
+PointVector* PointVector::set_max_comp(PointVector& p){
+	for(int i = 0; i < 3; i++){
+		*((&this->dx)+i) = *((&this->dx)+i) > *((&p.dx)+i) ? *((&this->dx)+i) : *((&p.dx)+i);
+	}
+	return this;
+}
+
+bool PointVector::is_min_comp(PointVector& p){
+	return this->dx > p.dx && this->dy > p.dy && this->dz > p.dz;
+}
+
+bool PointVector::is_max_comp(PointVector& p){
+	return this->dx < p.dx && this->dy < p.dy && this->dz < p.dz;
 }

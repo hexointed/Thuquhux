@@ -91,20 +91,14 @@ void Parametric_Surface::calculate_mesh(){
 	int count = 0;
 	for(double t = 0; t <= 1 + 1.0/mesh_detail; t += 1.0/mesh_detail){
 		for(double u = 0; u <= 1; u += 1.0/mesh_detail){
-			mesh_vertecies[count][0] = pfuncs[0](t,u);
-			mesh_vertecies[count + 1][0] = pfuncs[0](t + 1.0/mesh_detail, u);
-			bound_box[0]->setdx(pfuncs[0](t,u) < bound_box[0]->getdx() ? pfuncs[0](t,u) : bound_box[0]->getdx());
-			bound_box[1]->setdx(pfuncs[0](t,u) > bound_box[1]->getdx() ? pfuncs[0](t,u) : bound_box[1]->getdx());
+			for(int i = 0; i < 3; i++){
+				mesh_vertecies[count][i] = pfuncs[i](t,u);
+				mesh_vertecies[count + 1][i] = pfuncs[i](t + 1.0/mesh_detail, u);
+			}
 			
-			mesh_vertecies[count][1] = pfuncs[1](t,u);
-			mesh_vertecies[count + 1][1] = pfuncs[1](t + 1.0/mesh_detail, u);
-			bound_box[0]->setdy(pfuncs[1](t,u) < bound_box[0]->getdy() ? pfuncs[1](t,u) : bound_box[0]->getdy());
-			bound_box[1]->setdy(pfuncs[1](t,u) > bound_box[1]->getdy() ? pfuncs[1](t,u) : bound_box[1]->getdy());
-			
-			mesh_vertecies[count][2] = pfuncs[2](t,u);
-			mesh_vertecies[count + 1][2] = pfuncs[2](t + 1.0/mesh_detail, u);
-			bound_box[0]->setdz(pfuncs[2](t,u) < bound_box[0]->getdz() ? pfuncs[2](t,u) : bound_box[0]->getdz());
-			bound_box[1]->setdz(pfuncs[2](t,u) > bound_box[1]->getdz() ? pfuncs[2](t,u) : bound_box[1]->getdz());
+			PointVector p(pfuncs[0](t,u), pfuncs[1](t,u), pfuncs[2](t,u));
+			bound_box[0]->set_min_comp(p);
+			bound_box[1]->set_max_comp(p);
 			count += 2;
 		}
 	}

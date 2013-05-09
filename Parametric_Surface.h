@@ -19,11 +19,6 @@ public:
     Parametric_Surface(double (*x)(double, double) = def_param_axis_func_x, double (*y)(double, double) = def_param_axis_func_y, double (*z)(double, double) = def_param_axis_func_z);
     Parametric_Surface(const Parametric_Surface& orig);
     virtual ~Parametric_Surface();
-    
-    Parametric_Surface Unite(Parametric_Surface a, PointVector pos);
-    Parametric_Surface Intersect(Parametric_Surface a, PointVector pos);
-    Parametric_Surface Complement(Parametric_Surface a, PointVector pos);
-    Parametric_Surface Differatiate(Parametric_Surface a, PointVector pos);
 	
 	void Unite(Parametric_Surface a, PointVector pos);
     void Intersect(Parametric_Surface a, PointVector pos);
