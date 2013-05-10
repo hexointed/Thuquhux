@@ -38,20 +38,19 @@ void Parametric_Surface::Unite(Parametric_Surface a){
 	for(int i = 0; i < a.mesh_length; i++){
 		PointVector p = a.mesh_vertecies.at(a.mesh_vertecies.size()-1)[i];
 		p.add(*a.position)->sub(*this->position);
-		this->mesh_vertecies.at(this->mesh_vertecies.size()-1)[i].setdx(p.getdx());
-		this->mesh_vertecies.at(this->mesh_vertecies.size()-1)[i].setdy(p.getdy());
-		this->mesh_vertecies.at(this->mesh_vertecies.size()-1)[i].setdz(p.getdz());
+		this->mesh_vertecies.at(this->mesh_vertecies.size()-1)[i] = p;
+		bound_box[0]->set_min_comp(p);
+		bound_box[1]->set_max_comp(p);
 	}
 }
 
 bool Parametric_Surface::is_subset_of(const Parametric_Surface& v){
-	return	this->bound_box[1]->getdx() + this->position->getdx() < v.bound_box[1]->getdx() + v.position->getdx() &&
-			this->bound_box[1]->getdy() + this->position->getdy() < v.bound_box[1]->getdy() + v.position->getdy() &&
-			this->bound_box[1]->getdz() + this->position->getdz() < v.bound_box[1]->getdz() + v.position->getdz() &&
-			
-			this->bound_box[0]->getdx() + this->position->getdx() > v.bound_box[0]->getdx() + v.position->getdx() &&
-			this->bound_box[0]->getdy() + this->position->getdy() > v.bound_box[0]->getdy() + v.position->getdy() &&
-			this->bound_box[0]->getdz() + this->position->getdz() > v.bound_box[0]->getdz() + v.position->getdz();
+	PointVector p = *bound_box[1];
+	PointVector q = *v.bound_box[1];
+	PointVector r = *bound_box[0];
+	PointVector s = *v.bound_box[0];
+	
+	return	p.add(*position)->is_min_comp(*q.add(*v.position)) && r.add(*position)->is_max_comp(*s.add(*v.position));
 }
 
 bool Parametric_Surface::is_superset_of(const Parametric_Surface& v){
