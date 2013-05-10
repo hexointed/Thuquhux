@@ -1,13 +1,18 @@
+#include <GL/glew.h>
 #include <GL/freeglut.h>
+#include <GL/gl.h>
+#include <GL/glext.h>
 #include <iostream>
 #include <ctime>
 #include <math.h>
+#include <fstream>
 #include "Simplexnoise.h"
 #include "TerrainGenerator.h"
 #include "Parametric_Surface.h"
 
 void InitLight();
 void InitGlut(int argc, char **argv);
+void InitShader();
 void KeyboardHandler(unsigned char key, int x, int y);
 void Display();
 void Animate();
@@ -39,7 +44,10 @@ int main(int argc, char **argv)
 	c->calculate_mesh();
     
     InitGlut(argc, argv);
+	GLenum res = glewInit();
+	
     InitLight();
+	InitShader();
     
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -149,12 +157,14 @@ void Display()
     
     a->genGround(g_width, g_depth,posy,posx, vertecies);
     
+	glEnable(GL_VERTEX_PROGRAM_ARB);
     glPushMatrix();
         glTranslated(0.0,height -1, 0);
         glRotatef(rot, 0,1,0);
         glVertexPointer(3,GL_DOUBLE,0,vertecies);
         glDrawArrays(GL_TRIANGLE_STRIP,0,a->getGroundVertexSize());
     glPopMatrix();
+	glDisable(GL_VERTEX_PROGRAM_ARB);
 	
 	glPushMatrix();
 		glTranslated(-1.0, 1, 0);
@@ -223,4 +233,23 @@ void InitGlut(int argc, char **argv){
     glutDisplayFunc(Display);
     glutKeyboardFunc(KeyboardHandler);
     glutIdleFunc(Animate);
+}
+
+void InitShader(){
+	char prgrm[293];
+	std::ifstream in("Shaders/test.vshader");
+	in.read(prgrm, 293);
+	
+	glEnable(GL_VERTEX_PROGRAM_ARB);
+	unsigned int handle[1];
+	glGenProgramsARB(1,handle);
+	glBindProgramARB(GL_VERTEX_PROGRAM_ARB, *handle);
+	glProgramStringARB(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB, 293, &prgrm[0]);
+	
+	int err;
+	glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &err);
+	if(err !=-1){
+		std::string error = (const char*) glGetString(GL_PROGRAM_ERROR_STRING_ARB);
+		std::cout<<"Vertex program failed:\n"<<err<<std::endl<<error<<std::endl;
+	}
 }
