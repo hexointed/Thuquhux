@@ -15,7 +15,7 @@
 double PI = 3.14159265358979;
 
 Parametric_Surface::Parametric_Surface(double (*x)(double, double), double (*y)(double, double), double (*z)(double, double)):
-	mesh_detail(40),
+	mesh_detail(400),
 	mesh_length((mesh_detail + 2)*(mesh_detail + 1)*2)
 {
 	mesh_vertecies.push_back(new PointVector[mesh_length]);
@@ -88,27 +88,15 @@ double def_param_axis_func_z(double t, double u){
 
 void Parametric_Surface::calculate_mesh(){
 	int count = 0;
-	for(int n = 0; n < mesh_vertecies.size(); n++){
-		for(int i = 0; i <= 1+mesh_detail; i++){
-			for(int j = 0; j <= mesh_detail; j++){
-				double t = i*(1.0/mesh_detail);
-				double u = j*(1.0/mesh_detail);
-				mesh_vertecies.at(0)[count].setdx(pfuncs[0](t,u));
-				mesh_vertecies.at(0)[count + 1].setdx(pfuncs[0](t + 1.0/mesh_detail, u));
-				bound_box[0]->setdx(pfuncs[0](t,u) < bound_box[0]->getdx() ? pfuncs[0](t,u) : bound_box[0]->getdx());
-				bound_box[1]->setdx(pfuncs[0](t,u) > bound_box[1]->getdx() ? pfuncs[0](t,u) : bound_box[1]->getdx());
-			
-				mesh_vertecies.at(0)[count].setdy(pfuncs[1](t,u));
-				mesh_vertecies.at(0)[count + 1].setdy(pfuncs[1](t + 1.0/mesh_detail, u));
-				bound_box[0]->setdy(pfuncs[1](t,u) < bound_box[0]->getdy() ? pfuncs[1](t,u) : bound_box[0]->getdy());
-				bound_box[1]->setdy(pfuncs[1](t,u) > bound_box[1]->getdy() ? pfuncs[1](t,u) : bound_box[1]->getdy());
-			
-				mesh_vertecies.at(0)[count].setdz(pfuncs[2](t,u));
-				mesh_vertecies.at(0)[count + 1].setdz(pfuncs[2](t + 1.0/mesh_detail, u));
-				bound_box[0]->setdz(pfuncs[2](t,u) < bound_box[0]->getdz() ? pfuncs[2](t,u) : bound_box[0]->getdz());
-				bound_box[1]->setdz(pfuncs[2](t,u) > bound_box[1]->getdz() ? pfuncs[2](t,u) : bound_box[1]->getdz());
-				count += 2;
-			}
+	for(double t = 0; t <= 1 + 1.0/mesh_detail; t += 1.0/mesh_detail){
+		for(double u = 0; u <= 1; u += 1.0/mesh_detail){
+			PointVector p(pfuncs[0](t,u), pfuncs[1](t,u), pfuncs[2](t,u));
+			PointVector dp(pfuncs[0](t + 1.0/mesh_detail,u), pfuncs[1](t + 1.0/mesh_detail,u), pfuncs[2](t + 1.0/mesh_detail,u));
+			mesh_vertecies.at(0)[count] = p;
+			mesh_vertecies.at(0)[count +1] = dp;
+			bound_box[0]->set_min_comp(p);
+			bound_box[1]->set_max_comp(p);
+			count += 2;
 		}
 	}
 }
