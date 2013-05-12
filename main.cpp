@@ -141,9 +141,11 @@ void Display()
 		glClearColor(0,0,1,0);
 	}
 	c->position->setdx(cpos);
-    
-    GLfloat position[] = {(float)cos(lpos),(float)sin(lpos),0,5};
-    GLfloat position2[] = {(float)-cos(lpos),(float)-sin(lpos),0,1};
+	
+    glEnable(GL_VERTEX_PROGRAM_ARB);
+	
+    GLfloat position[] = {(float)(2.5*cos(lpos)),(float)(2.5*sin(lpos)),3,5};
+    GLfloat position2[] = {(float)(-2.5*cos(lpos)),(float)(-2.5*sin(lpos)),0,1};
 	
 	glProgramEnvParameter4fvARB(GL_VERTEX_PROGRAM_ARB, 0, position);
 	glProgramEnvParameter4fvARB(GL_VERTEX_PROGRAM_ARB, 1, position2);
@@ -163,14 +165,12 @@ void Display()
     
     a->genGround(g_width, g_depth,posy,posx, vertecies);
     
-	glEnable(GL_VERTEX_PROGRAM_ARB);
     glPushMatrix();
         glTranslated(0.0,height -1, 0);
         glRotatef(rot, 0,1,0);
         glVertexPointer(3,GL_DOUBLE,0,vertecies);
         glDrawArrays(GL_TRIANGLE_STRIP,0,a->getGroundVertexSize());
     glPopMatrix();
-	glDisable(GL_VERTEX_PROGRAM_ARB);
 	
 	glPushMatrix();
 		glTranslated(-1.0, 1, 0);
