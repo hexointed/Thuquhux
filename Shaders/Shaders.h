@@ -8,6 +8,10 @@
 #ifndef SHADERS_H
 #define	SHADERS_H
 
+#include <string>
+
 void InitARBShader();
+void InitGLSLShader();
+std::string loadFile(std::string file);
 
 #endif	/* SHADERS_H */

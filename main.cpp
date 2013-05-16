@@ -45,7 +45,8 @@ int main(int argc, char **argv)
 	GLenum res = glewInit();
 	
     InitLight();
-	InitARBShader();
+	InitGLSLShader();
+	//InitARBShader();
     
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -137,8 +138,6 @@ void Display()
 		glClearColor(0,0,1,0);
 	}
 	c->position->setdx(cpos);
-	
-    glEnable(GL_VERTEX_PROGRAM_ARB);
 	
     GLfloat position[] = {(float)(2.5*cos(lpos)),(float)(2.5*sin(lpos)),3,5};
     GLfloat position2[] = {(float)(-2.5*cos(lpos)),(float)(-2.5*sin(lpos)),0,1};

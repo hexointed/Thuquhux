@@ -14,6 +14,7 @@
 #include <GL/freeglut.h>
 #include <GL/glext.h>
 
+#include "Shaders.h"
 
 void InitARBShader(){
 	{
@@ -56,4 +57,33 @@ void InitARBShader(){
 		}
 		delete[] prgrm;
 	}
+}
+
+void InitGLSLShader(){
+	std::string str = loadFile("Shaders/vertex.glsl");
+	char * prgrm = new char[str.size()];
+	strcpy(prgrm, str.c_str());
+	int lengths = str.size();
+	
+	int handle = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(handle, 1, (const char**)&prgrm, &lengths);
+	glCompileShader(handle);
+	
+	char result[4096];
+	int * l;
+	glGetShaderInfoLog(handle, 4096, l, result);
+	
+	std::cout<<result<<std::endl;
+	
+	GLuint shaderprgrm = glCreateProgram();
+	glAttachShader(shaderprgrm, handle);
+	glLinkProgram(shaderprgrm);
+	glUseProgram(shaderprgrm);
+	
+}
+
+std::string loadFile(std::string file){
+	std::ifstream in(file);
+	std::string str((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+	return str;
 }
