@@ -21,7 +21,7 @@ public:
     void Complement(PhysObject a);
     void Differentiate(PhysObject);
     
-    bool isInObject(PointVector a);
+    bool isInObject(PointVector<> a);
     
 private:
 };

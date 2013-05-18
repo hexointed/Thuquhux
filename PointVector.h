@@ -8,14 +8,16 @@
 #ifndef POINTVECTOR_H
 #define	POINTVECTOR_H
 
+template<const int Dim = 3>
 class PointVector{
     
 public:
+	PointVector(double composants[Dim]);
     PointVector(double x, double y, double z);
 	PointVector(const PointVector& orig);
     
 private:
-    double dx, dy, dz;
+    double comp[Dim];
     
 public:
     double getdx();

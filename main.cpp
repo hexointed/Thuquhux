@@ -5,6 +5,8 @@
 #include "Simplexnoise.h"
 #include "TerrainGenerator.h"
 #include "Parametric_Surface.h"
+#include "PointVector.h"
+#include "PointVector.cpp"
 
 void InitLight();
 void InitGlut(int argc, char **argv);
