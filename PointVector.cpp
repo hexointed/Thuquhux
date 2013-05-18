@@ -10,11 +10,31 @@
 #include <cassert>
 
 template<const int Dim>
+PointVector<Dim>::PointVector(){
+	for(int i = 0; i < Dim; i++){
+		comp[i] = 0;
+	}
+}
+
+template<const int Dim>
+PointVector<Dim>::PointVector(double composants[Dim]){
+	for(int i = 0; i < Dim; i++){
+		comp[i] = composants[i];
+	}
+}
+
+template<const int Dim>
 PointVector<Dim>::PointVector(double x, double y, double z){
 	assert(Dim >= 3);
     comp[0] = x;
     comp[1] = y;
     comp[2] = z;
+}
+
+template<const int Dim>
+double PointVector<Dim>::get(int i){
+	assert(i <= Dim);
+	return comp[i];
 }
 
 template<const int Dim>
@@ -36,7 +56,7 @@ double PointVector<Dim>::getdz(){
 }
 
 template<const int Dim>
-inline double PointVector<Dim>::getMagnitude(){
+double PointVector<Dim>::getMagnitude(){
 	double mag = 0;
 	for(int i = 0; i < Dim; i++){
 		mag += comp[i] * comp[i];
@@ -45,19 +65,25 @@ inline double PointVector<Dim>::getMagnitude(){
 }
 
 template<const int Dim>
-double PointVector<Dim>::setdx(double d){
+void PointVector<Dim>::set(int i, double d){
+	assert(i <= Dim);
+	comp[i] = d;
+}
+
+template<const int Dim>
+void PointVector<Dim>::setdx(double d){
 	assert(Dim >= 1);
 	comp[0] = d;
 }
 
 template<const int Dim>
-double PointVector<Dim>::setdy(double d){
+void PointVector<Dim>::setdy(double d){
 	assert(Dim >= 2);
 	comp[1] = d;
 }
 
 template<const int Dim>
-double PointVector<Dim>::setdz(double d){
+void PointVector<Dim>::setdz(double d){
 	assert(Dim >= 3);
 	comp[2] = d;
 }
@@ -128,6 +154,21 @@ PointVector<Dim>* PointVector<Dim>::div(double d){
 }
 
 template<const int Dim>
+PointVector<Dim>* PointVector<Dim>::pow(double d){
+	for(int i = 0; i < Dim; i++){
+		comp[i] = pow(comp[i], d);
+	}
+	return this;
+}
+
+template<const int Dim>
+PointVector<Dim>* PointVector<Dim>::pow_comp(PointVector& p){
+	for(int i = 0; i < Dim; i++){
+		comp[i] = pow(comp[i], p.comp[i]);
+	}
+}
+
+template<const int Dim>
 PointVector<Dim>* PointVector<Dim>::set_min_comp(PointVector<Dim>& p){
 	for(int i = 0; i < Dim; i++){
 		*(comp+i) = *(comp+i) < *(p.comp+i) ? *(comp+i) : *(p.comp+i);
@@ -157,6 +198,60 @@ bool PointVector<Dim>::is_max_comp(PointVector<Dim>& p){
 	bool result = true;
 	for(int i = 0; i < Dim; i++){
 		result = result && comp[i] > p.comp[i];
+	}
+	return result;
+}
+
+template<const int Dim>
+std::array<bool, Dim> PointVector<Dim>::operator ==(PointVector<Dim>& p){
+	std::array<bool, Dim> result;
+	for(int i = 0; i < Dim; i++){
+		result[i] = comp[i] == p.comp[i];
+	}
+	return result;
+}
+
+template<const int Dim>
+std::array<bool, Dim> PointVector<Dim>::operator !=(PointVector<Dim>& p){
+	std::array<bool, Dim> result;
+	for(int i = 0; i < Dim; i++){
+		result[i] = comp[i] != p.comp[i];
+	}
+	return result;
+}
+
+template<const int Dim>
+std::array<bool, Dim> PointVector<Dim>::operator >(PointVector<Dim>& p){
+	std::array<bool, Dim> result;
+	for(int i = 0; i < Dim; i++){
+		result[i] = comp[i] > p.comp[i];
+	}
+	return result;
+}
+
+template<const int Dim>
+std::array<bool, Dim> PointVector<Dim>::operator <(PointVector<Dim>& p){
+	std::array<bool, Dim> result;
+	for(int i = 0; i < Dim; i++){
+		result[i] = comp[i] < p.comp[i];
+	}
+	return result;
+}
+
+template<const int Dim>
+std::array<bool, Dim> PointVector<Dim>::operator >=(PointVector<Dim>& p){
+	std::array<bool, Dim> result;
+	for(int i = 0; i < Dim; i++){
+		result[i] = comp[i] >= p.comp[i];
+	}
+	return result;
+}
+
+template<const int Dim>
+std::array<bool, Dim> PointVector<Dim>::operator <=(PointVector<Dim>& p){
+	std::array<bool, Dim> result;
+	for(int i = 0; i < Dim; i++){
+		result[i] = comp[i] <= p.comp[i];
 	}
 	return result;
 }
