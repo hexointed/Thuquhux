@@ -46,7 +46,6 @@ int main(int argc, char **argv)
 	
     InitLight();
 	InitGLSLShader();
-	//InitARBShader();
     
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -139,7 +138,7 @@ void Display()
 	}
 	c->position->setdx(cpos);
 	
-    GLfloat position[] = {(float)(2.5*cos(lpos)),(float)(2.5*sin(lpos)),3,5};
+    GLfloat position[] = {(float)(2.5*cos(lpos)),(float)(2.5*sin(lpos)),3,1};
     GLfloat position2[] = {(float)(-2.5*cos(lpos)),(float)(-2.5*sin(lpos)),0,1};
 	
 	glProgramEnvParameter4fvARB(GL_VERTEX_PROGRAM_ARB, 0, position);
@@ -149,7 +148,7 @@ void Display()
         glLightfv(GL_LIGHT0, GL_POSITION, position);
         
         glColorMaterial(GL_FRONT, GL_DIFFUSE);
-        glTranslatef(cos(lpos), sin(lpos),-3);
+        glTranslatef(2.5*cos(lpos), 2.5*sin(lpos),-3);
         DrawCube(0.05);
     glPopMatrix();
     glPushMatrix();
@@ -217,7 +216,7 @@ void InitLight(){
     glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.25f);
     
     glEnable(GL_LIGHT1);
-    GLfloat color2[] = {1,0,0};
+    GLfloat color2[] = {0,0,1};
     glLightfv(GL_LIGHT1, GL_AMBIENT, color2);
     glLightfv(GL_LIGHT1, GL_DIFFUSE, color2);
     glLightfv(GL_LIGHT1, GL_SPECULAR, color2);
