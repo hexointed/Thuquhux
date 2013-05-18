@@ -112,13 +112,30 @@ PointVector<Dim>* PointVector<Dim>::mul_comp(PointVector<Dim>& p){
 	return this;
 }
 
-/*template<const int Dim>
+template<const int Dim>
 PointVector<Dim>* PointVector<Dim>::mul_cross(PointVector<Dim>& p){
-	this->dx = this->dy * p.getdz() - this->dz * p.getdy();
-	this->dy = this->dz * p.getdx() - this->dx * p.getdz();
-	this->dz = this->dx * p.getdy() - this->dy * p.getdx();
 	return this;
-}*/
+}
+
+template<>
+inline PointVector<3>* PointVector<3>::mul_cross(PointVector<3>& p){
+	comp[0] = comp[1] * p.comp[2] - comp[2] * p.comp[1];
+	comp[1] = comp[2] * p.comp[0] - comp[0] * p.comp[2];
+	comp[2] = comp[0] * p.comp[1] - comp[1] * p.comp[0];
+	return this;
+}
+
+template<>
+inline PointVector<7>* PointVector<7>::mul_cross(PointVector<7>& p){
+	comp[0] = comp[1] * p.comp[3] - comp[3] * p.comp[1] + comp[2] * p.comp[6] - comp[6] * p.comp[2] + comp[4] * p.comp[5] - comp[5] * p.comp[4];
+	comp[1] = comp[2] * p.comp[4] - comp[4] * p.comp[2] + comp[3] * p.comp[0] - comp[0] * p.comp[3] + comp[5] * p.comp[6] - comp[6] * p.comp[5];
+	comp[2] = comp[3] * p.comp[5] - comp[5] * p.comp[3] + comp[4] * p.comp[1] - comp[1] * p.comp[4] + comp[6] * p.comp[0] - comp[0] * p.comp[6];
+	comp[3] = comp[4] * p.comp[6] - comp[6] * p.comp[4] + comp[5] * p.comp[2] - comp[2] * p.comp[5] + comp[0] * p.comp[1] - comp[1] * p.comp[0];
+	comp[4] = comp[5] * p.comp[0] - comp[0] * p.comp[5] + comp[6] * p.comp[3] - comp[3] * p.comp[6] + comp[1] * p.comp[2] - comp[2] * p.comp[1];
+	comp[5] = comp[6] * p.comp[1] - comp[1] * p.comp[6] + comp[0] * p.comp[4] - comp[4] * p.comp[0] + comp[2] * p.comp[3] - comp[3] * p.comp[2];
+	comp[6] = comp[0] * p.comp[2] - comp[2] * p.comp[0] + comp[1] * p.comp[5] - comp[5] * p.comp[1] + comp[3] * p.comp[4] - comp[4] * p.comp[3];
+	return this;
+}
 
 template<const int Dim>
 PointVector<Dim>* PointVector<Dim>::mul(long double d){
