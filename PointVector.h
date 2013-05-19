@@ -60,6 +60,9 @@ public:
 	std::array<bool, Dim> operator<	(PointVector& p);
 	std::array<bool, Dim> operator>=	(PointVector& p);
 	std::array<bool, Dim> operator<=	(PointVector& p);
+
+	/*This method is only for compability with std::set and std::map, it is not otherwise useful*/
+	bool operator< (const PointVector& p) const;
 };
 
 #endif	/* POINTVECTOR_H */

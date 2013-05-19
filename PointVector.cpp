@@ -272,3 +272,13 @@ std::array<bool, Dim> PointVector<Dim>::operator <=(PointVector<Dim>& p){
 	}
 	return result;
 }
+
+/*Only for compability with std::set and std::map*/
+template<const int Dim>
+bool PointVector<Dim>::operator <(const PointVector& p) const {
+	bool result = false;
+	for(int i = 0; i < Dim; i++){
+		result = result || comp[i] != p.comp[i];
+	}
+	return result;
+}
