@@ -20,15 +20,15 @@ public:
     Parametric_Surface(double (*x)(double, double) = def_param_axis_func_x, double (*y)(double, double) = def_param_axis_func_y, double (*z)(double, double) = def_param_axis_func_z);
     virtual ~Parametric_Surface();
     
-    friend Parametric_Surface Unite(Parametric_Surface a, Parametric_Surface b, PointVector pos);
-    friend Parametric_Surface Intersect(Parametric_Surface a, Parametric_Surface b, PointVector pos);
-    friend Parametric_Surface Complement(Parametric_Surface a, Parametric_Surface b, PointVector pos);
-    friend Parametric_Surface Differatiate(Parametric_Surface a, Parametric_Surface b, PointVector pos);
+    friend Parametric_Surface Unite(Parametric_Surface a, Parametric_Surface b, PointVector<> pos);
+    friend Parametric_Surface Intersect(Parametric_Surface a, Parametric_Surface b, PointVector<> pos);
+    friend Parametric_Surface Complement(Parametric_Surface a, Parametric_Surface b, PointVector<> pos);
+    friend Parametric_Surface Differatiate(Parametric_Surface a, Parametric_Surface b, PointVector<> pos);
 	
 	void Unite(Parametric_Surface a);
-    void Intersect(Parametric_Surface a, PointVector pos);
-    void Complement(Parametric_Surface a, PointVector pos);
-    void Differatiate(Parametric_Surface a, PointVector pos);
+    void Intersect(Parametric_Surface a);
+    void Complement(Parametric_Surface a);
+    void Differatiate(Parametric_Surface a);
     
     Parametric_Surface& operator=(Parametric_Surface v) const;
 	
@@ -38,8 +38,8 @@ public:
 	bool isIntersecting(const Parametric_Surface& v);
 	
 	double distance_between(const Parametric_Surface& v);
-	bool pointIsWithin(PointVector p);
-	bool lineIsWithin(PointVector p);
+	bool pointIsWithin(PointVector<> p);
+	bool lineIsWithin(PointVector<> p);
 	
 	double getVolume();
     double getSurfaceArea();
@@ -49,7 +49,7 @@ public:
 	void use_hq_mesh();
     
 private:
-	std::vector<PointVector (*)> mesh_vertecies;
+	std::vector<PointVector<> (*)> mesh_vertecies;
 	double (*hq_mesh)[3];
 	
 	int mesh_detail;
@@ -64,8 +64,8 @@ private:
 	double volume;
 	
 public:
-	PointVector * bound_box[2];
-	PointVector * position;
+	PointVector<> * bound_box[2];
+	PointVector<> * position;
 };
 
 #endif	/* PARAMETRIC_SURFACE_H */

@@ -7,118 +7,268 @@
 
 #include "PointVector.h"
 #include <math.h>
+#include <cassert>
 
-PointVector::PointVector(){
-	this->dx = 0;
-	this->dy = 0;
-	this->dz = 0;
+template<const int Dim>
+PointVector<Dim>::PointVector(){
+	for(int i = 0; i < Dim; i++){
+		comp[i] = 0;
+	}
 }
 
-PointVector::PointVector(double x, double y, double z){
-    this->dx = x;
-    this->dy = y;
-    this->dz = z;
+template<const int Dim>
+PointVector<Dim>::PointVector(double composants[Dim]){
+	for(int i = 0; i < Dim; i++){
+		comp[i] = composants[i];
+	}
 }
 
-double PointVector::getdx(){
-    return this->dx;
+template<const int Dim>
+PointVector<Dim>::PointVector(double x, double y, double z){
+	assert(Dim >= 3);
+    comp[0] = x;
+    comp[1] = y;
+    comp[2] = z;
 }
 
-double PointVector::getdy(){
-    return this->dy;
+template<const int Dim>
+double PointVector<Dim>::get(int i){
+	assert(i <= Dim);
+	return comp[i];
 }
 
-double PointVector::getdz(){
-    return this->dz;
+template<const int Dim>
+double PointVector<Dim>::getdx(){
+	assert(Dim >= 1);
+    return comp[0];
 }
 
-double PointVector::getMagnitude(){
-	return sqrt(dx*dx + dy*dy + dz*dz);
+template<const int Dim>
+double PointVector<Dim>::getdy(){
+    assert(Dim >= 2);
+    return comp[1];
 }
 
-double PointVector::setdx(double d){
-	this->dx = d;
+template<const int Dim>
+double PointVector<Dim>::getdz(){
+    assert(Dim >= 3);
+    return comp[2];
 }
 
-double PointVector::setdy(double d){
-	this->dy = d;
+template<const int Dim>
+double PointVector<Dim>::getMagnitude(){
+	double mag = 0;
+	for(int i = 0; i < Dim; i++){
+		mag += comp[i] * comp[i];
+	}
+	return sqrt(mag);
 }
 
-double PointVector::setdz(double d){
-	this->dz = d;
+template<const int Dim>
+void PointVector<Dim>::set(int i, double d){
+	assert(i <= Dim);
+	comp[i] = d;
 }
 
-PointVector* PointVector::add(PointVector& p){
-	this->dx += p.getdx();
-	this->dy += p.getdy();
-	this->dz += p.getdz();
-	return this;
+template<const int Dim>
+void PointVector<Dim>::setdx(double d){
+	assert(Dim >= 1);
+	comp[0] = d;
 }
 
-PointVector* PointVector::sub(PointVector& p){
-    this->dx -= p.getdx();
-	this->dy -= p.getdy();
-	this->dz -= p.getdz();
-	return this;
+template<const int Dim>
+void PointVector<Dim>::setdy(double d){
+	assert(Dim >= 2);
+	comp[1] = d;
 }
 
-PointVector* PointVector::mul_comp(PointVector& p){
-    this->dx *= p.getdx();
-	this->dy *= p.getdy();
-	this->dz *= p.getdz();
-	return this;
+template<const int Dim>
+void PointVector<Dim>::setdz(double d){
+	assert(Dim >= 3);
+	comp[2] = d;
 }
 
-PointVector* PointVector::mul_cross(PointVector& p){
-	this->dx = this->dy * p.getdz() - this->dz * p.getdy();
-	this->dy = this->dz * p.getdx() - this->dx * p.getdz();
-	this->dz = this->dx * p.getdy() - this->dy * p.getdx();
-	return this;
-}
-
-PointVector* PointVector::mul(long double d){
-	this->dx *= d;
-	this->dy *= d;
-	this->dz *= d;
-	return this;
-}
-
-double PointVector::mul_dot(PointVector& p, PointVector& q){
-	return q.getdx() * p.getdx() + q.getdy() * p.getdy() + q.getdz() * p.getdz();
-}
-
-PointVector* PointVector::div_comp(PointVector& p){
-    this->dx /= p.getdx();
-	this->dy /= p.getdy();
-	this->dz /= p.getdz();
-	return this;
-}
-
-PointVector* PointVector::div(double d){
-	this->dx /= d;
-	this->dy /= d;
-	this->dz /= d;
-	return this;
-}
-
-PointVector* PointVector::set_min_comp(PointVector& p){
-	for(int i = 0; i < 3; i++){
-		*((&this->dx)+i) = *((&this->dx)+i) < *((&p.dx)+i) ? *((&this->dx)+i) : *((&p.dx)+i);
+template<const int Dim>
+PointVector<Dim>* PointVector<Dim>::add(PointVector<Dim>& p){
+	for(int i = 0; i < Dim; i++){
+		comp[i] += p.comp[i];
 	}
 	return this;
 }
 
-PointVector* PointVector::set_max_comp(PointVector& p){
-	for(int i = 0; i < 3; i++){
-		*((&this->dx)+i) = *((&this->dx)+i) > *((&p.dx)+i) ? *((&this->dx)+i) : *((&p.dx)+i);
+template<const int Dim>
+PointVector<Dim>* PointVector<Dim>::sub(PointVector<Dim>& p){
+	for(int i = 0; i < Dim; i++){
+		comp[i] -= p.comp[i];
 	}
 	return this;
 }
 
-bool PointVector::is_min_comp(PointVector& p){
-	return this->dx > p.dx && this->dy > p.dy && this->dz > p.dz;
+template<const int Dim>
+PointVector<Dim>* PointVector<Dim>::mul_comp(PointVector<Dim>& p){
+	for(int i = 0; i < Dim; i++){
+		comp[i] *= p.comp[i];
+	}
+	return this;
 }
 
-bool PointVector::is_max_comp(PointVector& p){
-	return this->dx < p.dx && this->dy < p.dy && this->dz < p.dz;
+template<const int Dim>
+PointVector<Dim>* PointVector<Dim>::mul_cross(PointVector<Dim>& p){
+	return this;
+}
+
+template<>
+inline PointVector<3>* PointVector<3>::mul_cross(PointVector<3>& p){
+	comp[0] = comp[1] * p.comp[2] - comp[2] * p.comp[1];
+	comp[1] = comp[2] * p.comp[0] - comp[0] * p.comp[2];
+	comp[2] = comp[0] * p.comp[1] - comp[1] * p.comp[0];
+	return this;
+}
+
+template<>
+inline PointVector<7>* PointVector<7>::mul_cross(PointVector<7>& p){
+	comp[0] = comp[1] * p.comp[3] - comp[3] * p.comp[1] + comp[2] * p.comp[6] - comp[6] * p.comp[2] + comp[4] * p.comp[5] - comp[5] * p.comp[4];
+	comp[1] = comp[2] * p.comp[4] - comp[4] * p.comp[2] + comp[3] * p.comp[0] - comp[0] * p.comp[3] + comp[5] * p.comp[6] - comp[6] * p.comp[5];
+	comp[2] = comp[3] * p.comp[5] - comp[5] * p.comp[3] + comp[4] * p.comp[1] - comp[1] * p.comp[4] + comp[6] * p.comp[0] - comp[0] * p.comp[6];
+	comp[3] = comp[4] * p.comp[6] - comp[6] * p.comp[4] + comp[5] * p.comp[2] - comp[2] * p.comp[5] + comp[0] * p.comp[1] - comp[1] * p.comp[0];
+	comp[4] = comp[5] * p.comp[0] - comp[0] * p.comp[5] + comp[6] * p.comp[3] - comp[3] * p.comp[6] + comp[1] * p.comp[2] - comp[2] * p.comp[1];
+	comp[5] = comp[6] * p.comp[1] - comp[1] * p.comp[6] + comp[0] * p.comp[4] - comp[4] * p.comp[0] + comp[2] * p.comp[3] - comp[3] * p.comp[2];
+	comp[6] = comp[0] * p.comp[2] - comp[2] * p.comp[0] + comp[1] * p.comp[5] - comp[5] * p.comp[1] + comp[3] * p.comp[4] - comp[4] * p.comp[3];
+	return this;
+}
+
+template<const int Dim>
+PointVector<Dim>* PointVector<Dim>::mul(long double d){
+	for(int i = 0; i < Dim; i++){
+		comp[i] *= d;
+	}
+	return this;
+}
+
+template<const int Dim>
+double PointVector<Dim>::mul_dot(PointVector<Dim>& p, PointVector<Dim>& q){
+	double result = 0;
+	for(int i = 0; i < Dim; i++){
+		result += p.comp[i] * q.comp[i];
+	}
+	return result;
+}
+
+template<const int Dim>
+PointVector<Dim>* PointVector<Dim>::div_comp(PointVector<Dim>& p){
+    for(int i = 0; i < Dim; i++){
+		comp[i] /= p.comp[i];
+	}
+	return this;
+}
+
+template<const int Dim>
+PointVector<Dim>* PointVector<Dim>::div(double d){
+	for(int i = 0; i < Dim; i++){
+		comp[i] /= d;
+	}
+	return this;
+}
+
+template<const int Dim>
+PointVector<Dim>* PointVector<Dim>::pow(double d){
+	for(int i = 0; i < Dim; i++){
+		comp[i] = pow(comp[i], d);
+	}
+	return this;
+}
+
+template<const int Dim>
+PointVector<Dim>* PointVector<Dim>::pow_comp(PointVector& p){
+	for(int i = 0; i < Dim; i++){
+		comp[i] = pow(comp[i], p.comp[i]);
+	}
+}
+
+template<const int Dim>
+PointVector<Dim>* PointVector<Dim>::set_min_comp(PointVector<Dim>& p){
+	for(int i = 0; i < Dim; i++){
+		*(comp+i) = *(comp+i) < *(p.comp+i) ? *(comp+i) : *(p.comp+i);
+	}
+	return this;
+}
+
+template<const int Dim>
+PointVector<Dim>* PointVector<Dim>::set_max_comp(PointVector<Dim>& p){
+	for(int i = 0; i < Dim; i++){
+		*(comp+i) = *(comp+i) > *(p.comp+i) ? *(comp+i) : *(p.comp+i);
+	}
+	return this;
+}
+
+template<const int Dim>
+bool PointVector<Dim>::is_min_comp(PointVector<Dim>& p){
+	bool result = true;
+	for(int i = 0; i < Dim; i++){
+		result = result && comp[i] < p.comp[i];
+	}
+	return result;
+}
+
+template<const int Dim>
+bool PointVector<Dim>::is_max_comp(PointVector<Dim>& p){
+	bool result = true;
+	for(int i = 0; i < Dim; i++){
+		result = result && comp[i] > p.comp[i];
+	}
+	return result;
+}
+
+template<const int Dim>
+std::array<bool, Dim> PointVector<Dim>::operator ==(PointVector<Dim>& p){
+	std::array<bool, Dim> result;
+	for(int i = 0; i < Dim; i++){
+		result[i] = comp[i] == p.comp[i];
+	}
+	return result;
+}
+
+template<const int Dim>
+std::array<bool, Dim> PointVector<Dim>::operator !=(PointVector<Dim>& p){
+	std::array<bool, Dim> result;
+	for(int i = 0; i < Dim; i++){
+		result[i] = comp[i] != p.comp[i];
+	}
+	return result;
+}
+
+template<const int Dim>
+std::array<bool, Dim> PointVector<Dim>::operator >(PointVector<Dim>& p){
+	std::array<bool, Dim> result;
+	for(int i = 0; i < Dim; i++){
+		result[i] = comp[i] > p.comp[i];
+	}
+	return result;
+}
+
+template<const int Dim>
+std::array<bool, Dim> PointVector<Dim>::operator <(PointVector<Dim>& p){
+	std::array<bool, Dim> result;
+	for(int i = 0; i < Dim; i++){
+		result[i] = comp[i] < p.comp[i];
+	}
+	return result;
+}
+
+template<const int Dim>
+std::array<bool, Dim> PointVector<Dim>::operator >=(PointVector<Dim>& p){
+	std::array<bool, Dim> result;
+	for(int i = 0; i < Dim; i++){
+		result[i] = comp[i] >= p.comp[i];
+	}
+	return result;
+}
+
+template<const int Dim>
+std::array<bool, Dim> PointVector<Dim>::operator <=(PointVector<Dim>& p){
+	std::array<bool, Dim> result;
+	for(int i = 0; i < Dim; i++){
+		result[i] = comp[i] <= p.comp[i];
+	}
+	return result;
 }
