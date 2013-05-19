@@ -29,7 +29,7 @@ Parametric_Surface::Parametric_Surface(double (*x)(double, double), double (*y)(
 	this->position = new PointVector(0,0,0);
 }
 
-Parametric_Surface::Parametric_Surface(const Parametric_Surface& orig) {
+Parametric_Surface::Parametric_Surface(const Parametric_Surface& /*orig*/) {
 }
 
 Parametric_Surface::~Parametric_Surface() {
@@ -83,7 +83,7 @@ double def_param_axis_func_y(double t, double u){
 	return sin(t*2*PI)*(1 + 0.25*cos(u*2*PI));
 }
 
-double def_param_axis_func_z(double t, double u){
+double def_param_axis_func_z(double /*t*/, double u){
 	return 0.25*sin(u*2*PI);
 }
 

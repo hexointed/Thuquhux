@@ -10,7 +10,7 @@
 PhysObject::PhysObject() {
 }
 
-PhysObject::PhysObject(const PhysObject& orig) {
+PhysObject::PhysObject(const PhysObject& /*orig*/) {
 }
 
 PhysObject::~PhysObject() {

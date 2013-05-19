@@ -62,7 +62,7 @@ void Animate(){
     glutPostRedisplay();
 }
 
-void KeyboardHandler(unsigned char key, int x, int y)
+void KeyboardHandler(unsigned char key, int /*x*/, int /*y*/)
 {
   switch (key)
   {

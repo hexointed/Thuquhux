@@ -30,15 +30,15 @@ double PointVector::getMagnitude(){
 	return sqrt(dx*dx + dy*dy + dz*dz);
 }
 
-double PointVector::setdx(double d){
+void PointVector::setdx(double d){
 	this->dx = d;
 }
 
-double PointVector::setdy(double d){
+void PointVector::setdy(double d){
 	this->dy = d;
 }
 
-double PointVector::setdz(double d){
+void PointVector::setdz(double d){
 	this->dz = d;
 }
 

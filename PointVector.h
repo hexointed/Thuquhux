@@ -24,9 +24,9 @@ public:
 	
 	double getMagnitude();
 	
-	double setdx(double d);
-	double setdy(double d);
-	double setdz(double d);
+	void setdx(double d);
+	void setdy(double d);
+	void setdz(double d);
     
     PointVector* add(PointVector& p);
     PointVector* sub(PointVector& p);
