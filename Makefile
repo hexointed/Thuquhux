@@ -37,4 +37,4 @@ thuquhux: .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .Phy
 	$(CC) $(CFLAGS) PointVector.cpp -o .PointVector.o
 	
 clean:
-	rm -f *.o
+	rm -f .*.o
