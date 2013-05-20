@@ -2,7 +2,7 @@ Thuquhux
 ========
 
 --------
-Copyright (c) 2013 Elias Forsberg, Charles Gilljam
+Copyright (c) 2013 Elias Forsberg, Charles Gilljam, Joline Granath
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -26,4 +26,4 @@ the planet so that differant parts of the terrain can be seen.
 
 We will try to add more features when we have time. Hopefully, the 
 game will support non-trivial object deformation, some fluid dynamics,
-and terrain modification. NPCs are also planned. 
+and terrain modification. NPCs with pathfinding are also planned. 
