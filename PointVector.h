@@ -63,3 +63,5 @@ public:
 };
 
 #endif	/* POINTVECTOR_H */
+
+#include "PointVector.cpp"
