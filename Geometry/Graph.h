@@ -10,7 +10,7 @@
 
 #include <vector>
 #include <map>
-#include "PointVector.h"
+#include "../PointVector.h"
 #include "Geometry.h"
 
 using Geometry::Triangle;

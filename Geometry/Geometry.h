@@ -8,7 +8,7 @@
 #ifndef GEOMETRY_H
 #define	GEOMETRY_H
 
-#include "PointVector.h"
+#include "../PointVector.h"
 
 namespace Geometry{
 	class Polygon{

@@ -4,7 +4,7 @@
 #include <math.h>
 #include "Simplexnoise.h"
 #include "TerrainGenerator.h"
-#include "Parametric_Surface.h"
+#include "Geometry/Parametric_Surface.h"
 #include "PointVector.h"
 
 void InitLight();
