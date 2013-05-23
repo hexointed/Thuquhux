@@ -27,6 +27,8 @@ float cpos = 0.0f;
 
 TerrainGenerator *a = new TerrainGenerator();
 
+using Geometry::Parametric_Surface;
+
 Parametric_Surface *b = new Parametric_Surface();
 Parametric_Surface *c = new Parametric_Surface();
 

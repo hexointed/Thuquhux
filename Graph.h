@@ -11,34 +11,26 @@
 #include <vector>
 #include <map>
 #include "PointVector.h"
+#include "Geometry.h"
 
-struct Triangle{
-	Triangle* adjacents[3];
-	PointVector<>* vertecies[3];
-	Triangle(){}
-	Triangle(PointVector<>** verts){
-		for(int i = 0; i < 3; i++){
-			vertecies[i] = verts[i];
-		}
-	}
-};
+using Geometry::Triangle;
 
-class Graph {
-public:
-	Graph();
-	Graph(const Graph& orig);
-	virtual ~Graph();
+namespace Geometry{
+	class Graph {
+	public:
+		Graph(PointVector<>** verts, int length, int width);
+		Graph(const Graph& orig);
+		virtual ~Graph();
+		
+		int getVertexSize();
+		void getResult(PointVector<>* verts);
 	
-	void addVertecies(PointVector<>** verts, int length);
-	void connect(PointVector<>* a, PointVector<>* b, PointVector<>* c);
+	private:
+		typedef std::vector<Triangle(*)> trivec;
+		trivec triangles;
+		PointVector<>* vertecies;
 	
-private:
-	typedef std::map<PointVector<>, std::vector<Triangle> (*) > vmap;
-	typedef std::vector<Triangle(*)> trivec;
-	trivec triangles;
-	PointVector<>** vertecies;
-
-};
+	};
+}
 
 #endif	/* GRAPH_H */
-

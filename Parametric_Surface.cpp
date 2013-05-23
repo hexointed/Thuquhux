@@ -12,6 +12,8 @@
 #include <iostream>
 #include <vector>
 
+using Geometry::Parametric_Surface;
+
 double PI = 3.14159265358979;
 
 Parametric_Surface::Parametric_Surface(double (*x)(double, double), double (*y)(double, double), double (*z)(double, double)):
@@ -73,15 +75,15 @@ bool Parametric_Surface::isIntersecting(const Parametric_Surface& v){
 			this->bound_box[0]->getdz() + this->position->getdz() < v.bound_box[1]->getdz() + v.position->getdz();
 }
 
-double def_param_axis_func_x(double t, double u){
+double Geometry::def_param_axis_func_x(double t, double u){
 	return cos(t*2*PI)*(1 + 0.25*cos(u*2*PI));
 }
 
-double def_param_axis_func_y(double t, double u){
+double Geometry::def_param_axis_func_y(double t, double u){
 	return sin(t*2*PI)*(1 + 0.25*cos(u*2*PI));
 }
 
-double def_param_axis_func_z(double t, double u){
+double Geometry::def_param_axis_func_z(double t, double u){
 	return 0.25*sin(u*2*PI);
 }
 
