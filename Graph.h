@@ -11,15 +11,15 @@
 #include <vector>
 #include <map>
 #include "PointVector.h"
-#include "PointVector.cpp"
 
-struct Vertex{
-	typedef std::pair<Vertex*, Vertex*> ve;
-	std::vector<ve> adjecent;
-	PointVector<> position;
-	Vertex(){}
-	Vertex(PointVector<>& p){
-		position = p;
+struct Triangle{
+	Triangle* adjacents[3];
+	PointVector<>* vertecies[3];
+	Triangle(){}
+	Triangle(PointVector<>** verts){
+		for(int i = 0; i < 3; i++){
+			vertecies[i] = verts[i];
+		}
 	}
 };
 
@@ -29,12 +29,14 @@ public:
 	Graph(const Graph& orig);
 	virtual ~Graph();
 	
-	void addVertex(PointVector<> p);
-	void connect(PointVector<>& a, PointVector<>& b, PointVector<>& c);
+	void addVertecies(PointVector<>** verts, int length);
+	void connect(PointVector<>* a, PointVector<>* b, PointVector<>* c);
 	
 private:
-	typedef std::map<PointVector<>, Vertex> vmap;
-	vmap vertecies;
+	typedef std::map<PointVector<>, std::vector<Triangle> (*) > vmap;
+	typedef std::vector<Triangle(*)> trivec;
+	trivec triangles;
+	PointVector<>** vertecies;
 
 };
 

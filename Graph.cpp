@@ -6,6 +6,7 @@
  */
 
 #include "Graph.h"
+#include "PointVector.h"
 
 Graph::Graph() {
 }
@@ -16,22 +17,13 @@ Graph::Graph(const Graph& orig) {
 Graph::~Graph() {
 }
 
-void Graph::addVertex(PointVector<> p){
-	vmap::iterator itr = vertecies.begin();
-	itr = vertecies.find(p);
-	if(itr==vertecies.end()){
-		Vertex v(p);
-		vertecies[p] = v;
-		return;
+void Graph::addVertecies(PointVector<>** verts, int length){
+	for(int i = 0; i < length; i++){
+		vertecies[i] = verts[i];
 	}
 }
 
-void Graph::connect(PointVector<>& a, PointVector<>& b, PointVector<>& c){
-	addVertex(a);
-	addVertex(b);
-	addVertex(c);
-	vmap::iterator itra = vertecies.find(a);
-	vmap::iterator itrb = vertecies.find(b);
-	vmap::iterator itrc = vertecies.find(c);
-	itra->second.adjecent.push_back(std::make_pair(&(*itrb).second,&(*itrc).second));
+void Graph::connect(PointVector<>* a, PointVector<>* b, PointVector<>* c){
+	PointVector<>* arr[3] = {a, b, c};
+	triangles.push_back(new Triangle(arr));
 }

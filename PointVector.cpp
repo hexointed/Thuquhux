@@ -5,6 +5,9 @@
  * Created on December 26, 2012, 4:20 PM
  */
 
+#ifndef POINTVECTOR_CPP
+#define POINTVECTOR_CPP
+
 #include "PointVector.h"
 #include <math.h>
 #include <cassert>
@@ -282,3 +285,5 @@ bool PointVector<Dim>::operator <(const PointVector& p) const {
 	}
 	return result;
 }
+
+#endif /*POINTVECTOR_CPP*/
