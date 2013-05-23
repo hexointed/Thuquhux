@@ -22,19 +22,19 @@ thuquhux: .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .Phy
 	$(CC) $(CFLAGS) main.cpp -o .main.o
 	
 .Simplexnoise.o: Simplexnoise.cpp Simplexnoise.h
-	$(CC) $(CFLAGS) Simplexnoise.cpp -o .Simplexnoise.o
+	$(CC) $(CFLAGS) $< -o $@
 	
 .TerrainGenerator.o: TerrainGenerator.cpp TerrainGenerator.h
-	$(CC) $(CFLAGS) TerrainGenerator.cpp -o .TerrainGenerator.o
+	$(CC) $(CFLAGS) $< -o $@
 	
 .Parametric_Surface.o: Parametric_Surface.cpp Parametric_Surface.h
-	$(CC) $(CFLAGS) Parametric_Surface.cpp -o .Parametric_Surface.o
+	$(CC) $(CFLAGS) $< -o $@
 	
 .PhysObject.o: PhysObject.cpp PhysObject.h
-	$(CC) $(CFLAGS) PhysObject.cpp -o .PhysObject.o
+	$(CC) $(CFLAGS) $< -o $@
 	
 .PointVector.o: PointVector.cpp PointVector.h
-	$(CC) $(CFLAGS) PointVector.cpp -o .PointVector.o
+	$(CC) $(CFLAGS) $< -o $@
 	
 clean:
 	rm -f .*.o
