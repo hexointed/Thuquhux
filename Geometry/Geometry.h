@@ -11,17 +11,26 @@
 #include "../PointVector.h"
 
 namespace Geometry{
+	
+	template<const int Sides, const int Dim = 3>
 	class Polygon{
+	public:
+		Polygon();
+		Polygon(PointVector<Dim>* sides);
+		Polygon(const Polygon<Sides, Dim>& orig);
+		virtual ~Polygon();
 		
+		PointVector<Dim> vertecies[Sides];
 	};
 	
-	struct Triangle : public Polygon {
+	class Triangle : public Polygon<3> {
+	public:
 		Triangle();
 		Triangle(const Triangle& orig);
 		virtual ~Triangle();
 		
-		bool passesThrough(PointVector<>& a, PointVector<>& b);
-		std::pair<PointVector<>, PointVector<> > collisionWith(Triangle& a);
+		bool passesThrough(PointVector<>& max, PointVector<>& min);
+		Polygon<2> collisionWith(Triangle& a);
 	};
 }
 
