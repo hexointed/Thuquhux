@@ -17,7 +17,7 @@ public:
 	PointVector();
 	PointVector(double composants[Dim]);
     PointVector(double x, double y, double z);
-	PointVector(const PointVector& orig);
+	//PointVector(const PointVector& orig);
     
 private:
     double comp[Dim];
@@ -35,42 +35,42 @@ public:
 	void setdy(double d);
 	void setdz(double d);
     
-    PointVector& add(PointVector& p);
-    PointVector& sub(PointVector& p);
+    PointVector& add(PointVector p);
+    PointVector& sub(PointVector p);
 	static PointVector add(PointVector p, PointVector q);
 	static PointVector sub(PointVector p, PointVector q);
 	
-	PointVector& mul_comp(PointVector& p);
-	PointVector& mul_cross(PointVector& p);
+	PointVector& mul_comp(PointVector p);
+	PointVector& mul_cross(PointVector p);
     PointVector& mul(long double d);
-	static double mul_dot(PointVector& p, PointVector& q);
+	static double mul_dot(PointVector p, PointVector q);
 	static PointVector mul_comp(PointVector p, PointVector q);
 	static PointVector mul_cross(PointVector p, PointVector q);
 	static PointVector mul(double d, PointVector p);
 	
-    PointVector& div_comp(PointVector& p);
+    PointVector& div_comp(PointVector p);
     PointVector& div(double d);
 	static PointVector div_comp(PointVector p, PointVector q);
 	static PointVector div(double d, PointVector p);
 	
 	PointVector& pow(double d);
-	PointVector& pow_comp(PointVector& p);
+	PointVector& pow_comp(PointVector p);
 	static PointVector pow(double d, PointVector p);
 	static PointVector pow_comp(PointVector p, PointVector q);
 	
-	PointVector& set_min_comp(PointVector& p);
-	PointVector& set_max_comp(PointVector& p);
+	PointVector& set_min_comp(PointVector p);
+	PointVector& set_max_comp(PointVector p);
 	static PointVector min_comp(PointVector p, PointVector q);
 	static PointVector max_comp(PointVector p, PointVector q);
-	bool is_min_comp(PointVector& p) const;
-	bool is_max_comp(PointVector& p) const;
+	bool is_min_comp(PointVector p) const;
+	bool is_max_comp(PointVector p) const;
 	
-	std::array<bool, Dim> operator==	(PointVector& p) const;
-	std::array<bool, Dim> operator!=	(PointVector& p) const;
-	std::array<bool, Dim> operator>	(PointVector& p) const;
-	std::array<bool, Dim> operator<	(PointVector& p) const;
-	std::array<bool, Dim> operator>=	(PointVector& p) const;
-	std::array<bool, Dim> operator<=	(PointVector& p) const;
+	std::array<bool, Dim> operator==	(PointVector p) const;
+	std::array<bool, Dim> operator!=	(PointVector p) const;
+	std::array<bool, Dim> operator>	(PointVector p) const;
+	std::array<bool, Dim> operator<	(PointVector p) const;
+	std::array<bool, Dim> operator>=	(PointVector p) const;
+	std::array<bool, Dim> operator<=	(PointVector p) const;
 };
 
 #endif	/* POINTVECTOR_H */
