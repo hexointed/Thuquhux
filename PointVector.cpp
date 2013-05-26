@@ -278,6 +278,20 @@ bool PointVector<Dim>::is_max_comp(PointVector<Dim> p) const{
 }
 
 template<const int Dim>
+PointVector<Dim>& PointVector<Dim>::make_unit(){
+	double mag = getMagnitude();
+	for(int i = 0; i < Dim; i++){
+		comp[i] /= mag; 
+	}
+	return *this;
+}
+
+template<const int Dim>
+PointVector<Dim> PointVector<Dim>::make_unit(PointVector<Dim> p){
+	return p.make_unit();
+}
+
+template<const int Dim>
 std::array<bool, Dim> PointVector<Dim>::operator ==(PointVector<Dim> p) const{
 	std::array<bool, Dim> result;
 	for(int i = 0; i < Dim; i++){
@@ -329,6 +343,37 @@ std::array<bool, Dim> PointVector<Dim>::operator <=(PointVector<Dim> p) const{
 		result[i] = comp[i] <= p.comp[i];
 	}
 	return result;
+}
+
+template<const int Dim>
+bool Boolarr::all(std::array<bool,Dim> a){
+	for(int i = 0; i < Dim; i++){
+		if(!a[i]){
+			return false;
+		}
+	}
+	return true;
+}
+
+template<const int Dim>
+bool Boolarr::any(std::array<bool,Dim> a){
+	for(int i = 0; i < Dim; i++){
+		if(a[i]){
+			return true;
+		}
+	}
+	return false;
+}
+
+template<const int Dim>
+bool Boolarr::most(std::array<bool,Dim> a){
+	int temp = 0;
+	for(int i = 0; i < Dim; i++){
+		if(a[i]){
+			temp++;
+		}
+	}
+	return temp >= Dim/2.0;
 }
 
 #endif /*POINTVECTOR_CPP*/

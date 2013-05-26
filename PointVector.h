@@ -65,6 +65,9 @@ public:
 	bool is_min_comp(PointVector p) const;
 	bool is_max_comp(PointVector p) const;
 	
+	PointVector& make_unit();
+	static PointVector make_unit(PointVector p);
+	
 	std::array<bool, Dim> operator==	(PointVector p) const;
 	std::array<bool, Dim> operator!=	(PointVector p) const;
 	std::array<bool, Dim> operator>	(PointVector p) const;
@@ -72,6 +75,15 @@ public:
 	std::array<bool, Dim> operator>=	(PointVector p) const;
 	std::array<bool, Dim> operator<=	(PointVector p) const;
 };
+
+namespace Boolarr{
+	template<const int Dim>
+	bool all(std::array<bool, Dim> a);
+	template<const int Dim>
+	bool any(std::array<bool, Dim> a);
+	template<const int Dim>
+	bool most(std::array<bool, Dim> a);
+}
 
 #endif	/* POINTVECTOR_H */
 
