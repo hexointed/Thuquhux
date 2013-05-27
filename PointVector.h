@@ -16,17 +16,17 @@ class PointVector{
 public:
 	PointVector();
 	PointVector(double composants[Dim]);
-    PointVector(double x, double y, double z);
+	PointVector(double x, double y, double z);
 	//PointVector(const PointVector& orig);
     
 private:
-    double comp[Dim];
+	double comp[Dim];
     
 public:
 	double get(int i) const;
-    double getdx() const;
-    double getdy() const;
-    double getdz() const;
+	double getdx() const;
+	double getdy() const;
+	double getdz() const;
 	
 	double getMagnitude() const;
 	
@@ -35,21 +35,21 @@ public:
 	void setdy(double d);
 	void setdz(double d);
     
-    PointVector& add(PointVector p);
-    PointVector& sub(PointVector p);
+	PointVector& add(PointVector p);
+	PointVector& sub(PointVector p);
 	static PointVector add(PointVector p, PointVector q);
 	static PointVector sub(PointVector p, PointVector q);
 	
 	PointVector& mul_comp(PointVector p);
 	PointVector& mul_cross(PointVector p);
-    PointVector& mul(long double d);
+	PointVector& mul(long double d);
 	static double mul_dot(PointVector p, PointVector q);
 	static PointVector mul_comp(PointVector p, PointVector q);
 	static PointVector mul_cross(PointVector p, PointVector q);
 	static PointVector mul(double d, PointVector p);
 	
-    PointVector& div_comp(PointVector p);
-    PointVector& div(double d);
+	PointVector& div_comp(PointVector p);
+	PointVector& div(double d);
 	static PointVector div_comp(PointVector p, PointVector q);
 	static PointVector div(double d, PointVector p);
 	
