@@ -6,6 +6,7 @@
  */
 
 #include "PhysObject.h"
+#include "Material.h"
 
 PhysObject::PhysObject() {
 }
@@ -16,3 +17,6 @@ PhysObject::PhysObject(const PhysObject& /*orig*/) {
 PhysObject::~PhysObject() {
 }
 
+void PhysObject::setMass(double mass){
+	material.setDensity(mass/volume);
+}

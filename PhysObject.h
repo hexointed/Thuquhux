@@ -22,8 +22,13 @@ public:
     void Differentiate(PhysObject);
     
     bool isInObject(PointVector a);
+	
+	Material material;
+	double volume;
     
 private:
+	void setMass(double mass);
+	
 };
 
 #endif	/* PHYSOBJECT_H */

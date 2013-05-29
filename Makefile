@@ -15,8 +15,8 @@ EXECUTABLE = ./dist/Debug/GNU-Linux-x86/thuquhux
 
 all: thuquhux
 
-thuquhux: .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .PhysObject.o .PointVector.o
-	$(CC) .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .PhysObject.o .PointVector.o $(LIBS) -o $(EXECUTABLE)
+thuquhux: .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .PhysObject.o .PointVector.o .Material.o
+	$(CC) .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .PhysObject.o .PointVector.o .Material.o $(LIBS) -o $(EXECUTABLE)
 
 .main.o: main.cpp
 	$(CC) $(CFLAGS) main.cpp -o .main.o
@@ -35,6 +35,9 @@ thuquhux: .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .Phy
 	
 .PointVector.o: PointVector.cpp PointVector.h
 	$(CC) $(CFLAGS) PointVector.cpp -o .PointVector.o
+	
+.Material.o: Material.cpp Material.h
+	$(CC) $(CFLAGS) Material.cpp -o .Material.o
 	
 clean:
 	rm -f *.o
