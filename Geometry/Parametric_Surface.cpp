@@ -1,6 +1,6 @@
 /* 
- * File:   NURBS.cpp
- * Author: elias
+ * File:   Paramertic_Surface.cpp
+ * Author: Elias Forsberg
  * 
  * Created on April 24, 2013, 4:42 PM
  */
@@ -16,15 +16,11 @@ using Geometry::Parametric_Surface;
 
 double PI = 3.14159265358979;
 
-Parametric_Surface::Parametric_Surface(double (*x)(double, double), double (*y)(double, double), double (*z)(double, double)):
+Parametric_Surface::Parametric_Surface():
 	mesh_detail(400),
 	mesh_length((mesh_detail + 2)*(mesh_detail + 1)*2)
 {
 	mesh_vertecies.push_back(new PointVector<>[mesh_length]);
-	
-	pfuncs[0] = x;
-	pfuncs[1] = y;
-	pfuncs[2] = z;
 	
 	this->bound_box[0] = new PointVector<>(0,0,0);
 	this->bound_box[1] = new PointVector<>(0,0,0);
@@ -75,24 +71,21 @@ bool Parametric_Surface::isIntersecting(const Parametric_Surface& v){
 			this->bound_box[0]->getdz() + this->position->getdz() < v.bound_box[1]->getdz() + v.position->getdz();
 }
 
-double Geometry::def_param_axis_func_x(double t, double u){
-	return cos(t*2*PI)*(1 + 0.25*cos(u*2*PI));
+PointVector<> Geometry::def_param_axis_func(PointVector<> params){
+	params.mul(2*PI);
+	double arr[3] = {cos(params.getdx())*(1 + 0.25*cos(params.getdy())), sin(params.getdx())*(1 + 0.25*cos(params.getdy())), 0.25*sin(params.getdy())};
+	return PointVector<>(arr);
 }
 
-double Geometry::def_param_axis_func_y(double t, double u){
-	return sin(t*2*PI)*(1 + 0.25*cos(u*2*PI));
-}
-
-double Geometry::def_param_axis_func_z(double t, double u){
-	return 0.25*sin(u*2*PI);
-}
 
 void Parametric_Surface::calculate_mesh(){
 	int count = 0;
 	for(double t = 0; t <= 1 + 1.0/mesh_detail; t += 1.0/mesh_detail){
 		for(double u = 0; u <= 1; u += 1.0/mesh_detail){
-			PointVector<> p(pfuncs[0](t,u), pfuncs[1](t,u), pfuncs[2](t,u));
-			PointVector<> dp(pfuncs[0](t + 1.0/mesh_detail,u), pfuncs[1](t + 1.0/mesh_detail,u), pfuncs[2](t + 1.0/mesh_detail,u));
+			PointVector<> params(t,u,0);
+			PointVector<> dparams(t + 1.0/mesh_detail,u,0);
+			PointVector<> p(Geometry::def_param_axis_func(params));
+			PointVector<> dp(Geometry::def_param_axis_func(dparams));
 			mesh_vertecies.at(0)[count] = p;
 			mesh_vertecies.at(0)[count +1] = dp;
 			bound_box[0]->set_min_comp(p);

@@ -1,6 +1,6 @@
 /* 
- * File:   NURBS.h
- * Author: elias
+ * File:   Parametric_Surface.h
+ * Author: Elias Forsberg
  *
  * Created on April 24, 2013, 4:42 PM
  */
@@ -13,13 +13,11 @@
 
 namespace Geometry{
 
-	double def_param_axis_func_x(double t, double u);
-	double def_param_axis_func_y(double t, double u);
-	double def_param_axis_func_z(double t, double u);
+	PointVector<> def_param_axis_func(PointVector<> params);
 
-	class Parametric_Surface {    //Non Uniform Rational B-Spline Surface Encapsulated Volume
+	class Parametric_Surface {
 	public:
-		Parametric_Surface(double (*x)(double, double) = def_param_axis_func_x, double (*y)(double, double) = def_param_axis_func_y, double (*z)(double, double) = def_param_axis_func_z);
+		Parametric_Surface(PointVector<> (*pfunc)(PointVector<>) = def_param_axis_func);
 		virtual ~Parametric_Surface();
 		
 		friend Parametric_Surface Unite(Parametric_Surface a, Parametric_Surface b, PointVector<> pos);
@@ -60,7 +58,7 @@ namespace Geometry{
 		const int mesh_length;
 		
 		bool param_func_valid;
-		double (*pfuncs[3])(double, double);
+		PointVector<> (*pfunc)(PointVector<>);
 		
 		bool prop_updated;
 		double volume;
