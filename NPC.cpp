@@ -1,14 +1,26 @@
 #include "NPC.h"
 #include "PointVector.h"
+#include <cstdlib>
+#include <iostream>
+#include <time.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-public placeHolderPlayerPosition(double, double, double);
+PointVector<> PLACEHOLDER_PLAYER_POSITION;
+PointVector<> position(a, b, c);
 
-void NPC::getPosition{
+double NPC::getPosition{
 
 	for(;;){
-		return placeHolderPosition.getdx()
-		return placeHolderPosition.getdy()
-		return placeHolderPosition.getdz()
+		return PLACEHOLDER_PLAYER_POSITION;
 	}
 
-} // Jag vet att det är fel :)
+} 
+
+double NPC::makePosition{
+	srand(time(0));
+	a = rand();
+	b = rand();
+	c = rand();
+
+}
