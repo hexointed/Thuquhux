@@ -4,7 +4,7 @@
 #include <math.h>
 #include "Simplexnoise.h"
 #include "TerrainGenerator.h"
-#include "Parametric_Surface.h"
+#include "Geometry/Parametric_Surface.h"
 #include "PointVector.h"
 
 void InitLight();
@@ -26,6 +26,8 @@ float cpos = 0.0f;
 #define arot 0.0
 
 TerrainGenerator *a = new TerrainGenerator();
+
+using Geometry::Parametric_Surface;
 
 Parametric_Surface *b = new Parametric_Surface();
 Parametric_Surface *c = new Parametric_Surface();
