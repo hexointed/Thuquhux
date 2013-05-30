@@ -20,10 +20,10 @@ public:
     Parametric_Surface(const Parametric_Surface& orig);
     virtual ~Parametric_Surface();
 	
-	void Unite(Parametric_Surface a, PointVector pos);
-    void Intersect(Parametric_Surface a, PointVector pos);
-    void Complement(Parametric_Surface a, PointVector pos);
-    void Differatiate(Parametric_Surface a, PointVector pos);
+	void Unite(Parametric_Surface a, PointVector<> pos);
+    void Intersect(Parametric_Surface a, PointVector<> pos);
+    void Complement(Parametric_Surface a, PointVector<> pos);
+    void Differatiate(Parametric_Surface a, PointVector<> pos);
     
     Parametric_Surface& operator=(Parametric_Surface v) const;
 	
@@ -33,8 +33,8 @@ public:
 	bool isIntersecting(const Parametric_Surface& v);
 	
 	double distance_between(const Parametric_Surface& v);
-	bool pointIsWithin(PointVector p);
-	bool lineIsWithin(PointVector p);
+	bool pointIsWithin(PointVector<> p);
+	bool lineIsWithin(PointVector<> p);
 	
 	double getVolume();
     double getSurfaceArea();
@@ -57,8 +57,8 @@ private:
 	double volume;
 	
 public:
-	PointVector * bound_box[2];
-	PointVector * position;
+	PointVector<> * bound_box[2];
+	PointVector<> * position;
 };
 
 #endif	/* PARAMETRIC_SURFACE_H */
