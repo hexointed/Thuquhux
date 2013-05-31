@@ -29,6 +29,7 @@ PointVector<Dim>::PointVector(double composants[Dim]){
 template<const int Dim>
 template<typename... Tail>
 PointVector<Dim>::PointVector(Tail... t){
+	PointVector();
 	pconstruct(0, t...);
 }
 
@@ -73,6 +74,15 @@ double PointVector<Dim>::getMagnitude() const{
 		mag += comp[i] * comp[i];
 	}
 	return sqrt(mag);
+}
+
+template<const int Dim>
+double PointVector<Dim>::sum_comp() const{
+	double sum = 0;
+	for(auto x : comp){
+		sum += x;
+	}
+	return sum;
 }
 
 template<const int Dim>
@@ -269,20 +279,29 @@ PointVector<Dim> PointVector<Dim>::max_comp(PointVector p, PointVector q){
 
 template<const int Dim>
 bool PointVector<Dim>::is_min_comp(PointVector<Dim> p) const{
-	bool result = true;
 	for(int i = 0; i < Dim; i++){
-		result = result && comp[i] < p.comp[i];
+		if(comp[i] > p.comp[i])
+			return false;
 	}
-	return result;
+	return true;
 }
 
 template<const int Dim>
 bool PointVector<Dim>::is_max_comp(PointVector<Dim> p) const{
-	bool result = true;
 	for(int i = 0; i < Dim; i++){
-		result = result && comp[i] > p.comp[i];
+		if(comp[i] < p.comp[i])
+			return false;
 	}
-	return result;
+	return true;
+}
+
+template<const int Dim>
+bool PointVector<Dim>::is_eq_comp(PointVector<Dim> p) const{
+	for(int i = 0; i < Dim; i++){
+		if(comp[i] != p.comp[i])
+			return false;
+	}
+	return true;
 }
 
 template<const int Dim>
@@ -297,6 +316,33 @@ PointVector<Dim>& PointVector<Dim>::make_unit(){
 template<const int Dim>
 PointVector<Dim> PointVector<Dim>::make_unit(PointVector<Dim> p){
 	return p.make_unit();
+}
+
+template<const int Dim>
+PointVector<Dim>& PointVector<Dim>::project(PointVector p){
+	mul_comp(p);
+	PointVector q(p);
+	q.mul_comp(p);
+	double d = q.sum_comp();
+	double e = sum_comp();
+	for(int i = 0; i < Dim; i++){
+		comp[i] = p.comp[i] * e / d;
+	}
+	return *this;
+}
+
+template<const int Dim>
+PointVector<Dim> PointVector<Dim>::project(PointVector p, PointVector q){
+	return p.project(q);
+}
+
+template<const int Dim>
+double PointVector<Dim>::taxicab_distance(PointVector p, PointVector q){
+	double res;
+	for(int i = 0; i < Dim; i++){
+		res += abs(p.comp[i] - q.comp[i]);
+	}
+	return res;
 }
 
 template<const int Dim>

@@ -35,6 +35,7 @@ public:
 	double getdz() const;
 	
 	double getMagnitude() const;
+	double sum_comp() const;
 	
 	void set(int i, double d);
 	void setdx(double d);
@@ -68,11 +69,17 @@ public:
 	PointVector& set_max_comp(PointVector p);
 	static PointVector min_comp(PointVector p, PointVector q);
 	static PointVector max_comp(PointVector p, PointVector q);
+	
 	bool is_min_comp(PointVector p) const;
 	bool is_max_comp(PointVector p) const;
+	bool is_eq_comp (PointVector p) const;
 	
 	PointVector& make_unit();
 	static PointVector make_unit(PointVector p);
+	
+	PointVector& project(PointVector p);
+	static PointVector project(PointVector p, PointVector q);
+	static double taxicab_distance(PointVector p, PointVector q);
 	
 	std::array<bool, Dim> operator==	(PointVector p) const;
 	std::array<bool, Dim> operator!=	(PointVector p) const;
