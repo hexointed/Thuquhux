@@ -27,12 +27,20 @@ PointVector<Dim>::PointVector(double composants[Dim]){
 }
 
 template<const int Dim>
-PointVector<Dim>::PointVector(double x, double y, double z){
-	assert(Dim >= 3);
-    comp[0] = x;
-    comp[1] = y;
-    comp[2] = z;
+template<typename... Tail>
+PointVector<Dim>::PointVector(Tail... t){
+	pconstruct(0, t...);
 }
+
+template<const int Dim>
+template<typename First, typename... Tail>
+inline void PointVector<Dim>::pconstruct(int i, First f, Tail... t){
+	comp[i] = f;
+	pconstruct(i+1, t...);
+}
+
+template<const int Dim>
+inline void PointVector<Dim>::pconstruct(int i){}
 
 template<const int Dim>
 double PointVector<Dim>::get(int i) const{

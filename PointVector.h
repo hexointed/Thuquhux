@@ -16,8 +16,14 @@ class PointVector{
 public:
 	PointVector();
 	PointVector(double composants[Dim]);
-	PointVector(double x, double y, double z);
-	//PointVector(const PointVector& orig);
+	
+	template<typename... Tail>
+	PointVector(Tail... t);
+
+private:
+	template<typename First, typename... Tail>
+	inline void pconstruct(int i, First f, Tail... t);
+	inline void pconstruct(int i);
     
 private:
 	double comp[Dim];
