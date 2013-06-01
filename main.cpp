@@ -29,8 +29,8 @@ TerrainGenerator *a = new TerrainGenerator();
 
 using Geometry::Parametric_Surface;
 
-Parametric_Surface *b = new Parametric_Surface();
-Parametric_Surface *c = new Parametric_Surface();
+Parametric_Surface *b = new Parametric_Surface(Geometry::def_param_axis_func);
+Parametric_Surface *c = new Parametric_Surface(Geometry::def_param_axis_func);
 
 double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];
 
@@ -38,8 +38,6 @@ int main(int argc, char **argv)
 {
     srand(time(0));
     a->genGround(g_width, g_depth,arot,0, vertecies);
-	b->calculate_mesh();
-	c->calculate_mesh();
     
     InitGlut(argc, argv);
     InitLight();

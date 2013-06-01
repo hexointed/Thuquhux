@@ -17,7 +17,8 @@ namespace Geometry{
 
 	class Parametric_Surface {
 	public:
-		Parametric_Surface(PointVector<> (*pfunc)(PointVector<>) = def_param_axis_func);
+		template<typename Functor>
+		Parametric_Surface(Functor f);
 		virtual ~Parametric_Surface();
 		
 		friend Parametric_Surface Unite(Parametric_Surface a, Parametric_Surface b, PointVector<> pos);
@@ -45,20 +46,14 @@ namespace Geometry{
 		double getSurfaceArea();
 		
 		void drawMesh();
-		void calculate_mesh();
-		void use_hq_mesh();
+		template<typename Functor>
+		void calculate_mesh(Functor pfunc);
 		
 	private:
 		std::vector<PointVector<> (*)> mesh_vertecies;
-		double (*hq_mesh)[3];
 		
 		int mesh_detail;
-		int hq_mesh_detail;
-		
 		const int mesh_length;
-		
-		bool param_func_valid;
-		PointVector<> (*pfunc)(PointVector<>);
 		
 		bool prop_updated;
 		double volume;
@@ -67,6 +62,8 @@ namespace Geometry{
 		PointVector<> * bound_box[2];
 		PointVector<> * position;
 	};
-
+		
 }
 #endif	/* PARAMETRIC_SURFACE_H */
+
+#include "Parametric_Surface.hpp"
