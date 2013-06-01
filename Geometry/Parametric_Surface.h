@@ -13,7 +13,7 @@
 
 namespace Geometry{
 
-	PointVector<> def_param_axis_func(PointVector<> params);
+	PointVector<> def_param_axis_func(PointVector<2> params);
 
 	class Parametric_Surface {
 	public:

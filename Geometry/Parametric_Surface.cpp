@@ -59,7 +59,7 @@ bool Parametric_Surface::isIntersecting(const Parametric_Surface& v){
 			this->bound_box[0]->getdz() + this->position->getdz() < v.bound_box[1]->getdz() + v.position->getdz();
 }
 
-PointVector<> Geometry::def_param_axis_func(PointVector<> params){
+PointVector<> Geometry::def_param_axis_func(PointVector<2> params){
 	params.mul(2*PI);
 	double arr[3] = {cos(params.getdx())*(1 + 0.25*cos(params.getdy())), sin(params.getdx())*(1 + 0.25*cos(params.getdy())), 0.25*sin(params.getdy())};
 	return PointVector<>(arr);

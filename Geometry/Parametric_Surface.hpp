@@ -31,8 +31,8 @@ void Geometry::Parametric_Surface::calculate_mesh(Functor pfunc){
 	int count = 0;
 	for(double t = 0; t <= 1 + 1.0/mesh_detail; t += 1.0/mesh_detail){
 		for(double u = 0; u <= 1; u += 1.0/mesh_detail){
-			PointVector<> params(t,u,0);
-			PointVector<> dparams(t + 1.0/mesh_detail,u,0);
+			PointVector<2> params(t,u);
+			PointVector<2> dparams(t + 1.0/mesh_detail,u);
 			PointVector<> p(pfunc(params));
 			PointVector<> dp(pfunc(dparams));
 			mesh_vertecies.at(0)[count] = p;
