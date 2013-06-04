@@ -10,12 +10,15 @@
 
 #include <array>
 
-template<const int Dim = 3>
+template<unsigned int Dim = 3>
 class PointVector{
     
 public:
 	PointVector();
 	PointVector(double composants[Dim]);
+	
+	template<unsigned int D2>
+	PointVector(PointVector<D2> orig);
 	
 	template<typename... Tail>
 	PointVector(Tail... t);
@@ -90,11 +93,11 @@ public:
 };
 
 namespace Boolarr{
-	template<const int Dim>
+	template<unsigned int Dim>
 	bool all(std::array<bool, Dim> a);
-	template<const int Dim>
+	template<unsigned int Dim>
 	bool any(std::array<bool, Dim> a);
-	template<const int Dim>
+	template<unsigned int Dim>
 	bool most(std::array<bool, Dim> a);
 }
 

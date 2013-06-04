@@ -33,7 +33,7 @@ Parametric_Surface *c = new Parametric_Surface();
 double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];
 
 int main(int argc, char **argv)
-{
+{	
     srand(time(0));
     a->genGround(g_width, g_depth,arot,0, vertecies);
 	b->calculate_mesh();
