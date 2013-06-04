@@ -25,12 +25,13 @@ namespace Geometry{
 	
 	class Triangle : public Polygon<3> {
 	public:
-		Triangle();
+		Triangle(PointVector<>* sides);
 		Triangle(const Triangle& orig);
 		virtual ~Triangle();
 		
 		bool passesThrough(PointVector<>& max, PointVector<>& min);
-		Polygon<2> collisionWith(Triangle& a);
+		bool collisionWith(Triangle& a);
+		void draw();
 	};
 }
 

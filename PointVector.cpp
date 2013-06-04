@@ -150,9 +150,11 @@ PointVector<Dim>& PointVector<Dim>::mul_cross(PointVector<Dim> p){
 
 template<>
 inline PointVector<3>& PointVector<3>::mul_cross(PointVector<3> p){
-	comp[0] = comp[1] * p.comp[2] - comp[2] * p.comp[1];
-	comp[1] = comp[2] * p.comp[0] - comp[0] * p.comp[2];
+	double x = comp[1] * p.comp[2] - comp[2] * p.comp[1];
+	double y = comp[2] * p.comp[0] - comp[0] * p.comp[2];
 	comp[2] = comp[0] * p.comp[1] - comp[1] * p.comp[0];
+	comp[0] = x;
+	comp[1] = y;
 	return *this;
 }
 
