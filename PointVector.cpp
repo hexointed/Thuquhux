@@ -11,7 +11,6 @@
 #include "PointVector.h"
 #include <math.h>
 #include <cassert>
-#include <ios>
 
 template<unsigned int Dim>
 PointVector<Dim>::PointVector():
