@@ -10,12 +10,15 @@
 
 #include <array>
 
-template<const int Dim = 3>
+template<int Dim = 3>
 class PointVector{
     
 public:
 	PointVector();
 	PointVector(double composants[Dim]);
+	
+	template<int D2>
+	PointVector(PointVector<D2> orig);
 	
 	template<typename... Tail>
 	PointVector(Tail... t);
@@ -41,7 +44,23 @@ public:
 	void setdx(double d);
 	void setdy(double d);
 	void setdz(double d);
-    
+	
+	inline PointVector operator +(const PointVector r) const;
+	inline PointVector operator -(const PointVector r) const;
+	inline PointVector operator -() const;
+	
+	inline PointVector& operator+=(const PointVector r);
+	inline PointVector& operator-=(const PointVector r);
+	inline PointVector& operator*=(const double r);
+	inline PointVector& operator/=(const double r);
+	
+	template<int D>
+	friend PointVector<D> operator *(const PointVector<D> l, const double r);
+	template<int D>
+	friend PointVector<D> operator *(const double l, const PointVector<D> r);
+	template<int D>
+	friend PointVector<D> operator /(const PointVector<D> l, const double r);
+	
 	PointVector& add(PointVector p);
 	PointVector& sub(PointVector p);
 	static PointVector add(PointVector p, PointVector q);
@@ -90,11 +109,11 @@ public:
 };
 
 namespace Boolarr{
-	template<const int Dim>
+	template<int Dim>
 	bool all(std::array<bool, Dim> a);
-	template<const int Dim>
+	template<int Dim>
 	bool any(std::array<bool, Dim> a);
-	template<const int Dim>
+	template<int Dim>
 	bool most(std::array<bool, Dim> a);
 }
 
