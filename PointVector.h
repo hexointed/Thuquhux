@@ -60,8 +60,6 @@ public:
 	friend PointVector<D> operator *(const double l, const PointVector<D> r);
 	template<int D>
 	friend PointVector<D> operator /(const PointVector<D> l, const double r);
-	template<int D>
-	friend PointVector<D> operator /(const double l, const PointVector<D> r);
 	
 	PointVector& add(PointVector p);
 	PointVector& sub(PointVector p);

@@ -168,11 +168,6 @@ inline PointVector<D> operator/(const PointVector<D> l, const double r){
 	return PointVector<D>::div(r, l);
 }
 
-template<int D>
-inline PointVector<D> operator/(const double l, const PointVector<D> r){
-	return PointVector<D>::div(l, r);
-}
-
 template<int Dim>
 PointVector<Dim>& PointVector<Dim>::add(PointVector<Dim> p){
 	for(int i = 0; i < Dim; i++){
