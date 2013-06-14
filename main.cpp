@@ -3,11 +3,14 @@
 
 #include <ctime>
 #include <math.h>
+#include <iostream>
 
 #include "Simplexnoise.h"
 #include "TerrainGenerator.h"
-#include "Parametric_Surface.h"
 #include "Shaders/Shaders.h"
+#include "Geometry/Parametric_Surface.h"
+#include "PointVector.h"
+#include "Geometry/Geometry.h"
 
 void InitLight();
 void InitGlut(int argc, char **argv);
@@ -22,6 +25,7 @@ float rot = 0.0f;
 float lpos = 0.0f;
 float height = 0.0f;
 float cpos = 0.0f;
+float tpos = 0.0f;
 
 #define g_width 10.0
 #define g_depth 20.0
@@ -29,17 +33,28 @@ float cpos = 0.0f;
 
 TerrainGenerator *a = new TerrainGenerator();
 
-Parametric_Surface *b = new Parametric_Surface();
-Parametric_Surface *c = new Parametric_Surface();
+using Geometry::Parametric_Surface;
+using Geometry::Triangle;
+
+Parametric_Surface *b = new Parametric_Surface(Geometry::def_param_axis_func);
+Parametric_Surface *c = new Parametric_Surface(Geometry::def_param_axis_func);
+
+PointVector<> qq[] = {PointVector<>(0.5,0.2,-3.50), PointVector<>(0.1,-0.3,0), PointVector<>(-0.2,0.1,0)};
+PointVector<> pp[] = {PointVector<>(0.0,-0.3,-0.2), PointVector<>(-0.4,0.2,-0.2), PointVector<>(-0.3,-0.4,-0.2)};
+
+Triangle d(qq);
+Triangle e(pp);
 
 double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];
 
 int main(int argc, char **argv)
-{
+{	
     srand(time(0));
     a->genGround(g_width, g_depth,arot,0, vertecies);
-	b->calculate_mesh();
-	c->calculate_mesh();
+	
+	std::cout<< PointVector<>::mul_cross({0.5,0.2,-3.5}, {0,-0.3,-0.2}).get(0)<<std::endl;
+	std::cout<< PointVector<>::mul_cross({0.5,0.2,-3.5}, {0,-0.3,-0.2}).get(1)<<std::endl;
+	std::cout<< PointVector<>::mul_cross({0.5,0.2,-3.5}, {0,-0.3,-0.2}).get(2)<<std::endl;
     
     InitGlut(argc, argv);
 	GLenum res = glewInit();
@@ -48,7 +63,7 @@ int main(int argc, char **argv)
 	InitGLSLShader();
     
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
+    glDisable(GL_CULL_FACE);
     glEnableClientState(GL_VERTEX_ARRAY);
     
     gluLookAt(0,0,3, 0,0,1, 0,1,0);
@@ -68,7 +83,7 @@ void Animate(){
     glutPostRedisplay();
 }
 
-void KeyboardHandler(unsigned char key, int x, int y)
+void KeyboardHandler(unsigned char key, int /*x*/, int /*y*/)
 {
   switch (key)
   {
@@ -120,6 +135,18 @@ void KeyboardHandler(unsigned char key, int x, int y)
 	  {
 		  cpos += 0.125;
 	  } break;
+	  case 'c':
+	  {
+		  c->Unite(*b);
+	  } break;
+	  case 'k':
+	  {
+		  tpos += 0.0125;
+	  } break;
+	  case 'j':
+	  {
+		  tpos -= 0.0125;
+	  } break;
       default:
       {} break;
   }
@@ -131,10 +158,14 @@ void Display()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
 	
-	if(b->isIntersecting(*c)){
+	if(d.collisionWith(e) && ! c->isIntersecting(*b)){
 		glClearColor(1,0,0,0);
-	}else{
+	}else if(!d.collisionWith(e) && ! c->isIntersecting(*b)){
 		glClearColor(0,0,1,0);
+	}else if(!d.collisionWith(e)){
+		glClearColor(0,1,1,0);
+	}else{
+		glClearColor(1,0,1,0);
 	}
 	c->position->setdx(cpos);
 	
@@ -144,6 +175,8 @@ void Display()
 	glProgramEnvParameter4fvARB(GL_VERTEX_PROGRAM_ARB, 0, position);
 	glProgramEnvParameter4fvARB(GL_VERTEX_PROGRAM_ARB, 1, position2);
 	
+
+    e.vertecies[1].set(0,tpos);
     glPushMatrix();
         glLightfv(GL_LIGHT0, GL_POSITION, position);
         
@@ -173,7 +206,12 @@ void Display()
 		b->drawMesh();
 		c->drawMesh();
 	glPopMatrix();
-    
+	
+	glPushMatrix();
+		glRotatef(rot, 0, 1, 0);
+		d.draw();
+		e.draw();
+	glPopMatrix();
     glutSwapBuffers();
     
 }

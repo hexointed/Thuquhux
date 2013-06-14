@@ -22,7 +22,7 @@ public:
     TerrainGenerator();
     
     void genGround(double width, double depth, double alpha, double beta, double result[][3]);
-    const int getGroundVertexSize();
+    int getGroundVertexSize();
 	void get_distrib_points(int points, double result[][3], double solid_angle = 2 * 3.141592653589793);
     
     std::vector<PhysObject> operator()(double alpha, double beta);
