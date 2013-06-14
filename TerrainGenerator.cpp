@@ -93,7 +93,7 @@ void TerrainGenerator::genGround(double fov_near, double fov_length, double alph
     }
 }
 
-const int TerrainGenerator::getGroundVertexSize(){
+int TerrainGenerator::getGroundVertexSize(){
     return (const int) 4*ground_detail*ground_detail + 8 * ground_detail + 4;
 }
 
