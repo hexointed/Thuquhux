@@ -151,10 +151,14 @@ void Display()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
 	
-	if(d.collisionWith(e)){
+	if(d.collisionWith(e) && ! c->isIntersecting(*b)){
 		glClearColor(1,0,0,0);
-	}else{
+	}else if(!d.collisionWith(e) && ! c->isIntersecting(*b)){
 		glClearColor(0,0,1,0);
+	}else if(!d.collisionWith(e)){
+		glClearColor(0,1,1,0);
+	}else{
+		glClearColor(1,0,1,0);
 	}
 	c->position->setdx(cpos);
 	
@@ -190,10 +194,13 @@ void Display()
 		glScalef(0.125, 0.125, 0.125);
 		b->drawMesh();
 		c->drawMesh();
-		
 	glPopMatrix();
-    d.draw();
-	e.draw();
+	
+	glPushMatrix();
+		glRotatef(rot, 0, 1, 0);
+		d.draw();
+		e.draw();
+	glPopMatrix();
     glutSwapBuffers();
     
 }
