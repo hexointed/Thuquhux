@@ -6,7 +6,7 @@
  */
 
 #include "Graph.h"
-#include "../PointVector.h"
+#include "PointVector.h"
 #include "Geometry.h"
 
 using Geometry::Graph;

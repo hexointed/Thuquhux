@@ -30,13 +30,13 @@ thuquhux: .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .Phy
 .Parametric_Surface.o: ./Geometry/Parametric_Surface.cpp ./Geometry/Parametric_Surface.h
 	$(CC) $(CFLAGS) $< -o $@
 	
-.PhysObject.o: PhysObject.cpp PhysObject.h
+.PhysObject.o: Physics/PhysObject.cpp Physics/PhysObject.h
 	$(CC) $(CFLAGS) $< -o $@
 	
-.PointVector.o: PointVector.cpp PointVector.h
+.PointVector.o: Geometry/PointVector.cpp Geometry/PointVector.h
 	$(CC) $(CFLAGS) $< -o $@
 	
-.Material.o: Material.cpp Material.h
+.Material.o: Physics/Material.cpp Physics/Material.h
 	$(CC) $(CFLAGS) $< -o $@
 	
 .Graph.o: Geometry/Graph.cpp Geometry/Graph.h

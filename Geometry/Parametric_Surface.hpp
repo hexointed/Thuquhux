@@ -9,7 +9,7 @@
 #define	PARAMETRIC_SURFACE_HPP
 
 #include "Parametric_Surface.h"
-#include "../PointVector.h"
+#include "PointVector.h"
 #include <vector>
 
 template<typename Functor>

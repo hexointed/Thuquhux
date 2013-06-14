@@ -4,7 +4,7 @@
  * 
  * Created on April 24, 2013, 4:42 PM
  */
-#include "../PointVector.h"
+#include "PointVector.h"
 #include "Parametric_Surface.h"
 #include <math.h>
 

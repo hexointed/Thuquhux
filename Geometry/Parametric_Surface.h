@@ -8,7 +8,7 @@
 #ifndef PARAMETRIC_SURFACE_H
 #define	PARAMETRIC_SURFACE_H
 
-#include "../PointVector.h"
+#include "PointVector.h"
 #include <vector>
 
 namespace Geometry{
