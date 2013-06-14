@@ -4,10 +4,10 @@
  * 
  * Created on April 24, 2013, 4:42 PM
  */
-
+#include "PointVector.h"
 #include "Parametric_Surface.h"
 #include <math.h>
-#include "PointVector.h"
+
 #include "GL/freeglut.h"
 #include <iostream>
 
@@ -23,10 +23,10 @@ Parametric_Surface::Parametric_Surface(double (*x)(double, double), double (*y)(
 	pfuncs[1] = y;
 	pfuncs[2] = z;
 	
-	this->bound_box[0] = new PointVector(0,0,0);
-	this->bound_box[1] = new PointVector(0,0,0);
+	this->bound_box[0] = new PointVector<>(0,0,0);
+	this->bound_box[1] = new PointVector<>(0,0,0);
 	
-	this->position = new PointVector(0,0,0);
+	this->position = new PointVector<>(0,0,0);
 }
 
 Parametric_Surface::Parametric_Surface(const Parametric_Surface& /*orig*/) {
@@ -96,7 +96,7 @@ void Parametric_Surface::calculate_mesh(){
 				mesh_vertecies[count + 1][i] = pfuncs[i](t + 1.0/mesh_detail, u);
 			}
 			
-			PointVector p(pfuncs[0](t,u), pfuncs[1](t,u), pfuncs[2](t,u));
+			PointVector<> p(pfuncs[0](t,u), pfuncs[1](t,u), pfuncs[2](t,u));
 			bound_box[0]->set_min_comp(p);
 			bound_box[1]->set_max_comp(p);
 			count += 2;
