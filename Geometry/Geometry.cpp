@@ -43,50 +43,41 @@ Triangle::Triangle(const Triangle& orig) {
 Triangle::~Triangle() {
 }
 
-bool Triangle::collisionWith(Triangle& T1){
-	Triangle& T2 = *this;
-	//this = 2, a = 1
-	
-	PointVector<> n2 = PointVector<>::mul_cross(PointVector<>::sub(T2.vertecies[1], T2.vertecies[0]), PointVector<>::sub(T2.vertecies[2], T2.vertecies[0]));
-	double d2 = PointVector<>::mul_dot(PointVector<>::mul(-1,n2), T2.vertecies[0]);
-	
-	double adv0 = PointVector<>::mul_dot(n2, T1.vertecies[0]) + d2;
-	double adv1 = PointVector<>::mul_dot(n2, T1.vertecies[1]) + d2;
-	double adv2 = PointVector<>::mul_dot(n2, T1.vertecies[2]) + d2;
-	
-	bool asign = (adv0 >= 0) ^ (adv1 < 0) && (adv0 >= 0) ^ (adv2 < 0);
-	if((adv0 != 0) && (adv1 != 0) && (adv2 != 0) && asign)
-		return false;
-	
-	PointVector<> n1 = PointVector<>::mul_cross(PointVector<>::sub(T1.vertecies[1], T1.vertecies[0]), PointVector<>::sub(T1.vertecies[2], T1.vertecies[0]));
-	double d1 = PointVector<>::mul_dot(PointVector<>::mul(-1,n1), T1.vertecies[0]);
-	
-	double dv0 = PointVector<>::mul_dot(n1, T2.vertecies[0]) + d1;
-	double dv1 = PointVector<>::mul_dot(n1, T2.vertecies[1]) + d1;
-	double dv2 = PointVector<>::mul_dot(n1, T2.vertecies[2]) + d1;
-	
-	bool sign = (dv0 >= 0) ^ (dv1 < 0) && (dv0 >= 0) ^ (dv2 < 0);
-	if(dv0 != 0 && dv1 != 0 && dv2 != 0 && sign)
-		return false;
-	
-	if(dv0 == 0 && dv1 == 0 && dv2 == 0)
-		return false;
+bool Triangle::collisionWith(Triangle& a){
+	return this->coll(a) || a.coll(*this);
+}
 
-	PointVector<> lineD = PointVector<>::mul_cross(n2, n1);
-	double p0 = PointVector<>::mul_dot(lineD, vertecies[0]);
-	double p1 = PointVector<>::mul_dot(lineD, vertecies[1]);
-	double p2 = PointVector<>::mul_dot(lineD, vertecies[2]);
-	double ap0 = PointVector<>::mul_dot(lineD, T1.vertecies[0]);
-	double ap1 = PointVector<>::mul_dot(lineD, T1.vertecies[1]);
-	double ap2 = PointVector<>::mul_dot(lineD, T1.vertecies[2]);
-	
-	double t0 = p0 + (p1 -p0)*dv0/(dv0-dv1);
-	double t1 = p1 + (p2 -p1)*dv1/(dv1-dv2);
-	double at0 = ap0 + (ap1 -ap0)*adv0/(adv0-adv1);
-	double at1 = ap1 + (ap2 -ap1)*adv1/(adv1-adv2);
-	if((t0 <= at0 && at0 <= t1) || (t0 <= at1 && at1 <= t1) )//|| (t0 >= at0 && at0 >= t1) || (t0 >= at0 && at1 >= t1))
+bool Triangle::coll(Triangle& q){
+	auto u = q.vertecies[1] - q.vertecies[0];
+	auto v = q.vertecies[2] - q.vertecies[0];
+	auto n = PointVector<>::mul_cross(u, v);
+	for(int i = 0; i < 3; i++){
+		auto p0 = this->vertecies[i];
+		auto p1 = this->vertecies[(i+1)%3];
+		
+		auto divisor = PointVector<>::mul_dot(n, p1-p0);
+		if(divisor == 0)
+			continue;
+		auto r = PointVector<>::mul_dot(n, q.vertecies[0] - p0)/divisor;
+		if(r < 0 || r > 1)
+			continue;
+		
+		auto pi = p0 + r * (p1-p0);
+		auto w = pi - q.vertecies[0];
+		
+		auto tmp = PointVector<>::mul_dot(u,v);
+		auto div = tmp*tmp - PointVector<>::mul_dot(u,u)*PointVector<>::mul_dot(v,v);
+		if(div == 0)
+			continue;
+		
+		auto si = (tmp * PointVector<>::mul_dot(w,v) - PointVector<>::mul_dot(v,v)*PointVector<>::mul_dot(w,u))/div;
+		if(si < 0)
+			continue;
+		auto ti = (tmp * PointVector<>::mul_dot(w,u) - PointVector<>::mul_dot(u,u)*PointVector<>::mul_dot(w,v))/div;
+		if(ti < 0 || si+ti > 1)
+			continue;
 		return true;
-	
+	}
 	return false;
 }
 

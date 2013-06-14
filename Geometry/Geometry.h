@@ -32,6 +32,9 @@ namespace Geometry{
 		bool passesThrough(PointVector<>& max, PointVector<>& min);
 		bool collisionWith(Triangle& a);
 		void draw();
+		
+	private:
+		bool coll(Triangle& a);
 	};
 }
 
