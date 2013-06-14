@@ -15,8 +15,8 @@ EXECUTABLE = ./dist/Debug/GNU-Linux-x86/thuquhux
 
 all: thuquhux
 
-thuquhux: .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .PhysObject.o .PointVector.o .Material.o
-	$(CC) .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .PhysObject.o .PointVector.o .Material.o $(LIBS) -o $(EXECUTABLE)
+thuquhux: .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .PhysObject.o .PointVector.o .Material.o .Geometry.o .Graph.o
+	$(CC) .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .PhysObject.o .PointVector.o .Material.o .Geometry.o .Graph.o $(LIBS) -o $(EXECUTABLE)
 
 .main.o: main.cpp
 	$(CC) $(CFLAGS) main.cpp -o .main.o
@@ -27,7 +27,7 @@ thuquhux: .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .Phy
 .TerrainGenerator.o: TerrainGenerator.cpp TerrainGenerator.h
 	$(CC) $(CFLAGS) $< -o $@
 	
-.Parametric_Surface.o: Parametric_Surface.cpp Parametric_Surface.h
+.Parametric_Surface.o: ./Geometry/Parametric_Surface.cpp ./Geometry/Parametric_Surface.h
 	$(CC) $(CFLAGS) $< -o $@
 	
 .PhysObject.o: PhysObject.cpp PhysObject.h
@@ -37,7 +37,13 @@ thuquhux: .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .Phy
 	$(CC) $(CFLAGS) $< -o $@
 	
 .Material.o: Material.cpp Material.h
-	$(CC) $(CFLAGS) Material.cpp -o .Material.o
+	$(CC) $(CFLAGS) $< -o $@
 	
+.Graph.o: Geometry/Graph.cpp Geometry/Graph.h
+	$(CC) $(CFLAGS) $< -o $@
+	
+.Geometry.o: ./Geometry/Geometry.cpp ./Geometry/Geometry.h
+	$(CC) $(CFLAGS) $< -o $@
+
 clean:
 	rm -f .*.o

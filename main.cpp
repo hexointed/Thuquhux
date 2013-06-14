@@ -4,8 +4,9 @@
 #include <math.h>
 #include "Simplexnoise.h"
 #include "TerrainGenerator.h"
-#include "Parametric_Surface.h"
+#include "Geometry/Parametric_Surface.h"
 #include "PointVector.h"
+#include "Geometry/Geometry.h"
 
 void InitLight();
 void InitGlut(int argc, char **argv);
@@ -20,6 +21,7 @@ float rot = 0.0f;
 float lpos = 0.0f;
 float height = 0.0f;
 float cpos = 0.0f;
+float tpos = 0.0f;
 
 #define g_width 8.0
 #define g_depth 12.0
@@ -27,23 +29,34 @@ float cpos = 0.0f;
 
 TerrainGenerator *a = new TerrainGenerator();
 
-Parametric_Surface *b = new Parametric_Surface();
-Parametric_Surface *c = new Parametric_Surface();
+using Geometry::Parametric_Surface;
+using Geometry::Triangle;
+
+Parametric_Surface *b = new Parametric_Surface(Geometry::def_param_axis_func);
+Parametric_Surface *c = new Parametric_Surface(Geometry::def_param_axis_func);
+
+PointVector<> qq[] = {PointVector<>(0.5,0.2,-3.50), PointVector<>(0.1,-0.3,0), PointVector<>(-0.2,0.1,0)};
+PointVector<> pp[] = {PointVector<>(0.0,-0.3,-0.2), PointVector<>(-0.4,0.2,-0.2), PointVector<>(-0.3,-0.4,-0.2)};
+
+Triangle d(qq);
+Triangle e(pp);
 
 double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];
 
 int main(int argc, char **argv)
-{
+{	
     srand(time(0));
     a->genGround(g_width, g_depth,arot,0, vertecies);
-	b->calculate_mesh();
-	c->calculate_mesh();
+	
+	std::cout<< PointVector<>::mul_cross({0.5,0.2,-3.5}, {0,-0.3,-0.2}).get(0)<<std::endl;
+	std::cout<< PointVector<>::mul_cross({0.5,0.2,-3.5}, {0,-0.3,-0.2}).get(1)<<std::endl;
+	std::cout<< PointVector<>::mul_cross({0.5,0.2,-3.5}, {0,-0.3,-0.2}).get(2)<<std::endl;
     
     InitGlut(argc, argv);
     InitLight();
     
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
+    glDisable(GL_CULL_FACE);
     glEnableClientState(GL_VERTEX_ARRAY);
     
     gluLookAt(0,0,3, 0,0,1, 0,1,0);
@@ -115,6 +128,18 @@ void KeyboardHandler(unsigned char key, int /*x*/, int /*y*/)
 	  {
 		  cpos += 0.125;
 	  } break;
+	  case 'c':
+	  {
+		  c->Unite(*b);
+	  } break;
+	  case 'k':
+	  {
+		  tpos += 0.0125;
+	  } break;
+	  case 'j':
+	  {
+		  tpos -= 0.0125;
+	  } break;
       default:
       {} break;
   }
@@ -126,13 +151,15 @@ void Display()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
 	
-	if(b->isIntersecting(*c)){
+	if(d.collisionWith(e)){
 		glClearColor(1,0,0,0);
 	}else{
 		glClearColor(0,0,1,0);
 	}
 	c->position->setdx(cpos);
-    
+	
+    e.vertecies[1].set(0,tpos);
+	
     GLfloat position[] = {(float)cos(lpos),(float)sin(lpos),0,1};
     GLfloat position2[] = {(float)-cos(lpos),(float)-sin(lpos),0,1};
     glPushMatrix();
@@ -163,8 +190,10 @@ void Display()
 		glScalef(0.125, 0.125, 0.125);
 		b->drawMesh();
 		c->drawMesh();
+		
 	glPopMatrix();
-    
+    d.draw();
+	e.draw();
     glutSwapBuffers();
     
 }
