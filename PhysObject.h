@@ -1,6 +1,6 @@
 /* 
  * File:   PhysObject.h
- * Author: elias
+ * Author: Charles Gilljam
  *
  * Created on April 28, 2013, 6:59 PM
  */
@@ -9,6 +9,7 @@
 #define	PHYSOBJECT_H
 
 #include "PointVector.h"
+#include "Material.h"
 
 class PhysObject {
 public:
@@ -21,9 +22,14 @@ public:
     void Complement(PhysObject a);
     void Differentiate(PhysObject);
     
-    bool isInObject(PointVector a);
+    bool isInObject(PointVector<> a);
+	
+	Material material;
+	double volume;
     
 private:
+	void setMass(double mass);
+	
 };
 
 #endif	/* PHYSOBJECT_H */
