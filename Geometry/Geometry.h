@@ -9,6 +9,7 @@
 #define	GEOMETRY_H
 
 #include "PointVector.h"
+#include <vector>
 
 namespace Geometry{
 	
@@ -30,11 +31,8 @@ namespace Geometry{
 		virtual ~Triangle();
 		
 		bool passesThrough(PointVector<>& max, PointVector<>& min);
-		bool collisionWith(Triangle& a);
+		std::pair<bool, std::vector<PointVector<>>> collisionWith(Triangle a);
 		void draw();
-		
-	private:
-		bool coll(Triangle& a);
 	};
 }
 

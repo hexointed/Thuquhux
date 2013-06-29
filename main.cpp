@@ -151,11 +151,11 @@ void Display()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
 	
-	if(d.collisionWith(e) && ! c->isIntersecting(*b)){
+	if(d.collisionWith(e).first && ! c->isIntersecting(*b)){
 		glClearColor(1,0,0,0);
-	}else if(!d.collisionWith(e) && ! c->isIntersecting(*b)){
+	}else if(!d.collisionWith(e).first && ! c->isIntersecting(*b)){
 		glClearColor(0,0,1,0);
-	}else if(!d.collisionWith(e)){
+	}else if(!d.collisionWith(e).first){
 		glClearColor(0,1,1,0);
 	}else{
 		glClearColor(1,0,1,0);

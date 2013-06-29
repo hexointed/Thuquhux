@@ -68,7 +68,7 @@ PointVector<> Geometry::def_param_axis_func(PointVector<2> params){
 void Parametric_Surface::drawMesh(){
 	glPushMatrix();
 	glTranslatef(position->getdx(), position->getdy(), position->getdz());
-	for(int i = 0; i < mesh_vertecies.size(); i++){
+	for(int i = 0; (unsigned) i < mesh_vertecies.size(); i++){
 		glVertexPointer(3,GL_DOUBLE,0,mesh_vertecies.at(i));
 		glDrawArrays(GL_TRIANGLE_STRIP,0,mesh_length);
 	}

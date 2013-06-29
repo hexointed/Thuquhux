@@ -12,16 +12,16 @@
 using Geometry::Graph;
 using Geometry::Triangle;
 
-Graph::Graph(PointVector<>** verts, int length, int width){
+Graph::Graph(PointVector<>** /*verts*/, int length, int width){
 	for(int i = 0; i < length - 1; i++){
 		for(int j = 0; j < width; j++){
-			int pos = i*width + j;
+			//int pos = i*width + j;
 			
 		}
 	}
 }
 
-Graph::Graph(const Graph& orig) {
+Graph::Graph(const Graph& /*orig*/) {
 }
 
 Graph::~Graph() {
