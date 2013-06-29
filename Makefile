@@ -1,7 +1,7 @@
 ###Thuquhux makefile###
 
 #Compiler
-CC = g++
+CC = g++-4.8
 
 #Flags
 ERRFLAGS = -pedantic -Wall -Wextra -Wpointer-arith -Wcast-qual -fstrict-overflow -Wstrict-overflow=3
@@ -11,7 +11,7 @@ CFLAGS = -c -std=c++0x $(ERRFLAGS)
 LIBS = -lglut -lGLU -lGLEW
 
 #Executable output file
-EXECUTABLE = ./dist/Debug/GNU-Linux-x86/thuquhux
+EXECUTABLE = ./thuquhux.elf
 
 all: thuquhux
 
