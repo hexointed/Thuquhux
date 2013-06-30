@@ -59,8 +59,8 @@ namespace Geometry{
 		double volume;
 		
 	public:
-		PointVector<> * bound_box[2];
-		PointVector<> * position;
+		PointVector<> bound_box[2];
+		PointVector<> position;
 	};
 		
 }

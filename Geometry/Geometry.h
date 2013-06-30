@@ -16,10 +16,11 @@ namespace Geometry{
 	template<const int Sides, const int Dim = 3>
 	class Polygon{
 	public:
-		Polygon();
+		Polygon() = default;
+		template<typename Head, typename... Trail>
+		Polygon(Head head, Trail... trail);
 		Polygon(PointVector<Dim>* sides);
-		//Polygon(const Polygon<Sides, Dim>& orig);
-		virtual ~Polygon();
+		virtual ~Polygon() = default;
 		
 		PointVector<Dim> vertecies[Sides];
 	};
@@ -27,11 +28,11 @@ namespace Geometry{
 	class Triangle : public Polygon<3> {
 	public:
 		Triangle(PointVector<>* sides);
-		//Triangle(const Triangle& orig);
-		virtual ~Triangle();
+		virtual ~Triangle() = default;
 		
 		bool passesThrough(PointVector<>& max, PointVector<>& min);
-		std::pair<bool, std::vector<PointVector<>>> collisionWith(Triangle a);
+		std::pair<bool, PointVector<>> intersectionWith(Polygon<2> a);
+		std::pair<bool, std::vector<PointVector<>>> intersectionWith(Triangle a);
 		void draw();
 	};
 }

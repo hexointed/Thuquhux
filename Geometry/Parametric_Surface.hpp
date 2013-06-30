@@ -14,15 +14,13 @@
 
 template<typename Functor>
 Geometry::Parametric_Surface::Parametric_Surface(Functor f):
-	mesh_detail(400),
-	mesh_length((mesh_detail + 2)*(mesh_detail + 1)*2)
+	mesh_detail{400},
+	mesh_length{(mesh_detail + 2)*(mesh_detail + 1)*2},
+	bound_box{{0,0,0},{0,0,0}},
+	position{0,0,0}
 {
 	mesh_vertecies.push_back(new PointVector<>[mesh_length]);
-
-	this->bound_box[0] = new PointVector<>(0,0,0);
-	this->bound_box[1] = new PointVector<>(0,0,0);
 	
-	this->position = new PointVector<>(0,0,0);
 	calculate_mesh(f);
 }
 
@@ -37,8 +35,8 @@ void Geometry::Parametric_Surface::calculate_mesh(Functor pfunc){
 			PointVector<> dp(pfunc(dparams));
 			mesh_vertecies.at(0)[count] = p;
 			mesh_vertecies.at(0)[count +1] = dp;
-			bound_box[0]->set_min_comp(p);
-			bound_box[1]->set_max_comp(p);
+			bound_box[0].set_min_comp(p);
+			bound_box[1].set_max_comp(p);
 			count += 2;
 		}
 	}
