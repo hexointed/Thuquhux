@@ -22,13 +22,11 @@ Parametric_Surface::~Parametric_Surface() {
 }
 
 void Parametric_Surface::Unite(Parametric_Surface a){
-	this->mesh_vertecies.push_back(new PointVector<>[a.mesh_length]);
-	for(int i = 0; i < a.mesh_length; i++){
-		PointVector<> p = a.mesh_vertecies.at(a.mesh_vertecies.size()-1)[i];
-		p.add(a.position).sub(this->position);
-		this->mesh_vertecies.at(this->mesh_vertecies.size()-1)[i] = p;
-		bound_box[0].set_min_comp(p);
-		bound_box[1].set_max_comp(p);
+	PointVector<> rel_pos = a.position - position;
+	bound_box[0].set_min_comp(a.bound_box[0] + rel_pos);
+	bound_box[1].set_max_comp(a.bound_box[1] + rel_pos);
+	for(Triangle tri: a.mesh_vertecies){
+		mesh_vertecies.push_back(Triangle{tri.vertecies[0] + rel_pos, tri.vertecies[1] + rel_pos, tri.vertecies[2] + rel_pos});
 	}
 }
 
@@ -70,8 +68,7 @@ bool Parametric_Surface::pointIsWithin(PointVector<> p){
 	clip_line.vertecies[0] = min;
 	clip_line.vertecies[1] = max;
 	std::vector<PointVector<>> clips;
-	for(int i = 0; i < mesh_length - 2; i++){
-		Triangle tri{mesh_vertecies[0] + i};
+	for(Triangle tri: mesh_vertecies){
 		auto tmp = tri.intersectionWith(clip_line);
 		if(tmp.first)
 			clips.push_back(tmp.second);
@@ -95,9 +92,8 @@ PointVector<> Geometry::def_param_axis_func(PointVector<2> params){
 void Parametric_Surface::drawMesh(){
 	glPushMatrix();
 	glTranslatef(position.getdx(), position.getdy(), position.getdz());
-	for(int i = 0; (unsigned) i < mesh_vertecies.size(); i++){
-		glVertexPointer(3,GL_DOUBLE,0,mesh_vertecies.at(i));
-		glDrawArrays(GL_TRIANGLE_STRIP,0,mesh_length);
+	for(Triangle tri: mesh_vertecies){
+		tri.draw();
 	}
 	glPopMatrix();
 }

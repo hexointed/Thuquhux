@@ -16,6 +16,8 @@ namespace Geometry{
 	template<const int Sides, const int Dim = 3>
 	class Polygon{
 	public:
+		friend class Triangle;
+		
 		Polygon() = default;
 		template<typename Head, typename... Trail>
 		Polygon(Head head, Trail... trail);
@@ -25,15 +27,19 @@ namespace Geometry{
 		PointVector<Dim> vertecies[Sides];
 	};
 	
-	class Triangle : public Polygon<3> {
+	class Triangle {
 	public:
+		Triangle() = default;
 		Triangle(PointVector<>* sides);
+		Triangle(PointVector<> a, PointVector<> b, PointVector<> c);
 		virtual ~Triangle() = default;
 		
 		bool passesThrough(PointVector<>& max, PointVector<>& min);
 		std::pair<bool, PointVector<>> intersectionWith(Polygon<2> a);
 		std::pair<bool, std::vector<PointVector<>>> intersectionWith(Triangle a);
 		void draw();
+		
+		PointVector<> vertecies[3];
 	};
 }
 

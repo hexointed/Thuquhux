@@ -19,8 +19,15 @@ Polygon<Sides, Dim>::Polygon(PointVector<Dim>* sides){
 	}
 }
 
-Triangle::Triangle(PointVector<>* sides): Polygon<3>(sides) {
+Triangle::Triangle(PointVector<>* sides) {
+	for(int i = 0; i < 3; i++){
+		this->vertecies[i] = sides[i];
+	}
 }
+
+Triangle::Triangle(PointVector<> a, PointVector<> b, PointVector<> c):
+vertecies{a,b,c}
+{}
 
 std::pair<bool, PointVector<>> Triangle::intersectionWith(Polygon<2> p){
 	auto no_true = std::make_pair(false, PointVector<>{});
