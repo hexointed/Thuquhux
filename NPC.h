@@ -1,5 +1,5 @@
-#ifndef NPC
-#define NPC
+#ifndef NPC_H
+#define NPC_H
 
 class NPC{
 
@@ -7,8 +7,11 @@ public:
 
 private:
 
-	void getPosition(); 
+	PointVector<> position;
 
+	double getPosition(); 
+	double makePosition();
+	double changePosition();
 }
 
-#endif 
+#endif /*NPC_H*/
