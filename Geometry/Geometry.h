@@ -30,16 +30,20 @@ namespace Geometry{
 	class Triangle {
 	public:
 		Triangle() = default;
+		Triangle(const Triangle& orig);
 		Triangle(PointVector<>* sides);
 		Triangle(PointVector<> a, PointVector<> b, PointVector<> c);
 		virtual ~Triangle() = default;
+		
+		Triangle move(PointVector<> diff);
 		
 		bool passesThrough(PointVector<>& max, PointVector<>& min);
 		std::pair<bool, PointVector<>> intersectionWith(Polygon<2> a);
 		std::pair<bool, std::vector<PointVector<>>> intersectionWith(Triangle a);
 		void draw();
-		
-		PointVector<> vertecies[3];
+	
+	//private:	
+		PointVector<>* vertecies[3];
 	};
 }
 

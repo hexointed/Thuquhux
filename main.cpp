@@ -166,7 +166,7 @@ void Display()
     glMatrixMode(GL_MODELVIEW);
 	
 	c->position.setdx(cpos);
-    e.vertecies[1].set(0,tpos);
+	(*e.vertecies[1]).set(0,tpos);
 	
 	double color[3] {c->pointIsWithin(tp)?1.0:0.0, c->isIntersecting(*b)?1.0:0.0, d.intersectionWith(e).first?1.0:0.0};
 	glClearColor(color[0], color[1], color[2], 0);
