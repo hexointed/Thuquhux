@@ -35,14 +35,15 @@ namespace Geometry{
 		Triangle(PointVector<> a, PointVector<> b, PointVector<> c);
 		virtual ~Triangle() = default;
 		
-		Triangle move(PointVector<> diff);
+		Triangle& move(const PointVector<> diff);
+		Triangle operator +(const PointVector<> a);
 		
 		bool passesThrough(PointVector<>& max, PointVector<>& min);
 		std::pair<bool, PointVector<>> intersectionWith(Polygon<2> a);
 		std::pair<bool, std::vector<PointVector<>>> intersectionWith(Triangle a);
 		void draw();
 	
-	//private:	
+	private:	
 		PointVector<>* vertecies[3];
 	};
 }

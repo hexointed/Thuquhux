@@ -93,11 +93,18 @@ std::pair<bool, std::vector<PointVector<>>> Triangle::intersectionWith(Triangle 
 	return std::make_pair(false,results);
 }
 
-Triangle Triangle::move(PointVector<> diff){
+Triangle& Triangle::move(const PointVector<> diff){
+	*this->vertecies[0] += diff;
+	*this->vertecies[1] += diff;
+	*this->vertecies[2] += diff;
+	return *this;
+}
+
+Triangle Triangle::operator +(const PointVector<> a){
 	Triangle ret = *this;
-	*ret.vertecies[0] += diff;
-	*ret.vertecies[1] += diff;
-	*ret.vertecies[2] += diff;
+	*ret.vertecies[0] += a;
+	*ret.vertecies[1] += a;
+	*ret.vertecies[2] += a;
 	return ret;
 }
 
