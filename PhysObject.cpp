@@ -17,6 +17,29 @@ PhysObject::PhysObject(const PhysObject& /*orig*/) {
 PhysObject::~PhysObject() {
 }
 
-void PhysObject::setMass(double mass){
-	material.setDensity(mass/volume);
+double& PhysObject::density(){
+	return material.density();
+}
+
+Material& PhysObject::material(){
+	return material;
+}
+
+PointVector& PhysObject::position(){
+	return position;
+}
+
+PointVector& PhysObject::velocity(){
+	return velocity;
+}
+
+Parametric_Surface& PhysObject::surface(){
+	return surface;
+}
+
+void PhysObject::calcVolume(){
+}
+
+void PhysObject::unite(PhysObject a){
+	surface.
 }

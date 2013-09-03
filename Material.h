@@ -8,20 +8,15 @@
 #ifndef MATERIAL_H
 #define	MATERIAL_H
 
-struct Material {
-    Material();
-//    Material(const Material& orig);
-	virtual ~Material();
+class Material{
+public:
+	double& density();
 	
-    double inertialDens;
-    double gravitationDens;
-    int friction;
-    int elasticity;
+private:
+	double density;
 	
-	void setDensity(double density);
-    
-
-};
-
+	
+	
+}
 #endif	/* MATERIAL_H */
 
