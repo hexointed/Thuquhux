@@ -1,5 +1,8 @@
 ###Thuquhux makefile###
 
+#Project name
+PROJ = thuquhux
+
 #Compiler
 CC = g++-4.8
 
@@ -11,21 +14,37 @@ CFLAGS = -c -std=c++0x $(ERRFLAGS)
 LIBS = -lglut -lGLU -lGLEW
 
 #Executable output file
-EXECUTABLE = ./thuquhux.elf
+EXECUTABLE = ./$(PROJ).elf
 
-all: thuquhux
+#Scource code
+SRC = main.cpp
 
-thuquhux: .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .PhysObject.o .PointVector.o .Material.o .Geometry.o .Graph.o
+#Classes
+CLS = \
+TerrainGenerator \
+Simplexnoise \
+#PhysObject \
+#Material \
+#Graph \
+#Geometry
+
+#Classes with template methods
+CLT = \
+Parametric_Surface
+#Template Classes.Simplexnoise.o .TerrainGenerator.o
+TCL = \
+PointVector
+
+all: $(PROJ)
+
+$(PROJ): .main.o .classes .Parametric_Surface.o .PhysObject.o .PointVector.o .Material.o .Geometry.o .Graph.o
 	$(CC) .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .PhysObject.o .PointVector.o .Material.o .Geometry.o .Graph.o $(LIBS) -o $(EXECUTABLE)
 
 .main.o: main.cpp
 	$(CC) $(CFLAGS) main.cpp -o .main.o
 	
-.Simplexnoise.o: Simplexnoise.cpp Simplexnoise.h
-	$(CC) $(CFLAGS) $< -o $@
-	
-.TerrainGenerator.o: TerrainGenerator.cpp TerrainGenerator.h
-	$(CC) $(CFLAGS) $< -o $@
+.classes:
+	$(foreach class, $(CLS), $(CC) $(CFLAGS) $(class).cpp -o .$(class).o;)
 	
 .Parametric_Surface.o: ./Geometry/Parametric_Surface.cpp ./Geometry/Parametric_Surface.h
 	$(CC) $(CFLAGS) $< -o $@
