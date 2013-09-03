@@ -108,6 +108,21 @@ Triangle Triangle::operator +(const PointVector<> a){
 	return ret;
 }
 
+PointVector<>& Triangle::operator [](const int vertex){
+	return *vertecies[vertex];
+}
+
+bool Triangle::shares_side(const Triangle& with){
+	int res = 0;
+	for(PointVector<>* a : vertecies){
+		for(PointVector<>* b : with.vertecies){
+			if(a == b)
+				++res;
+		}
+	}
+    return res == 2;
+}
+
 bool Triangle::passesThrough(PointVector<>& /*max*/, PointVector<>& /*min*/){
 	bool result = true;
 	PointVector<> d[3] = {*vertecies[0], *vertecies[1], *vertecies[2]};
