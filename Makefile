@@ -15,8 +15,8 @@ EXECUTABLE = ./thuquhux.elf
 
 all: thuquhux
 
-thuquhux: .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .PhysObject.o .PointVector.o .Material.o .Geometry.o .Graph.o
-	$(CC) .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .PhysObject.o .PointVector.o .Material.o .Geometry.o .Graph.o $(LIBS) -o $(EXECUTABLE)
+thuquhux: .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .PhysObject.o .PointVector.o .Material.o .Geometry.o .Triangle_Mesh.o
+	$(CC) .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .PhysObject.o .PointVector.o .Material.o .Geometry.o .Triangle_Mesh.o $(LIBS) -o $(EXECUTABLE)
 
 .main.o: main.cpp
 	$(CC) $(CFLAGS) main.cpp -o .main.o
@@ -39,10 +39,10 @@ thuquhux: .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .Phy
 .Material.o: Physics/Material.cpp Physics/Material.h
 	$(CC) $(CFLAGS) $< -o $@
 	
-.Graph.o: Geometry/Graph.cpp Geometry/Graph.h
-	$(CC) $(CFLAGS) $< -o $@
-	
 .Geometry.o: ./Geometry/Geometry.cpp ./Geometry/Geometry.h
+	$(CC) $(CFLAGS) $< -o $@
+
+.Triangle_Mesh.o: ./Geometry/Triangle_Mesh.cpp ./Geometry/Triangle_Mesh.h
 	$(CC) $(CFLAGS) $< -o $@
 
 clean:
