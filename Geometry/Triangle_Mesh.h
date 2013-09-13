@@ -16,7 +16,7 @@ namespace Geometry{
 
 	class Triangle_Mesh {
 	private:
-		Triangle_Mesh();
+		Triangle_Mesh() = default;
 		class Element;
 		
 	public:

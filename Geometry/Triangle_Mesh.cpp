@@ -1,4 +1,6 @@
 #include <set>
+#include <map>
+#include <vector>
 
 #include "Triangle_Mesh.h"
 
@@ -9,19 +11,29 @@ long int Triangle_Mesh::size(){
 }
 
 Triangle_Mesh Triangle_Mesh::get_single_path(Element& begin, Element& end){
-	std::set<Triangle_Mesh::Element*> already_tried;
-	std::vector<Element> path;
-	Element* current = &begin;
-	while(true){
-		for(Triangle_Mesh::Element* a: current->connected){
-			if(a == nullptr)
-				continue;
-			if(current = &end){
-				path.push_back(*current);
-			}
+	std::map<Geometry::Triangle*, Triangle_Mesh::Element> already_eval;
+	std::map<int, Triangle_Mesh::Element> to_be_eval;
+	std::vector<Triangle_Mesh::Element> path_taken;
+	
+	auto astarheuristic = [](Element curr, Element goal)->int{return  5;};
+	
+	to_be_eval.insert(std::make_pair(astarheuristic(begin, end), begin));
+	
+	while(to_be_eval.size()){
+		Element current = to_be_eval.begin()->second;
+		to_be_eval.erase(to_be_eval.begin());
+		if(true){
+			path_taken.push_back(current);
+			Triangle_Mesh a{};
+			a.elem = path_taken;
+			return a;
+		}
+		already_eval.insert(std::make_pair(current.tri, current));
+		for(Element* neighbor: current.connected){
 			
 		}
 	}
+	throw "FAIL";
 }
 
 bool Triangle_Mesh::is_loop(){
