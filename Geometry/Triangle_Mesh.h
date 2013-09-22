@@ -9,6 +9,7 @@
 #define	TRIANGLE_MESH_H
 
 #include <vector>
+#include <map>
 
 #include "Geometry.h"
 
@@ -34,8 +35,8 @@ namespace Geometry{
 		
 		void add(Triangle t);
 		void remove(const Triangle& t);
-
-	private:
+		
+	public:
 		std::vector<Element> elem;
 		
 		class Element{
@@ -48,7 +49,18 @@ namespace Geometry{
 			Triangle* tri;
 			Element* connected[3];
 			short connections;
-		};
+			
+		public:
+			struct Elementcompare{
+				bool operator()(Element a, Element b){
+					return a.tri < b.tri;
+				}
+			};
+		};	
+	
+	private:
+		Triangle_Mesh construct_mesh(Element a, std::map<Element, Element, Element::Elementcompare> b);
+
 	};
 }
 
