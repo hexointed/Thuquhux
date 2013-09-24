@@ -8,7 +8,7 @@ CC = g++-4.8
 
 #Flags
 ERRFLAGS = -pedantic -Wall -Wextra -Wpointer-arith -Wcast-qual -fstrict-overflow -Wstrict-overflow=3
-CFLAGS = -c -std=c++0x $(ERRFLAGS)
+CFLAGS = -c -std=c++11 $(ERRFLAGS)
 
 #Linked libraries
 LIBS = -lglut -lGLU -lGLEW
@@ -17,52 +17,65 @@ LIBS = -lglut -lGLU -lGLEW
 EXECUTABLE = ./$(PROJ).elf
 
 #Scource code
-SRC = main.cpp
+SRC = main
 
 #Classes
 CLS = \
 TerrainGenerator \
 Simplexnoise \
-#PhysObject \
-#Material \
-#Graph \
-#Geometry
+Physics/PhysObject \
+Physics/Material \
+Geometry/Graph \
+Geometry/Geometry
 
 #Classes with template methods
 CLT = \
-Parametric_Surface
-#Template Classes.Simplexnoise.o .TerrainGenerator.o
+Geometry/Parametric_Surface
+
+#Template Classes
 TCL = \
-PointVector
+Geometry/PointVector
 
 all: $(PROJ)
 
-$(PROJ): .main.o .classes .Parametric_Surface.o .PhysObject.o .PointVector.o .Material.o .Geometry.o .Graph.o
-	$(CC) .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .PhysObject.o .PointVector.o .Material.o .Geometry.o .Graph.o $(LIBS) -o $(EXECUTABLE)
+$(PROJ): $(addsuffix .o,$(CLS) $(SRC) $(CLT) $(TCL))
+	$(CC) $(addsuffix .o,$(CLS) $(SRC) $(CLT) $(TCL)) $(LIBS) -o $(EXECUTABLE)
+	
+define PROGRAM_SRC
 
-.main.o: main.cpp
-	$(CC) $(CFLAGS) main.cpp -o .main.o
-	
-.classes:
-	$(foreach class, $(CLS), $(CC) $(CFLAGS) $(class).cpp -o .$(class).o;)
-	
-.Parametric_Surface.o: ./Geometry/Parametric_Surface.cpp ./Geometry/Parametric_Surface.h
-	$(CC) $(CFLAGS) $< -o $@
-	
-.PhysObject.o: Physics/PhysObject.cpp Physics/PhysObject.h
-	$(CC) $(CFLAGS) $< -o $@
-	
-.PointVector.o: Geometry/PointVector.cpp Geometry/PointVector.h
-	$(CC) $(CFLAGS) $< -o $@
-	
-.Material.o: Physics/Material.cpp Physics/Material.h
-	$(CC) $(CFLAGS) $< -o $@
-	
-.Graph.o: Geometry/Graph.cpp Geometry/Graph.h
-	$(CC) $(CFLAGS) $< -o $@
-	
-.Geometry.o: ./Geometry/Geometry.cpp ./Geometry/Geometry.h
-	$(CC) $(CFLAGS) $< -o $@
+$(1).o: $(1).cpp
+	$(CC) $(CFLAGS) $(1).cpp -o $(1).o
 
+endef
+
+$(foreach standalone,$(SRC),$(eval $(call PROGRAM_SRC,$(standalone))))
+
+define PROGRAM_CLS
+
+$(1).o: $(1).cpp $(1).h
+	$(CC) $(CFLAGS) $(1).cpp -o $(1).o
+
+endef
+
+$(foreach class,$(CLS),$(eval $(call PROGRAM_CLS,$(class))))
+
+define PROGRAM_CLT
+
+$(1).o: $(1).cpp $(1).hpp $(1).h
+	$(CC) $(CFLAGS) $(1).cpp -o $(1).o
+
+endef
+
+$(foreach class,$(CLT),$(eval $(call PROGRAM_CLT,$(class))))
+
+define PROGRAM_TCL
+
+$(1).o: $(1).cpp $(1).h
+	$(CC) $(CFLAGS) $(1).cpp -o $(1).o
+
+endef
+
+$(foreach class,$(TCL),$(eval $(call PROGRAM_TCL,$(class))))
+	
 clean:
-	rm -f .*.o
+	rm -f *.o && rm -f ./*/*.o
