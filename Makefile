@@ -36,10 +36,10 @@ Geometry/Parametric_Surface
 TCL = \
 Geometry/PointVector
 
-all: $(PROJ)
+all: $(EXECUTABLE)
 
-$(PROJ): $(addsuffix .o,$(CLS) $(SRC) $(CLT) $(TCL))
-	$(CC) $(addsuffix .o,$(CLS) $(SRC) $(CLT) $(TCL)) $(LIBS) -o $(EXECUTABLE)
+$(EXECUTABLE): $(addsuffix .o,$(CLS) $(SRC) $(CLT))
+	$(CC) $(addsuffix .o,$(CLS) $(SRC) $(CLT)) $(LIBS) -o $(EXECUTABLE)
 	
 define PROGRAM_SRC
 
@@ -70,8 +70,8 @@ $(foreach class,$(CLT),$(eval $(call PROGRAM_CLT,$(class))))
 
 define PROGRAM_TCL
 
-$(1).o: $(1).cpp $(1).h
-	$(CC) $(CFLAGS) $(1).cpp -o $(1).o
+#$(1).o: $(1).hpp $(1).h
+#	$(CC) $(CFLAGS) $(1).hpp -o $(1).o
 
 endef
 
