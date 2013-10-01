@@ -9,9 +9,19 @@ private:
 
 	PointVector<> position;
 
+	bool randomBool;
+
+	double velocityx;
+	double velocityy;
+	double velocityz;
+
+	double climbingAbilityx;
+	double climbingAbilityy;
+	double climbingAbilityz;
+
 	double getPosition(); 
 	double makePosition();
-	double changePosition();
+	double updatePosition();
 }
 
 #endif /*NPC_H*/

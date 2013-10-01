@@ -5,7 +5,8 @@
 #include <vector>
 
 PointVector<> PLACEHOLDER_PLAYER_POSITION;
-std::vector<PhysObject> PLACEHOLDER_STUFF;
+std::vector<PointVector<>> PLACEHOLDER_LINE_OF_TRAVEL;
+PointVector<> GRAVITY_CENTER;
 
 double NPC::getPosition{
 
@@ -26,34 +27,109 @@ double NPC::makePosition{
 
 }
 
-double NPC::changePosition{
-
-	while(position.getdx()>PLACEHOLDER_PLAYER_POSITION.getdx()){
-		if(position.getdx()-PLACEHOLDER_STUFF.getdx() < 1){
-			
-} 		
-		position.setdx(position.getdx()-1);
+bool randomBool{
+srand(time(0));
+for( int i = 0; i < 1000000; ++i )
+{
+    assert( 0 == ( rand() % 2 ) );
+}
 }
 
-	while(position.getdy()>PLACEHOLDER_PLAYER_POSITION.getdy()){
-		position.setdy(position.getdx()-1);
+double NPC::updatePosition(deltaT){
+
+	if(GRAVITY_CENTER.getdx() > position.getdx()){
+		climbingAbilityx = INFINITY;
+	}
+
+	if(GRAVITY_CENTER.getdy() > position.getdy()){
+		climbingAbilityy = INFINITY;
+	}
+
+	if(GRAVITY_CENTER.getdz() > position.getdz()){
+		climbingAbilityz = INFINITY;
+	}
+
+
+	int k{
+		if(randomBool == 1){
+			k=1;
+		}
+
+		if(randomBool == 0){
+			k=(-1);
+		}
+	}
+
+	double sx = deltaT*velocityx;
+	double sy = deltaT*velocityy;
+	double sz = deltaT*velocityz;
+
+	if(position.getdx() < PLACEHOLDER_LINE_OF_TRAVEL.getdx()){
+
+		if(PLACEHOLDER_LINE_OF_TRAVEL.getdx() - (position.getdx() + k*sx) >= 0){
+			position.setdx(position.getdx() + k*sx);
+		}
+		else{
+			position.setdx(PLACEHOLDER_LINE_OF_TRAVEL.getdx());
+		}
+	}
+
+	if(position.getdy() < PLACEHOLDER_LINE_OF_TRAVEL.getdy()){
+		if(PLACEHOLDER_LINE_OF_TRAVEL.getdy() - (position.getdy() + k*sy) >= 0){
+			position.setdy(position.getdy() + k*sy);
+		}	
+		else{
+			position.setdy(PLACEHOLDER_LINE_OF_TRAVEL.getdy())
+		}
+
+	}
+
+	if(position.getdz() < PLACEHOLDER_LINE_OF_TRAVEL.getdz()){
+		if(PLACEHOLDER_LINE_OF_TRAVEL.getdz() - (position.getdz() + k*sz) >= 0){
+			position.setdz(position.getdz() + k*sz);
+		}
+		else{
+			position.setdz(PLACEHOLDER_LINE_OF_TRAVEL.getdz());
+		}
+	}
+
 }
 
-	while(position.getdz()>PLACEHOLDER_PLAYER_POSITION.getdz()){
-		position.setdz(position.getdz()-1);
+
+
+
+if(GRAVITY_CENTER.getdx() > position.getdx()){
+	climbingAbilityx = INFINITY;
 }
 
-	while(position.getdx()<PLACEHOLDER_PLAYER_POSITION.getdx()){
-		position.setdx(position.getdx()-1);
+if(GRAVITY_CENTER.getdy() > position.getdy()){
+	climbingAbilityy = INFINITY;
 }
 
-	while(position.getdy()<PLACEHOLDER_PLAYER_POSITION.getdy()){
-		position.setdy(position.getdx()-1);
+if(GRAVITY_CENTER.getdz() > position.getdz()){
+	climbingAbilityz = INFINITY;
 }
 
-	while(position.getdz()<PLACEHOLDER_PLAYER_POSITION.getdz()){
-		position.setdz(position.getdz()-1);
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
