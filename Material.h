@@ -11,10 +11,11 @@
 class Material{
 public:
 	double& density();
-	
+	double& restitution();	
+
 private:
 	double density;
-	
+	double restitution;
 	
 	
 }

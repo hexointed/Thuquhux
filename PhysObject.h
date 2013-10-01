@@ -28,12 +28,13 @@ public:
 	double& density();
 	Material& material();
 	double& volume();
-	PointVector position();
-	PointVector velocity();
-	Parametric_Surface surface();
+	PointVector<>& position();
+	PointVector<>& velocity();
+	Parametric_Surface& surface();
 	
 	void calcVolume();
-	
+
+	static void collision(PhysObject&,PhysObject&);
     
 private:
 	Material material;

@@ -20,3 +20,7 @@ double& Material::density() {
 	
 	return density;
 }
+
+double& Material::restitution(){
+	return restitution;
+}

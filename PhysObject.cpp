@@ -38,8 +38,13 @@ Parametric_Surface& PhysObject::surface(){
 }
 
 void PhysObject::calcVolume(){
+	
 }
 
 void PhysObject::unite(PhysObject a){
 	surface.
+}
+
+void PhysObject::collision(PhysObject& obj1,PhysObject& obj2){
+	obj1.velocity
 }
