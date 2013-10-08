@@ -25,7 +25,7 @@ namespace Geometry{
 		static Container<Triangle_Mesh> make_mesh(Container<Triangle*> triangles);
 		
 		template<template <typename> class Container>
-		static Container<Triangle_Mesh> make_mesh(Container<PointVector<> > mesh_vertecies);
+		static Triangle_Mesh make_mesh(Container<PointVector<> > mesh_vertecies);
 		
 		Triangle& operator[](const int i);
 		long int size();
@@ -36,7 +36,7 @@ namespace Geometry{
 		void add(Triangle t);
 		void remove(const Triangle& t);
 		
-	public:
+	private:
 		std::vector<Element> elem;
 		
 		class Element{
@@ -60,8 +60,15 @@ namespace Geometry{
 	
 	private:
 		Triangle_Mesh construct_mesh(Element a, std::map<Element, Element, Element::Elementcompare> b);
+		
+	public:
+		auto begin() -> decltype(elem.begin()){return elem.begin();}
+		auto end() -> decltype(elem.end()){return elem.end();}
+		using iterator = decltype(elem)::iterator;
 
 	};
 }
 
 #endif	/* TRIANGLE_MESH_H */
+
+#include "Triangle_Mesh.hpp"

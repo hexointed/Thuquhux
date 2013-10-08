@@ -7,6 +7,7 @@
 #include "Geometry/Parametric_Surface.h"
 #include "Geometry/PointVector.h"
 #include "Geometry/Geometry.h"
+#include "Geometry/Triangle_Mesh.h"
 
 void InitLight();
 void InitGlut(int argc, char **argv);
