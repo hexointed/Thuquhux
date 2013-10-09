@@ -13,7 +13,7 @@
 
 #include <array>
 
-template<int Dim = 3>
+template<int Dim = 3, typename Numeric = double>
 class PointVector{
     
 public:
