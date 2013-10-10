@@ -17,19 +17,24 @@ namespace Geometry{
 	template<template <typename> class Container>
 	Triangle_Mesh Triangle_Mesh::make_mesh(Container<PointVector<>> mesh_vertecies){
 		int md = sqrt(mesh_vertecies.size());
-		int ml = ll*ll;
+		int ml = md*md;
+		Triangle_Mesh result;
 		for(int i = 0; i < md; ++i){
 			for(int n = 0; n < md; ++n){		//"connect" the points, so that they can be drawn using Triangle methods
-				mesh_vertecies.push_back(Triangle{	vertecies[(i* md + n) % ml], 
-													vertecies[(i* md + n  + 1) % ml],
-													vertecies[((i+1)*md + n) % ml]});
-				mesh_vertecies.push_back(Triangle{	vertecies[((i+1)*md + n) % ml], 
-													vertecies[(i* md + n  + 1) % ml],
-													vertecies[((i+1)*md + n + 1) % ml]});
+			Element a;
+			a.tri = Triangle{	mesh_vertecies[(i* md + n) % ml], 
+								mesh_vertecies[(i* md + n  + 1) % ml],
+								mesh_vertecies[((i+1)*md + n) % ml]};
+			Element b;
+			b. tri = Triangle{	mesh_vertecies[((i+1)*md + n) % ml], 
+								mesh_vertecies[(i* md + n  + 1) % ml],
+								mesh_vertecies[((i+1)*md + n + 1) % ml]};
+			result.elem.push_back(a);
+			result.elem.push_back(b);
 			}
 		}
+		return result;
 	}
-
 }
 
 #endif /* TRIANGLE_MESH_HPP */

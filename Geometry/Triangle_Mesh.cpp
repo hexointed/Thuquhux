@@ -71,6 +71,12 @@ bool Triangle_Mesh::is_loop(){
 	return e == &elem[0];
 }
 
+void Triangle_Mesh::add(Triangle& t){
+	Element a;
+	a.tri = &t;
+	elem.push_back(a);
+}
+
 bool Triangle_Mesh::Element::single_valid_connection(){
 	int b = 0;
 	for(Triangle_Mesh::Element* a: Triangle_Mesh::Element::connected){
