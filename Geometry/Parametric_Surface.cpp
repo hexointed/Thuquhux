@@ -26,7 +26,7 @@ void Parametric_Surface::Unite(Parametric_Surface a){
 	bound_box[0].set_min_comp(a.bound_box[0] + rel_pos);
 	bound_box[1].set_max_comp(a.bound_box[1] + rel_pos);
 	for(Triangle tri: a.mesh_vertecies){
-		//mesh_vertecies.add(Triangle{tri + rel_pos});
+		mesh_vertecies.add(Triangle{tri + rel_pos});
 	}
 }
 

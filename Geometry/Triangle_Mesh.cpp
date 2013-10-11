@@ -4,7 +4,7 @@
 
 #include "Triangle_Mesh.h"
 
-using namespace Geometry;
+using Geometry::Triangle_Mesh;
 
 long int Triangle_Mesh::size(){
 	return elem.size();
@@ -84,18 +84,48 @@ bool Triangle_Mesh::Element::single_valid_connection(){
 			++b;
 	}
 	return b==1;
+	Triangle_Mesh a;
+	for(Triangle b: a){
+	
+	}
 }
 
-using Triangle_Mesh::Iterator;
-
-Iterator::Iterator(decltype(elem)::iterator i){
-	it = i;
+Geometry::Triangle& Triangle_Mesh::Iterator::operator *(){
+	return *(*it).tri;
 }
 
-Triangle& Iterator::operator *(){
-	return *(*it).tri
+Triangle_Mesh::Iterator Triangle_Mesh::Iterator::operator++(){
+	++it;
+	return *this;
 }
 
-Iterator Iterator::operator++(){
-	it
+Triangle_Mesh::Iterator Triangle_Mesh::Iterator::operator++(int){
+	it++;
+	return *this;
+}
+
+Triangle_Mesh::Iterator Triangle_Mesh::Iterator::operator--(){
+	--it;
+	return *this;
+}
+
+Triangle_Mesh::Iterator Triangle_Mesh::Iterator::operator--(int){
+	it--;
+	return *this;
+}
+
+Triangle_Mesh::Iterator Triangle_Mesh::Iterator::operator +(int p) const {
+	return Triangle_Mesh::Iterator{it + p};
+}
+
+Triangle_Mesh::Iterator Triangle_Mesh::Iterator::operator -(int p) const {
+	return Triangle_Mesh::Iterator{it - p};
+}
+
+int Triangle_Mesh::Iterator::operator -(Triangle_Mesh::Iterator i) const {
+	return it - i.it;
+}
+
+bool Triangle_Mesh::Iterator::operator!=(Triangle_Mesh::Iterator i) const {
+	return it != i.it;
 }

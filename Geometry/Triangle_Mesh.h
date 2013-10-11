@@ -16,10 +16,12 @@
 namespace Geometry{
 
 	class Triangle_Mesh {
-	private:
+	
+	public:
 		Triangle_Mesh() = default;
-		class Element;
 		class Iterator;
+	private:
+		class Element;
 		
 	public:
 		template<template <typename> class Container>
@@ -63,22 +65,25 @@ namespace Geometry{
 		Triangle_Mesh construct_mesh(Element a, std::map<Element, Element, Element::Elementcompare> b);
 		
 	public:
-		auto begin() -> decltype(elem.begin()){return elem.begin();}
-		auto end() -> decltype(elem.end()){return elem.end();}
+		Iterator begin() {return Iterator{elem.begin()};}
+		Iterator end() {return Iterator{elem.end()};}
 		using iterator = Iterator;
 		
 		class Iterator{
 		public:
-			Iterator(decltype(elem)::iterator i);
+			Iterator(decltype(elem)::iterator i){
+				it = i;
+			}
 			
 			Triangle&	operator *();
 			Iterator	operator++();
 			Iterator	operator++(int);
 			Iterator	operator--();
 			Iterator	operator--(int);
-			Iterator	operator +(int p);
-			Iterator	operator -(int p);
-			Iterator	operator -(Iterator i);
+			Iterator	operator +(int p) const;
+			Iterator	operator -(int p) const;
+			int			operator -(Iterator i) const;
+			bool		operator!=(Iterator i) const;
 			
 		private:
 			decltype(elem)::iterator it;
