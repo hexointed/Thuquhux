@@ -4,7 +4,7 @@
 
 #include "Triangle_Mesh.h"
 
-using Geometry::Triangle_Mesh;
+using namespace Geometry;
 
 long int Triangle_Mesh::size(){
 	return elem.size();
@@ -84,4 +84,18 @@ bool Triangle_Mesh::Element::single_valid_connection(){
 			++b;
 	}
 	return b==1;
+}
+
+using Triangle_Mesh::Iterator;
+
+Iterator::Iterator(decltype(elem)::iterator i){
+	it = i;
+}
+
+Triangle& Iterator::operator *(){
+	return *(*it).tri
+}
+
+Iterator Iterator::operator++(){
+	it
 }

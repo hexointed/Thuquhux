@@ -19,6 +19,7 @@ namespace Geometry{
 	private:
 		Triangle_Mesh() = default;
 		class Element;
+		class Iterator;
 		
 	public:
 		template<template <typename> class Container>
@@ -64,7 +65,24 @@ namespace Geometry{
 	public:
 		auto begin() -> decltype(elem.begin()){return elem.begin();}
 		auto end() -> decltype(elem.end()){return elem.end();}
-		using iterator = decltype(elem)::iterator;
+		using iterator = Iterator;
+		
+		class Iterator{
+		public:
+			Iterator(decltype(elem)::iterator i);
+			
+			Triangle&	operator *();
+			Iterator	operator++();
+			Iterator	operator++(int);
+			Iterator	operator--();
+			Iterator	operator--(int);
+			Iterator	operator +(int p);
+			Iterator	operator -(int p);
+			Iterator	operator -(Iterator i);
+			
+		private:
+			decltype(elem)::iterator it;
+		};
 
 	};
 }
