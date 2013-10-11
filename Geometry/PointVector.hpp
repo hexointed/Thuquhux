@@ -18,7 +18,7 @@ PointVector<Dim, Numeric>::PointVector():
 {}
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric>::PointVector(double composants[Dim]){
+PointVector<Dim, Numeric>::PointVector(Numeric composants[Dim]){
 	std::copy(composants, composants+Dim, comp);
 }
 
@@ -49,32 +49,32 @@ template<int Dim, typename Numeric>
 inline void PointVector<Dim, Numeric>::pconstruct(int /*i*/){}
 
 template<int Dim, typename Numeric>
-double PointVector<Dim, Numeric>::get(int i) const{
+Numeric PointVector<Dim, Numeric>::get(int i) const{
 	assert(i <= Dim);
 	return comp[i];
 }
 
 template<int Dim, typename Numeric>
-double PointVector<Dim, Numeric>::getdx() const{
+Numeric PointVector<Dim, Numeric>::getdx() const{
 	static_assert(Dim >= 1, "This PointVector does not have an x-component");
     return comp[0];
 }
 
 template<int Dim, typename Numeric>
-double PointVector<Dim, Numeric>::getdy() const{
+Numeric PointVector<Dim, Numeric>::getdy() const{
     static_assert(Dim >= 2, "This PointVector does not have a y-component");
     return comp[1];
 }
 
 template<int Dim, typename Numeric>
-double PointVector<Dim, Numeric>::getdz() const{
+Numeric PointVector<Dim, Numeric>::getdz() const{
     static_assert(Dim >= 3, "This PointVector does not have a z-component");
     return comp[2];
 }
 
 template<int Dim, typename Numeric>
-double PointVector<Dim, Numeric>::getMagnitude() const{
-	double mag = 0;
+Numeric PointVector<Dim, Numeric>::getMagnitude() const{
+	Numeric mag = 0;
 	for(int i = 0; i < Dim; i++){
 		mag += comp[i] * comp[i];
 	}
@@ -82,8 +82,8 @@ double PointVector<Dim, Numeric>::getMagnitude() const{
 }
 
 template<int Dim, typename Numeric>
-double PointVector<Dim, Numeric>::sum_comp() const{
-	double sum = 0;
+Numeric PointVector<Dim, Numeric>::sum_comp() const{
+	Numeric sum = 0;
 	for(auto x : comp){
 		sum += x;
 	}
@@ -91,25 +91,25 @@ double PointVector<Dim, Numeric>::sum_comp() const{
 }
 
 template<int Dim, typename Numeric>
-void PointVector<Dim, Numeric>::set(int i, double d){
+void PointVector<Dim, Numeric>::set(int i, Numeric d){
 	assert(i <= Dim);
 	comp[i] = d;
 }
 
 template<int Dim, typename Numeric>
-void PointVector<Dim, Numeric>::setdx(double d){
+void PointVector<Dim, Numeric>::setdx(Numeric d){
 	static_assert(Dim >= 1, "This PointVector does not have an x-component");
 	comp[0] = d;
 }
 
 template<int Dim, typename Numeric>
-void PointVector<Dim, Numeric>::setdy(double d){
+void PointVector<Dim, Numeric>::setdy(Numeric d){
 	static_assert(Dim >= 2, "This PointVector does not have a y-component");
 	comp[1] = d;
 }
 
 template<int Dim, typename Numeric>
-void PointVector<Dim, Numeric>::setdz(double d){
+void PointVector<Dim, Numeric>::setdz(Numeric d){
 	static_assert(Dim >= 3, "This PointVector does not have a z-component");
 	comp[2] = d;
 }
@@ -142,30 +142,30 @@ inline PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::operator -=(const P
 }
 
 template<int Dim, typename Numeric>
-inline PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::operator *=(const double r){
+inline PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::operator *=(const Numeric r){
 	this->mul(r);
 	return *this;
 }
 
 template<int Dim, typename Numeric>
-inline PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::operator /=(const double r){
+inline PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::operator /=(const Numeric r){
 	this->div(r);
 	return *this;
 }
 
-template<int D, typename Numeric>
-inline PointVector<D, Numeric> operator*(const PointVector<D> l, const double r){
-	return PointVector<D>::mul(r, l);
+template<int D, typename Num>
+inline PointVector<D, Num> operator*(const PointVector<D, Num> l, const Num r){
+	return PointVector<D, Num>::mul(r, l);
 }
 
-template<int D, typename Numeric>
-inline PointVector<D, Numeric> operator*(const double l, const PointVector<D> r){
-	return PointVector<D>::mul(l, r);
+template<int D, typename Num>
+inline PointVector<D, Num> operator*(const Num l, const PointVector<D, Num> r){
+	return PointVector<D, Num>::mul(l, r);
 }
 
-template<int D, typename Numeric>
-inline PointVector<D, Numeric> operator/(const PointVector<D> l, const double r){
-	return PointVector<D>::div(r, l);
+template<int D, typename Num>
+inline PointVector<D, Num> operator/(const PointVector<D, Num> l, const Num r){
+	return PointVector<D, Num>::div(r, l);
 }
 
 template<int Dim, typename Numeric>
@@ -204,6 +204,10 @@ PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::mul_comp(PointVector<Dim, 
 
 template<int Dim, typename Numeric>
 PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::mul_cross(PointVector<Dim, Numeric> p){
+	PointVector<3, Numeric> q(*this);
+	comp[0] = q.comp[1] * p.comp[2] - q.comp[2] * p.comp[1];
+	comp[1] = q.comp[2] * p.comp[0] - q.comp[0] * p.comp[2];
+	comp[2] = q.comp[0] * p.comp[1] - q.comp[1] * p.comp[0];
 	return *this;
 }
 /*
@@ -231,7 +235,7 @@ inline PointVector<7, Numeric>& PointVector<7, Numeric>::mul_cross(PointVector<7
 }*/
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::mul(long double d){
+PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::mul(Numeric d){
 	for(int i = 0; i < Dim; i++){
 		comp[i] *= d;
 	}
@@ -239,8 +243,8 @@ PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::mul(long double d){
 }
 
 template<int Dim, typename Numeric>
-double PointVector<Dim, Numeric>::mul_dot(PointVector<Dim, Numeric> p, PointVector<Dim, Numeric> q){
-	double result = 0;
+Numeric PointVector<Dim, Numeric>::mul_dot(PointVector<Dim, Numeric> p, PointVector<Dim, Numeric> q){
+	Numeric result = 0;
 	for(int i = 0; i < Dim; i++){
 		result += p.comp[i] * q.comp[i];
 	}
@@ -258,7 +262,7 @@ PointVector<Dim, Numeric> PointVector<Dim, Numeric>::mul_cross(PointVector<Dim, 
 }
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric> PointVector<Dim, Numeric>::mul(double d, PointVector<Dim, Numeric> p){
+PointVector<Dim, Numeric> PointVector<Dim, Numeric>::mul(Numeric d, PointVector<Dim, Numeric> p){
 	return p.mul(d);
 }
 
@@ -271,7 +275,7 @@ PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::div_comp(PointVector<Dim, 
 }
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::div(double d){
+PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::div(Numeric d){
 	for(int i = 0; i < Dim; i++){
 		comp[i] /= d;
 	}
@@ -284,12 +288,12 @@ PointVector<Dim, Numeric> PointVector<Dim, Numeric>::div_comp(PointVector<Dim, N
 }
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric> PointVector<Dim, Numeric>::div(double d, PointVector p){
+PointVector<Dim, Numeric> PointVector<Dim, Numeric>::div(Numeric d, PointVector p){
 	return p.div(d);
 }
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::pow(double d){
+PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::pow(Numeric d){
 	for(int i = 0; i < Dim; i++){
 		comp[i] = pow(comp[i], d);
 	}
@@ -304,7 +308,7 @@ PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::pow_comp(PointVector p){
 }
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric> PointVector<Dim, Numeric>::pow(double d, PointVector p){
+PointVector<Dim, Numeric> PointVector<Dim, Numeric>::pow(Numeric d, PointVector p){
 	return p.pow(d);
 }
 
@@ -368,7 +372,7 @@ bool PointVector<Dim, Numeric>::is_eq_comp(PointVector<Dim, Numeric> p) const{
 
 template<int Dim, typename Numeric>
 PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::make_unit(){
-	double mag = getMagnitude();
+	Numeric mag = getMagnitude();
 	for(int i = 0; i < Dim; i++){
 		comp[i] /= mag; 
 	}
@@ -385,8 +389,8 @@ PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::project(PointVector p){
 	mul_comp(p);
 	PointVector q(p);
 	q.mul_comp(p);
-	double d = q.sum_comp();
-	double e = sum_comp();
+	Numeric d = q.sum_comp();
+	Numeric e = sum_comp();
 	for(int i = 0; i < Dim; i++){
 		comp[i] = p.comp[i] * e / d;
 	}
@@ -399,8 +403,8 @@ PointVector<Dim, Numeric> PointVector<Dim, Numeric>::project(PointVector p, Poin
 }
 
 template<int Dim, typename Numeric>
-double PointVector<Dim, Numeric>::taxicab_distance(PointVector p, PointVector q){
-	double res;
+Numeric PointVector<Dim, Numeric>::taxicab_distance(PointVector p, PointVector q){
+	Numeric res;
 	for(int i = 0; i < Dim; i++){
 		res += abs(p.comp[i] - q.comp[i]);
 	}
