@@ -47,7 +47,7 @@ Triangle e(pp);
 double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];
 
 int main(int argc, char **argv)
-{	
+{
     srand(time(0));
     a->genGround(g_width, g_depth,arot,0, vertecies);
     

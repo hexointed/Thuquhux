@@ -1,8 +1,11 @@
 #include <set>
 #include <map>
 #include <utility>
+#include <iostream>
+#include <cstdlib>
 
 #include "Triangle_Mesh.h"
+#include "Parametric_Surface.h"
 
 using Geometry::Triangle_Mesh;
 
@@ -22,13 +25,16 @@ Triangle_Mesh Triangle_Mesh::get_single_path(Element& begin, Element& end){
 	f_score.insert(std::make_pair(1, begin));
 	
 	while(to_be_eval.size()){
-		auto& current = (*f_score.begin());
+		auto current = (*f_score.begin());
 		to_be_eval.erase(to_be_eval.begin());
+		f_score.erase(f_score.begin());
 		if(current.second.tri == end.tri){
-			return construct_mesh(end, path_taken);
+			return construct_mesh(end, begin, path_taken);
 		}
 		already_eval.insert(current.second);
 		for(Element* neighbor: current.second.connected){
+			if(neighbor == nullptr)
+				continue;
 			int t_g_score = g_score[current.second] +1;
 			if(already_eval.find(*neighbor) != already_eval.end() && t_g_score >= g_score[current.second]){
 				continue;
@@ -44,20 +50,22 @@ Triangle_Mesh Triangle_Mesh::get_single_path(Element& begin, Element& end){
 	throw "FAIL";
 }
 
-Triangle_Mesh Triangle_Mesh::construct_mesh(Element a, std::map<Element,Element,Element::Elementcompare> b){
+Triangle_Mesh Triangle_Mesh::construct_mesh(Element end, Element begin, std::map<Element,Element,Element::Elementcompare> c){
 	Triangle_Mesh result;
-	Element current = a;
-	do{
-		if(result.elem.size()){
-			result.elem.back().connected[0] = &current;
-			result.elem.back().connected[1]	= nullptr;
-			result.elem.back().connected[2]	= nullptr;
-		}
+	Element current = end;
+	while(current.tri != begin.tri){
 		result.elem.push_back(current);
-		Element tmp = current;
-		current = b[current];
-		b.erase(tmp);
-	}while(b.size());
+		current = c[current];
+	}
+	result.elem.push_back(current);
+	
+	for(unsigned int i = 0; i < result.elem.size(); i++){
+		if(i > 0)
+			result.elem[i].connected[0] = &result.elem[i-1];
+		if(i < result.elem.size())
+			result.elem[0].connected[1] = &result.elem[i+1];
+		result.elem[0].connected[2] = nullptr;
+	}
 	return result;
 }
 
@@ -82,6 +90,11 @@ void Triangle_Mesh::add(Triangle& t){
 	a.tri = &t;
 	elem.push_back(a);
 }
+
+Triangle_Mesh::Element::Element():
+	tri(nullptr),
+	connected{nullptr, nullptr, nullptr}
+{}
 
 bool Triangle_Mesh::Element::single_valid_connection(){
 	int b = 0;

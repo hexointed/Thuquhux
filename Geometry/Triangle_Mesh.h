@@ -36,6 +36,8 @@ namespace Geometry{
 		Triangle_Mesh get_single_path(Element& begin, Element& end);
 		bool is_loop();
 		
+		static void test();
+		
 		void add(Triangle t);
 		void add(Triangle& t);
 		void remove(const Triangle& t);
@@ -45,7 +47,7 @@ namespace Geometry{
 		
 		class Element{
 		public:
-			Element() = default;
+			Element();
 			Element& first_valid_connection();
 			bool single_valid_connection();
 			
@@ -63,7 +65,7 @@ namespace Geometry{
 		};	
 	
 	private:
-		Triangle_Mesh construct_mesh(Element a, std::map<Element, Element, Element::Elementcompare> b);
+		Triangle_Mesh construct_mesh(Element a, Element b, std::map<Element, Element, Element::Elementcompare> c);
 		
 	public:
 		Iterator begin() {return Iterator{elem.begin()};}

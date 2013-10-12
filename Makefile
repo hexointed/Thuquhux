@@ -5,7 +5,7 @@ CC = g++-4.8
 
 #Flags
 ERRFLAGS = -pedantic -Wall -Wextra -Wpointer-arith -Wcast-qual -fstrict-overflow -Wstrict-overflow=3
-CFLAGS = -c -std=c++0x $(ERRFLAGS)
+CFLAGS = -c -std=c++0x -g $(ERRFLAGS)
 
 #Linked libraries
 LIBS = -lglut -lGLU -lGLEW
