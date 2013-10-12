@@ -204,35 +204,8 @@ PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::mul_comp(PointVector<Dim, 
 
 template<int Dim, typename Numeric>
 PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::mul_cross(PointVector<Dim, Numeric> p){
-	PointVector<3, Numeric> q(*this);
-	comp[0] = q.comp[1] * p.comp[2] - q.comp[2] * p.comp[1];
-	comp[1] = q.comp[2] * p.comp[0] - q.comp[0] * p.comp[2];
-	comp[2] = q.comp[0] * p.comp[1] - q.comp[1] * p.comp[0];
-	return *this;
+	return Cross_product(*this, p);
 }
-/*
-template<>
-template<typename Numeric>
-inline PointVector<3, Numeric>& PointVector<3, Numeric>::mul_cross(PointVector<3, Numeric> p){
-	PointVector<3, Numeric> q(*this);
-	comp[0] = q.comp[1] * p.comp[2] - q.comp[2] * p.comp[1];
-	comp[1] = q.comp[2] * p.comp[0] - q.comp[0] * p.comp[2];
-	comp[2] = q.comp[0] * p.comp[1] - q.comp[1] * p.comp[0];
-	return *this;
-}
-
-template<typename Numeric>
-inline PointVector<7, Numeric>& PointVector<7, Numeric>::mul_cross(PointVector<7, Numeric> p){
-	PointVector<7, Numeric> q(*this);
-	comp[0] = q.comp[1] * p.comp[3] - q.comp[3] * p.comp[1] + q.comp[2] * p.comp[6] - q.comp[6] * p.comp[2] + q.comp[4] * p.comp[5] - q.comp[5] * p.comp[4];
-	comp[1] = q.comp[2] * p.comp[4] - q.comp[4] * p.comp[2] + q.comp[3] * p.comp[0] - q.comp[0] * p.comp[3] + q.comp[5] * p.comp[6] - q.comp[6] * p.comp[5];
-	comp[2] = q.comp[3] * p.comp[5] - q.comp[5] * p.comp[3] + q.comp[4] * p.comp[1] - q.comp[1] * p.comp[4] + q.comp[6] * p.comp[0] - q.comp[0] * p.comp[6];
-	comp[3] = q.comp[4] * p.comp[6] - q.comp[6] * p.comp[4] + q.comp[5] * p.comp[2] - q.comp[2] * p.comp[5] + q.comp[0] * p.comp[1] - q.comp[1] * p.comp[0];
-	comp[4] = q.comp[5] * p.comp[0] - q.comp[0] * p.comp[5] + q.comp[6] * p.comp[3] - q.comp[3] * p.comp[6] + q.comp[1] * p.comp[2] - q.comp[2] * p.comp[1];
-	comp[5] = q.comp[6] * p.comp[1] - q.comp[1] * p.comp[6] + q.comp[0] * p.comp[4] - q.comp[4] * p.comp[0] + q.comp[2] * p.comp[3] - q.comp[3] * p.comp[2];
-	comp[6] = q.comp[0] * p.comp[2] - q.comp[2] * p.comp[0] + q.comp[1] * p.comp[5] - q.comp[5] * p.comp[1] + q.comp[3] * p.comp[4] - q.comp[4] * p.comp[3];
-	return *this;
-}*/
 
 template<int Dim, typename Numeric>
 PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::mul(Numeric d){
@@ -258,7 +231,7 @@ PointVector<Dim, Numeric> PointVector<Dim, Numeric>::mul_comp(PointVector<Dim, N
 
 template<int Dim, typename Numeric>
 PointVector<Dim, Numeric> PointVector<Dim, Numeric>::mul_cross(PointVector<Dim, Numeric> p, PointVector<Dim, Numeric> q){
-	return p.mul_cross(q);
+	return Cross_product(p,q);
 }
 
 template<int Dim, typename Numeric>
@@ -463,6 +436,34 @@ std::array<bool, Dim> PointVector<Dim, Numeric>::operator <=(PointVector<Dim, Nu
 		result[i] = comp[i] <= p.comp[i];
 	}
 	return result;
+}
+
+template<int Dim, typename Numeric>
+PointVector<Dim, Numeric>::Cross_product::Cross_product(PointVector<Dim, Numeric> t, PointVector<Dim, Numeric> u){
+	q = t;
+	p = u;
+}
+
+template<int Dim, typename Numeric>
+PointVector<Dim, Numeric>::Cross_product::operator PointVector<3, Numeric> () const{
+	PointVector<3, Numeric> res;
+	res.comp[0] = q.comp[1] * p.comp[2] - q.comp[2] * p.comp[1];
+	res.comp[1] = q.comp[2] * p.comp[0] - q.comp[0] * p.comp[2];
+	res.comp[2] = q.comp[0] * p.comp[1] - q.comp[1] * p.comp[0];
+	return res;
+}
+
+template<int Dim, typename Numeric>
+PointVector<Dim, Numeric>::Cross_product::operator PointVector<7, Numeric> () const{
+	PointVector<7, Numeric> res;
+	res.comp[0] = q.comp[1] * p.comp[3] - q.comp[3] * p.comp[1] + q.comp[2] * p.comp[6] - q.comp[6] * p.comp[2] + q.comp[4] * p.comp[5] - q.comp[5] * p.comp[4];
+	res.comp[1] = q.comp[2] * p.comp[4] - q.comp[4] * p.comp[2] + q.comp[3] * p.comp[0] - q.comp[0] * p.comp[3] + q.comp[5] * p.comp[6] - q.comp[6] * p.comp[5];
+	res.comp[2] = q.comp[3] * p.comp[5] - q.comp[5] * p.comp[3] + q.comp[4] * p.comp[1] - q.comp[1] * p.comp[4] + q.comp[6] * p.comp[0] - q.comp[0] * p.comp[6];
+	res.comp[3] = q.comp[4] * p.comp[6] - q.comp[6] * p.comp[4] + q.comp[5] * p.comp[2] - q.comp[2] * p.comp[5] + q.comp[0] * p.comp[1] - q.comp[1] * p.comp[0];
+	res.comp[4] = q.comp[5] * p.comp[0] - q.comp[0] * p.comp[5] + q.comp[6] * p.comp[3] - q.comp[3] * p.comp[6] + q.comp[1] * p.comp[2] - q.comp[2] * p.comp[1];
+	res.comp[5] = q.comp[6] * p.comp[1] - q.comp[1] * p.comp[6] + q.comp[0] * p.comp[4] - q.comp[4] * p.comp[0] + q.comp[2] * p.comp[3] - q.comp[3] * p.comp[2];
+	res.comp[6] = q.comp[0] * p.comp[2] - q.comp[2] * p.comp[0] + q.comp[1] * p.comp[5] - q.comp[5] * p.comp[1] + q.comp[3] * p.comp[4] - q.comp[4] * p.comp[3];
+	return res;
 }
 
 template<int Dim, typename Numeric>

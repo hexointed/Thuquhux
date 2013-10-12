@@ -42,6 +42,7 @@ private:
     
 private:
 	Numeric comp[Dim];
+	class Cross_product;
     
 public:
 	/*
@@ -135,10 +136,29 @@ public:
 	
 	std::array<bool, Dim> operator==	(PointVector p) const;
 	std::array<bool, Dim> operator!=	(PointVector p) const;
-	std::array<bool, Dim> operator>	(PointVector p) const;
-	std::array<bool, Dim> operator<	(PointVector p) const;
+	std::array<bool, Dim> operator> 	(PointVector p) const;
+	std::array<bool, Dim> operator< 	(PointVector p) const;
 	std::array<bool, Dim> operator>=	(PointVector p) const;
 	std::array<bool, Dim> operator<=	(PointVector p) const;
+	
+	/*
+	 * Cross_product is a class that handles computation of cross products by using 
+	 * automatic type casting to the expected return type. This method is used because
+	 * of the lack of partial specialization of template class methods.
+	 */
+	
+private:
+	class Cross_product{
+	public:
+		Cross_product(PointVector t, PointVector u);
+		
+		operator PointVector<3,Numeric> () const;
+		operator PointVector<7,Numeric> () const;
+	
+	private:
+		PointVector q, p;
+	};
+	
 };
 
 namespace Boolarr{
