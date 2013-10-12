@@ -71,6 +71,12 @@ bool Triangle_Mesh::is_loop(){
 	return e == &elem[0];
 }
 
+void Triangle_Mesh::add(Triangle t){
+	Element a;
+	a.tri = new Triangle{t};
+	elem.push_back(a);
+}
+
 void Triangle_Mesh::add(Triangle& t){
 	Element a;
 	a.tri = &t;

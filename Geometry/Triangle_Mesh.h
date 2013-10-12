@@ -36,6 +36,7 @@ namespace Geometry{
 		Triangle_Mesh get_single_path(Element& begin, Element& end);
 		bool is_loop();
 		
+		void add(Triangle t);
 		void add(Triangle& t);
 		void remove(const Triangle& t);
 		
