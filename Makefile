@@ -78,4 +78,4 @@ endef
 $(foreach class,$(TCL),$(eval $(call PROGRAM_TCL,$(class))))
 	
 clean:
-	rm -f *.o && rm -f ./*/*.o
+	rm $(addsuffix .o,$(SRC) $(CLS) $(CLT))
