@@ -130,7 +130,9 @@ public:
 	PointVector& make_unit();
 	static PointVector make_unit(PointVector p);
 	
+	PointVector& reflect(PointVector normal);
 	PointVector& project(PointVector p);
+	static PointVector reflect(PointVector p, PointVector normal);
 	static PointVector project(PointVector p, PointVector q);
 	static Numeric taxicab_distance(PointVector p, PointVector q);
 	

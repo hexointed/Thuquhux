@@ -358,6 +358,14 @@ PointVector<Dim, Numeric> PointVector<Dim, Numeric>::make_unit(PointVector<Dim, 
 }
 
 template<int Dim, typename Numeric>
+PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::reflect(PointVector<Dim, Numeric> normal){
+	PointVector<Dim, Numeric> p = *this;
+	normal.make_unit();
+	*this = 2.0 * mul_dot(p, normal) * normal - p;
+	return *this;
+}
+
+template<int Dim, typename Numeric>
 PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::project(PointVector p){
 	mul_comp(p);
 	PointVector q(p);
@@ -368,6 +376,11 @@ PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::project(PointVector p){
 		comp[i] = p.comp[i] * e / d;
 	}
 	return *this;
+}
+
+template<int Dim, typename Numeric>
+PointVector<Dim, Numeric> PointVector<Dim, Numeric>::reflect(PointVector<Dim, Numeric> p, PointVector<Dim, Numeric> normal){
+	return p.reflect(normal);
 }
 
 template<int Dim, typename Numeric>
