@@ -39,9 +39,10 @@ public:
 private:
 	Material material;
 	double volume;
-	PointVector position;
-	PointVector velocity;
+	PointVector<> position;
+	PointVector<> velocity;
 	Parametric_Surface surface;
+	PointVector<> rotation;
 	
 	
 };
