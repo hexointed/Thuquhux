@@ -8,7 +8,8 @@
 #ifndef PARAMETRIC_SURFACE_H
 #define	PARAMETRIC_SURFACE_H
 
-#include "../PointVector.h"
+#include "PointVector.h"
+#include "Geometry.h"
 #include <vector>
 
 namespace Geometry{
@@ -18,7 +19,7 @@ namespace Geometry{
 	class Parametric_Surface {
 	public:
 		template<typename Functor>
-		Parametric_Surface(Functor f);
+		Parametric_Surface(Functor f, PointVector<> pos = {0,0,0});
 		virtual ~Parametric_Surface();
 		
 		friend Parametric_Surface Unite(Parametric_Surface a, Parametric_Surface b, PointVector<> pos);
@@ -50,7 +51,7 @@ namespace Geometry{
 		void calculate_mesh(Functor pfunc);
 		
 	private:
-		std::vector<PointVector<> (*)> mesh_vertecies;
+		std::vector<Triangle> mesh_vertecies;
 		
 		int mesh_detail;
 		const int mesh_length;
@@ -59,8 +60,8 @@ namespace Geometry{
 		double volume;
 		
 	public:
-		PointVector<> * bound_box[2];
-		PointVector<> * position;
+		PointVector<> bound_box[2];
+		PointVector<> position;
 	};
 		
 }

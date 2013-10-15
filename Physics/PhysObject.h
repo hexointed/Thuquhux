@@ -8,7 +8,7 @@
 #ifndef PHYSOBJECT_H
 #define	PHYSOBJECT_H
 
-#include "PointVector.h"
+#include "../Geometry/PointVector.h"
 #include "Material.h"
 #include "Geometry/Parametric_Surface.h"
 
