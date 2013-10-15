@@ -18,9 +18,9 @@ Material::~Material() {
 
 double& Material::density() {
 	
-	return density;
+	return _density;
 }
 
 double& Material::restitution(){
-	return restitution;
+	return _restitution;
 }

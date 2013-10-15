@@ -14,10 +14,10 @@ public:
 	double& restitution();	
 
 private:
-	double density;
-	double restitution;
+	double _density;
+	double _restitution;
 	
 	
-}
+};
 #endif	/* MATERIAL_H */
 
