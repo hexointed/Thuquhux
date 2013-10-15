@@ -4,10 +4,12 @@
 #include "PhysObject.h"
 #include <vector>
 #include <iostream>
+#define _USE_MATH_DEFINES
 
 PointVector<> PLACEHOLDER_PLAYER_POSITION;
 std::vector<PointVector<>> PLACEHOLDER_LINE_OF_TRAVEL;
 PointVector<> GRAVITY_CENTER;
+double RADIUS;
 
 PointVector<> NPC::getPosition(){
 
@@ -59,16 +61,16 @@ double NPC::climbingAbilityz(){
 	return climbingAbilityz;
 }
 
-bool NPC::randomness(){
+int NPC::randomInt(){
 	srand (time(NULL));
 	int randomInt = rand() % 50;
 	
-	randomness = randomInt == 2 ?  1 : 0;
+	return randomInt;
 }
-
 
 double NPC::updatePosition(deltaT){
 
+	
 	double infinity = 1.0/0.0;
 
 	double sx = deltaT*velocityx;
@@ -76,11 +78,33 @@ double NPC::updatePosition(deltaT){
 	double sz = deltaT*velocityz;
 
 
-	if(random == 1){
-		static double b;
-		konstant double a = position.getdx();		
-		position.setdx(a+sin(b));
-	}
+	if(randomInt == 2){
+		srand (time(NULL));
+		int d = 2 + (rand() % 5);
+		PointVector<> u = PointVector<>::make_unit(d + RADIUS - CENTER_OF_GRAVITY);		
+/*
+		static const int c = position.getdx();
+
+
+
+		if(position.getdx<(c+2)){
+			position.setdx(position.getdx()+sx);
+		} 		
+
+
+		else if(sqrt((position.getdx())*(position.getdx()) + (position.getdy())*(position.getdy()) + (position.getdz())*(position.getdz())) > RADIUS + d){
+			
+
+
+		}
+
+		else{
+			static double b = 0;
+			static const double a = position.getdx();		
+			position.setdx(a+sin(b*M_PI/90));
+			b++;
+		}
+ 	}*/
 	
 	else{
 		int k = randomBool == 1 ? 1 : -1;
@@ -148,7 +172,7 @@ double NPC::updatePosition(deltaT){
 					position.setdz(position.getdz() - k*sz,);	
 			}
 		}
-}	
+	}	
 }
 
 
