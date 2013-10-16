@@ -168,6 +168,15 @@ inline PointVector<D, Num> operator/(const PointVector<D, Num> l, const Num r){
 	return PointVector<D, Num>::div(r, l);
 }
 
+template<int D, typename Num>
+inline PointVector<D, Num> operator/(const Num l, const PointVector<D, Num> r){
+	PointVector<D, Num> a;
+	for(int i = 0; i < D; i++){
+		a.comp[i] = 1.0/r.comp [i];
+	}
+	return PointVector<D, Num>::mul_comp(a, l);
+}
+
 template<int Dim, typename Numeric>
 PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::add(PointVector<Dim, Numeric> p){
 	for(int i = 0; i < Dim; i++){
@@ -367,15 +376,9 @@ PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::reflect(PointVector<Dim, N
 
 template<int Dim, typename Numeric>
 PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::project(PointVector p){
-	mul_comp(p);
-	PointVector q(p);
-	q.mul_comp(p);
-	Numeric d = q.sum_comp();
-	Numeric e = sum_comp();
-	for(int i = 0; i < Dim; i++){
-		comp[i] = p.comp[i] * e / d;
-	}
-	return *this;
+	PointVector<Dim, Numeric>& res = *this;
+	mul_dot(res, p)/mul_dot(p,p) * p;
+	return res;
 }
 
 template<int Dim, typename Numeric>

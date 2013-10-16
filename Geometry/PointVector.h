@@ -130,6 +130,11 @@ public:
 	PointVector& make_unit();
 	static PointVector make_unit(PointVector p);
 	
+	/*
+	 * reflect creates a PointVector that is a reflection on the surface of which
+	 * normal is the normal vector. Projecting a PointVector p onto q creates a 
+	 * PointVector that is the component of p in the direction of q.
+	 */
 	PointVector& reflect(PointVector normal);
 	PointVector& project(PointVector p);
 	static PointVector reflect(PointVector p, PointVector normal);
