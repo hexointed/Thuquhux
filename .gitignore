@@ -11,6 +11,7 @@
 *.o
 *.so
 *.elf
+*.h.gch
 
 # Packages #
 ############

@@ -38,7 +38,7 @@ Geometry/PointVector
 
 all: $(EXECUTABLE)
 
-$(EXECUTABLE): $(addsuffix .o,$(CLS) $(SRC) $(CLT))
+$(EXECUTABLE): $(addsuffix .o,$(CLS) $(SRC) $(CLT)) $(addsuffix .h.gch,$(TCL))
 	$(CC) $(addsuffix .o,$(CLS) $(SRC) $(CLT)) $(LIBS) -o $(EXECUTABLE)
 	
 define PROGRAM_SRC
@@ -70,8 +70,8 @@ $(foreach class,$(CLT),$(eval $(call PROGRAM_CLT,$(class))))
 
 define PROGRAM_TCL
 
-#$(1).o: $(1).hpp $(1).h
-#	$(CC) $(CFLAGS) $(1).hpp -o $(1).o
+$(1).h.gch: $(1).hpp $(1).h
+	$(CC) $(CFLAGS) $(1).h
 
 endef
 
