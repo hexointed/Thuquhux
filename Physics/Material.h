@@ -10,6 +10,8 @@
 
 class Material{
 public:
+	Material();
+	~Material();
 	double& density();
 	double& restitution();	
 
