@@ -25,7 +25,7 @@ void Parametric_Surface::Unite(Parametric_Surface a){
 	PointVector<> rel_pos = a.position - position;
 	bound_box[0].set_min_comp(a.bound_box[0] + rel_pos);
 	bound_box[1].set_max_comp(a.bound_box[1] + rel_pos);
-	for(Triangle tri: a.mesh_vertecies){
+	for(Triangle& tri: a.mesh_vertecies){
 		mesh_vertecies.add(Triangle{tri + rel_pos});
 	}
 }
@@ -68,7 +68,7 @@ bool Parametric_Surface::pointIsWithin(PointVector<> p){
 	clip_line.vertecies[0] = min;
 	clip_line.vertecies[1] = max;
 	std::vector<PointVector<>> clips;
-	for(Triangle tri: mesh_vertecies){
+	for(Triangle& tri: mesh_vertecies){
 		auto tmp = tri.intersectionWith(clip_line);
 		if(tmp.first)
 			clips.push_back(tmp.second);

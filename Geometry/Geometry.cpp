@@ -16,13 +16,23 @@ template<const int Sides, const int Dim>
 Polygon<Sides, Dim>::Polygon(PointVector<Dim>* sides){
 	for(int i = 0; i < Sides; i++){
 		this->vertecies[i] = sides[i];
-	}
+	} 
 }
 
 Triangle::Triangle(const Triangle& orig){
 	vertecies[0] = new PointVector<>{*orig.vertecies[0]};
 	vertecies[1] = new PointVector<>{*orig.vertecies[1]};
 	vertecies[2] = new PointVector<>{*orig.vertecies[2]};
+}
+
+Triangle::Triangle(Triangle&& orig)
+{
+	vertecies[0] = orig.vertecies[0];
+	vertecies[1] = orig.vertecies[1];
+	vertecies[2] = orig.vertecies[2];
+	orig.vertecies[0] = nullptr;
+	orig.vertecies[1] = nullptr;
+	orig.vertecies[2] = nullptr;
 }
 
 Triangle::Triangle(PointVector<>* sides){
@@ -38,10 +48,16 @@ Triangle::Triangle(PointVector<> a, PointVector<> b, PointVector<> c)
 	vertecies[2] = new PointVector<>{c};
 }
 
+Triangle::~Triangle(){
+	delete vertecies[0];
+	delete vertecies[1];
+	delete vertecies[2];
+}
+
 std::pair<bool, PointVector<>> Triangle::intersectionWith(Polygon<2> p){
 	auto no_true = std::make_pair(false, PointVector<>{});
 	
-	auto q = *this;
+	auto& q = *this;
 	auto u = *q.vertecies[1] - *q.vertecies[0];
 	auto v = *q.vertecies[2] - *q.vertecies[0];
 	auto n = PointVector<>::mul_cross(u, v);
@@ -70,8 +86,8 @@ std::pair<bool, PointVector<>> Triangle::intersectionWith(Polygon<2> p){
 	return std::make_pair(true, *q.vertecies[0] + si*u + ti*v);
 }
 
-std::pair<bool, std::vector<PointVector<>>> Triangle::intersectionWith(Triangle q){
-	Triangle p = *this;
+std::pair<bool, std::vector<PointVector<>>> Triangle::intersectionWith(Triangle& q){
+	Triangle& p = *this;
 	std::vector<PointVector<>> results;
 	for(int i = 0; i < 2; i++){
 		
@@ -90,6 +106,7 @@ std::pair<bool, std::vector<PointVector<>>> Triangle::intersectionWith(Triangle 
 		}
 		std::swap(p,q);
 	}
+	std::swap(p,q);
 	return std::make_pair(false,results);
 }
 
@@ -106,6 +123,13 @@ Triangle Triangle::operator +(const PointVector<> a){
 	*ret.vertecies[1] += a;
 	*ret.vertecies[2] += a;
 	return ret;
+}
+
+Triangle& Triangle::operator = (const Triangle& a){
+	vertecies[0] = new PointVector<>{*a.vertecies[0]};
+	vertecies[1] = new PointVector<>{*a.vertecies[1]};
+	vertecies[2] = new PointVector<>{*a.vertecies[2]};
+	return *this;
 }
 
 PointVector<>& Triangle::operator [](const int vertex){

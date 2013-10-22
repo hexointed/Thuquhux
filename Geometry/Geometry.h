@@ -31,19 +31,21 @@ namespace Geometry{
 	public:
 		explicit Triangle() = default;
 		Triangle(const Triangle& orig);
+		Triangle(Triangle&& orig);
 		Triangle(PointVector<>* sides);
 		explicit Triangle(PointVector<> a, PointVector<> b, PointVector<> c);
-		virtual ~Triangle() = default;
+		~Triangle();
 		
 		Triangle& move(const PointVector<> diff);
 		Triangle operator +(const PointVector<> a);
+		Triangle& operator =(const Triangle& a);
                 
 		PointVector<>& operator[](const int vertex);
 		
 		bool shares_side(const Triangle& with);
 		bool passesThrough(PointVector<>& max, PointVector<>& min);
 		std::pair<bool, PointVector<>> intersectionWith(Polygon<2> a);
-		std::pair<bool, std::vector<PointVector<>>> intersectionWith(Triangle a);
+		std::pair<bool, std::vector<PointVector<>>> intersectionWith(Triangle& a);
 		void draw();
 	
 	private:	
