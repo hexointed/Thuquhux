@@ -82,6 +82,8 @@ double NPC::updatePosition(deltaT){
 		srand (time(NULL));
 		int d = 2 + (rand() % 5);
 		PointVector<> u = PointVector<>::make_unit(d + RADIUS - CENTER_OF_GRAVITY);		
+		
+
 /*
 		static const int c = position.getdx();
 
