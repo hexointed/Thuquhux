@@ -1,6 +1,6 @@
 /* 
  * File:   PhysObject.cpp
- * Author: elias
+ * Author: Charles Gilljam
  * 
  * Created on April 28, 2013, 6:59 PM
  */
@@ -8,10 +8,19 @@
 #include "PhysObject.h"
 #include "Material.h"
 
-PhysObject::PhysObject() {
+PhysObject::PhysObject():
+	_material{},
+	_volume{1},
+	_position{0,0,0},
+	_velocity{0,0,0},
+	_surface(Geometry::def_param_axis_func, _position),
+	_rotation{0,0,0}
+{
 }
 
-PhysObject::PhysObject(const PhysObject& /*orig*/) {
+PhysObject::PhysObject(const PhysObject& /*orig*/):
+	_surface(Geometry::def_param_axis_func, _position)
+{
 }
 
 PhysObject::~PhysObject() {
@@ -32,11 +41,11 @@ PointVector<>& PhysObject::position(){
 PointVector<>& PhysObject::velocity(){
 	return _velocity;
 }
-/*
+
 Parametric_Surface& PhysObject::surface(){
-	return surface;
+	return _surface;
 }
-*/
+
 void PhysObject::calcVolume(){
 	
 }

@@ -10,7 +10,9 @@
 
 #include "../Geometry/PointVector.h"
 #include "Material.h"
-//#include "Geometry/Parametric_Surface.h"
+#include "../Geometry/Parametric_Surface.h"
+
+using Geometry::Parametric_Surface;
 
 class PhysObject {
 public:
@@ -30,7 +32,7 @@ public:
 	double& volume();
 	PointVector<>& position();
 	PointVector<>& velocity();
-	//Parametric_Surface& surface();
+	Parametric_Surface& surface();
 	
 	void calcVolume();
 
@@ -41,7 +43,7 @@ private:
 	double _volume;
 	PointVector<> _position;
 	PointVector<> _velocity;
-	//Parametric_Surface _surface;
+	Parametric_Surface _surface;
 	PointVector<> _rotation;
 	
 	

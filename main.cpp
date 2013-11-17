@@ -8,6 +8,7 @@
 #include "Geometry/PointVector.h"
 #include "Geometry/Geometry.h"
 #include "Geometry/Triangle_Mesh.h"
+#include "Physics/PhysObject.h"
 
 void InitLight();
 void InitGlut(int argc, char **argv);
@@ -41,8 +42,10 @@ PointVector<> pp[] = {PointVector<>(0.0,-0.3,-0.2), PointVector<>(-0.4,0.2,-0.2)
 
 PointVector<> tp{0,0,0};
 
-Triangle d(qq);
-Triangle e(pp);
+Triangle d{qq};
+Triangle e{pp};
+
+PhysObject phA{};
 
 double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];
 
@@ -198,7 +201,7 @@ void Display()
 	
 	glPushMatrix();
 		glTranslated(-1.0, 1, 0);
-        glRotatef(rot, 0,1,0);
+		glRotatef(rot, 0,1,0);
 		glScalef(0.125, 0.125, 0.125);
 		b->drawMesh();
 		c->drawMesh();
@@ -211,6 +214,7 @@ void Display()
 		glRotatef(rot, 0, 1, 0);
 		d.draw();
 		e.draw();
+		phA.surface().drawMesh();
 	glPopMatrix();
     glutSwapBuffers();
     
