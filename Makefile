@@ -1,5 +1,8 @@
 ###Thuquhux makefile###
 
+#Project name
+PROJ = thuquhux
+
 #Compiler
 CC = g++-4.8
 
@@ -11,39 +14,68 @@ CFLAGS = -c -std=c++0x -g $(ERRFLAGS)
 LIBS = -lglut -lGLU -lGLEW
 
 #Executable output file
-EXECUTABLE = ./thuquhux.elf
+EXECUTABLE = ./$(PROJ).elf
 
-all: thuquhux
+#Scource code
+SRC = main
 
-thuquhux: .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .PhysObject.o .PointVector.o .Material.o .Geometry.o .Triangle_Mesh.o
-	$(CC) .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .PhysObject.o .PointVector.o .Material.o .Geometry.o .Triangle_Mesh.o $(LIBS) -o $(EXECUTABLE)
+#Classes
+CLS = \
+TerrainGenerator \
+Simplexnoise \
+Physics/PhysObject \
+Physics/Material \
+Geometry/Triangle_Mesh \
+Geometry/Geometry
 
-.main.o: main.cpp
-	$(CC) $(CFLAGS) main.cpp -o .main.o
-	
-.Simplexnoise.o: Simplexnoise.cpp Simplexnoise.h
-	$(CC) $(CFLAGS) $< -o $@
-	
-.TerrainGenerator.o: TerrainGenerator.cpp TerrainGenerator.h
-	$(CC) $(CFLAGS) $< -o $@
-	
-.Parametric_Surface.o: ./Geometry/Parametric_Surface.cpp ./Geometry/Parametric_Surface.h
-	$(CC) $(CFLAGS) $< -o $@
-	
-.PhysObject.o: Physics/PhysObject.cpp Physics/PhysObject.h
-	$(CC) $(CFLAGS) $< -o $@
-	
-.PointVector.o: Geometry/PointVector.cpp Geometry/PointVector.h
-	$(CC) $(CFLAGS) $< -o $@
-	
-.Material.o: Physics/Material.cpp Physics/Material.h
-	$(CC) $(CFLAGS) $< -o $@
-	
-.Geometry.o: ./Geometry/Geometry.cpp ./Geometry/Geometry.h
-	$(CC) $(CFLAGS) $< -o $@
+#Classes with template methods
+CLT = \
+Geometry/Parametric_Surface
 
-.Triangle_Mesh.o: ./Geometry/Triangle_Mesh.cpp ./Geometry/Triangle_Mesh.h
-	$(CC) $(CFLAGS) $< -o $@
+#Template Classes
+TCL = \
+Geometry/PointVector
 
+all: $(EXECUTABLE)
+
+$(EXECUTABLE): $(addsuffix .o,$(CLS) $(SRC) $(CLT))
+	$(CC) $(addsuffix .o,$(CLS) $(SRC) $(CLT)) $(LIBS) -o $(EXECUTABLE)
+	
+define PROGRAM_SRC
+
+$(1).o: $(1).cpp
+	$(CC) $(CFLAGS) $(1).cpp -o $(1).o
+
+endef
+
+$(foreach standalone,$(SRC),$(eval $(call PROGRAM_SRC,$(standalone))))
+
+define PROGRAM_CLS
+
+$(1).o: $(1).cpp $(1).h
+	$(CC) $(CFLAGS) $(1).cpp -o $(1).o
+
+endef
+
+$(foreach class,$(CLS),$(eval $(call PROGRAM_CLS,$(class))))
+
+define PROGRAM_CLT
+
+$(1).o: $(1).cpp $(1).hpp $(1).h
+	$(CC) $(CFLAGS) $(1).cpp -o $(1).o
+
+endef
+
+$(foreach class,$(CLT),$(eval $(call PROGRAM_CLT,$(class))))
+
+define PROGRAM_TCL
+
+#$(1).o: $(1).hpp $(1).h
+#	$(CC) $(CFLAGS) $(1).hpp -o $(1).o
+
+endef
+
+$(foreach class,$(TCL),$(eval $(call PROGRAM_TCL,$(class))))
+	
 clean:
-	rm -f .*.o
+	rm -f *.o && rm -f ./*/*.o

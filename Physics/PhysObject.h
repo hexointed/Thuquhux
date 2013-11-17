@@ -10,6 +10,7 @@
 
 #include "../Geometry/PointVector.h"
 #include "Material.h"
+//#include "Geometry/Parametric_Surface.h"
 
 class PhysObject {
 public:
@@ -17,18 +18,32 @@ public:
     PhysObject(const PhysObject& orig);
     virtual ~PhysObject();
     
-    void Unite(PhysObject a);
-    void Intersect(PhysObject a);
-    void Complement(PhysObject a);
-    void Differentiate(PhysObject);
+    void unite(PhysObject a);
+    void intersect(PhysObject a);
+    void complement(PhysObject a);
+    void differentiate(PhysObject);
     
     bool isInObject(PointVector<> a);
 	
-	Material material;
-	double volume;
+	double& density();
+	Material& material();
+	double& volume();
+	PointVector<>& position();
+	PointVector<>& velocity();
+	//Parametric_Surface& surface();
+	
+	void calcVolume();
+
+	static void collision(PhysObject&,PhysObject&);
     
 private:
-	void setMass(double mass);
+	Material _material;
+	double _volume;
+	PointVector<> _position;
+	PointVector<> _velocity;
+	//Parametric_Surface _surface;
+	PointVector<> _rotation;
+	
 	
 };
 

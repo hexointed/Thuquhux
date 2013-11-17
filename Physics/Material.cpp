@@ -16,7 +16,11 @@ Material::Material() {
 Material::~Material() {
 }
 
-void Material::setDensity(double density){
-	inertialDens = density;
-	gravitationDens = density;
+double& Material::density() {
+	
+	return _density;
+}
+
+double& Material::restitution(){
+	return _restitution;
 }
