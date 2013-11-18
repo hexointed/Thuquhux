@@ -13,6 +13,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <utility>
 
 using Geometry::Parametric_Surface;
 
@@ -22,11 +23,26 @@ Parametric_Surface::~Parametric_Surface() {
 }
 
 void Parametric_Surface::Unite(Parametric_Surface a){
+	/* Deprecated *
 	PointVector<> rel_pos = a.position - position;
 	bound_box[0].set_min_comp(a.bound_box[0] + rel_pos);
 	bound_box[1].set_max_comp(a.bound_box[1] + rel_pos);
 	for(Triangle& tri: a.mesh_vertecies){
 		mesh_vertecies.add(Triangle{tri + rel_pos});
+	}
+	*/
+	
+	PointVector<> rel_pos = a.position - position;
+	bound_box[0].set_min_comp(a.bound_box[0] + rel_pos);
+	bound_box[1].set_max_comp(a.bound_box[1] + rel_pos);
+	for(Triangle& tri: mesh_vertecies){
+		std::vector<std::pair<bool, std::vector<PointVector<>>>> intersections;
+		for(Triangle& atri: a.mesh_vertecies){
+			auto collision = atri.intersectionWith(tri);
+			if(collision){
+				intersections.push_back(collision);
+			}
+		}
 	}
 }
 
