@@ -8,10 +8,10 @@ ERRFLAGS = -pedantic -Wall -Wextra -Wpointer-arith -Wcast-qual -fstrict-overflow
 CFLAGS = -c -std=c++0x $(ERRFLAGS)
 
 #Linked libraries
-LIBS = -lglut -lGLU -lGLEW
+LIBS = -lGL -lglut -lGLU -lGLEW
 
 #Executable output file
-EXECUTABLE = ./dist/Debug/GNU-Linux-x86/thuquhux
+EXECUTABLE = ./thuquhux.elf
 
 all: thuquhux
 
