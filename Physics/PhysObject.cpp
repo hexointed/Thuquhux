@@ -32,6 +32,12 @@ PointVector<>& PhysObject::position(){
 PointVector<>& PhysObject::velocity(){
 	return _velocity;
 }
+
+PointVector<>& PhysObject::acceleration(){
+	return _acceleration;
+}
+
+
 /*
 Parametric_Surface& PhysObject::surface(){
 	return surface;
@@ -39,6 +45,10 @@ Parametric_Surface& PhysObject::surface(){
 */
 void PhysObject::calcVolume(){
 	
+}
+
+void PhysObject::accelerate(PointVector<> a){
+	_acceleration = _acceleration + a;
 }
 
 
