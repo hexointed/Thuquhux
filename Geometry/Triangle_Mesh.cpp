@@ -9,6 +9,32 @@
 
 using Geometry::Triangle_Mesh;
 
+std::vector<Triangle_Mesh> Triangle_Mesh::intersection(Triangle_Mesh a){
+	std::vector<const Element*> intersecting_elements;
+	for(const Element& e: elem){
+		for(const Element& ae: a.elem){
+			auto collision = e.tri->intersectionWith(*ae.tri);
+			if(collision.first){
+				intersecting_elements.push_back(&e);
+			}
+		}
+	}
+	std::vector<Triangle_Mesh> results;
+	if(intersecting_elements.size() < 1){
+		return results;
+	}
+	std::vector<Element> tmp_elem{*intersecting_elements[intersecting_elements.size()-1]};
+	intersecting_elements.pop_back();
+	while(tmp_elem.size()){
+		static Element current;
+		current = tmp_elem[tmp_elem.size()-1];
+		tmp_elem.pop_back();
+		for(const Element* e: intersecting_elements){
+			
+		}
+	}
+}
+
 long int Triangle_Mesh::size(){
 	return elem.size();
 }
@@ -106,6 +132,12 @@ bool Triangle_Mesh::Element::single_valid_connection(){
 	Triangle_Mesh a;
 	for(Triangle b: a){
 	
+	}
+}
+
+bool Triangle_Mesh::Element::connected_with(const Element& e){
+	for(const Element* ptr: connected){
+		
 	}
 }
 

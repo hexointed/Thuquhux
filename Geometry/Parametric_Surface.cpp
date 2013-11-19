@@ -39,7 +39,7 @@ void Parametric_Surface::Unite(Parametric_Surface a){
 		std::vector<std::pair<bool, std::vector<PointVector<>>>> intersections;
 		for(Triangle& atri: a.mesh_vertecies){
 			auto collision = atri.intersectionWith(tri);
-			if(collision){
+			if(collision.first){
 				intersections.push_back(collision);
 			}
 		}

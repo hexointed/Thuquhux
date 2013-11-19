@@ -30,6 +30,7 @@ namespace Geometry{
 		template<template <typename> class Container>
 		static Triangle_Mesh make_mesh(Container<PointVector<> > mesh_vertecies);
 		
+		std::vector<Triangle_Mesh> intersection(Triangle_Mesh a);
 		Triangle& operator[](const int i);
 		long int size();
 		
@@ -50,11 +51,11 @@ namespace Geometry{
 			Element();
 			Element& first_valid_connection();
 			bool single_valid_connection();
+			bool connected_with(const Element& e);
 			
 		public:
 			Triangle* tri;
 			Element* connected[3];
-			short connections;
 			
 		public:
 			struct Elementcompare{
