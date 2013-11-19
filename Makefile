@@ -78,4 +78,4 @@ endef
 $(foreach class,$(TCL),$(eval $(call PROGRAM_TCL,$(class))))
 	
 clean:
-	rm $(addsuffix .o,$(SRC) $(CLS) $(CLT))
+	- rm $(addsuffix .o,$(SRC) $(CLS) $(CLT)) $(addsuffix .h.gch,$(TCL))
