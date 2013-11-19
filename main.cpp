@@ -5,7 +5,7 @@
 #include "Simplexnoise.h"
 #include "TerrainGenerator.h"
 #include "Geometry/Parametric_Surface.h"
-#include "PointVector.h"
+#include "Geometry/PointVector.h"
 #include "Geometry/Geometry.h"
 
 void InitLight();
@@ -38,6 +38,8 @@ Parametric_Surface *c = new Parametric_Surface(Geometry::def_param_axis_func);
 PointVector<> qq[] = {PointVector<>(0.5,0.2,-3.50), PointVector<>(0.1,-0.3,0), PointVector<>(-0.2,0.1,0)};
 PointVector<> pp[] = {PointVector<>(0.0,-0.3,-0.2), PointVector<>(-0.4,0.2,-0.2), PointVector<>(-0.3,-0.4,-0.2)};
 
+PointVector<> tp{0,0,0};
+
 Triangle d(qq);
 Triangle e(pp);
 
@@ -47,10 +49,6 @@ int main(int argc, char **argv)
 {	
     srand(time(0));
     a->genGround(g_width, g_depth,arot,0, vertecies);
-	
-	std::cout<< PointVector<>::mul_cross({0.5,0.2,-3.5}, {0,-0.3,-0.2}).get(0)<<std::endl;
-	std::cout<< PointVector<>::mul_cross({0.5,0.2,-3.5}, {0,-0.3,-0.2}).get(1)<<std::endl;
-	std::cout<< PointVector<>::mul_cross({0.5,0.2,-3.5}, {0,-0.3,-0.2}).get(2)<<std::endl;
     
     InitGlut(argc, argv);
     InitLight();
@@ -132,13 +130,29 @@ void KeyboardHandler(unsigned char key, int /*x*/, int /*y*/)
 	  {
 		  c->Unite(*b);
 	  } break;
-	  case 'k':
+	  case 'b':
 	  {
 		  tpos += 0.0125;
 	  } break;
-	  case 'j':
+	  case 'v':
 	  {
 		  tpos -= 0.0125;
+	  } break;
+	  case 'j':
+	  {
+		  tp.setdx(tp.getdx() - 0.125123);
+	  } break;
+	  case 'l':
+	  {
+		  tp.setdx(tp.getdx() + 0.125123);
+	  } break;
+	  case 'k':
+	  {
+		  tp.setdy(tp.getdy() - 0.125123);
+	  } break;
+	  case 'i':
+	  {
+		  tp.setdy(tp.getdy() + 0.125127);
 	  } break;
       default:
       {} break;
@@ -151,18 +165,11 @@ void Display()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
 	
-	if(d.collisionWith(e) && ! c->isIntersecting(*b)){
-		glClearColor(1,0,0,0);
-	}else if(!d.collisionWith(e) && ! c->isIntersecting(*b)){
-		glClearColor(0,0,1,0);
-	}else if(!d.collisionWith(e)){
-		glClearColor(0,1,1,0);
-	}else{
-		glClearColor(1,0,1,0);
-	}
-	c->position->setdx(cpos);
-	
+	c->position.setdx(cpos);
     e.vertecies[1].set(0,tpos);
+	
+	double color[3] {c->pointIsWithin(tp)?1.0:0.0, c->isIntersecting(*b)?1.0:0.0, d.intersectionWith(e).first?1.0:0.0};
+	glClearColor(color[0], color[1], color[2], 0);
 	
     GLfloat position[] = {(float)cos(lpos),(float)sin(lpos),0,1};
     GLfloat position2[] = {(float)-cos(lpos),(float)-sin(lpos),0,1};
@@ -194,6 +201,9 @@ void Display()
 		glScalef(0.125, 0.125, 0.125);
 		b->drawMesh();
 		c->drawMesh();
+		glBegin(GL_POINTS);
+			glVertex3dv((double*)&tp);
+		glEnd();
 	glPopMatrix();
 	
 	glPushMatrix();

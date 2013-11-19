@@ -119,4 +119,4 @@ namespace Boolarr{
 
 #endif	/* POINTVECTOR_H */
 
-#include "PointVector.cpp"
+#include "PointVector.hpp"

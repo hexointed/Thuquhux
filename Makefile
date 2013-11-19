@@ -1,49 +1,81 @@
 ###Thuquhux makefile###
 
+#Project name
+PROJ = thuquhux
+
 #Compiler
-CC = g++
+CC = g++-4.8
 
 #Flags
 ERRFLAGS = -pedantic -Wall -Wextra -Wpointer-arith -Wcast-qual -fstrict-overflow -Wstrict-overflow=3
-CFLAGS = -c -std=c++0x $(ERRFLAGS)
+CFLAGS = -c -std=c++11 $(ERRFLAGS)
 
 #Linked libraries
 LIBS = -lglut -lGLU -lGLEW
 
 #Executable output file
-EXECUTABLE = ./dist/Debug/GNU-Linux-x86/thuquhux
+EXECUTABLE = ./$(PROJ).elf
 
-all: thuquhux
+#Scource code
+SRC = main
 
-thuquhux: .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .PhysObject.o .PointVector.o .Material.o .Geometry.o .Graph.o
-	$(CC) .main.o .Simplexnoise.o .TerrainGenerator.o .Parametric_Surface.o .PhysObject.o .PointVector.o .Material.o .Geometry.o .Graph.o $(LIBS) -o $(EXECUTABLE)
+#Classes
+CLS = \
+TerrainGenerator \
+Simplexnoise \
+Physics/PhysObject \
+Physics/Material \
+Geometry/Graph \
+Geometry/Geometry
 
-.main.o: main.cpp
-	$(CC) $(CFLAGS) main.cpp -o .main.o
-	
-.Simplexnoise.o: Simplexnoise.cpp Simplexnoise.h
-	$(CC) $(CFLAGS) $< -o $@
-	
-.TerrainGenerator.o: TerrainGenerator.cpp TerrainGenerator.h
-	$(CC) $(CFLAGS) $< -o $@
-	
-.Parametric_Surface.o: ./Geometry/Parametric_Surface.cpp ./Geometry/Parametric_Surface.h
-	$(CC) $(CFLAGS) $< -o $@
-	
-.PhysObject.o: PhysObject.cpp PhysObject.h
-	$(CC) $(CFLAGS) $< -o $@
-	
-.PointVector.o: PointVector.cpp PointVector.h
-	$(CC) $(CFLAGS) $< -o $@
-	
-.Material.o: Material.cpp Material.h
-	$(CC) $(CFLAGS) $< -o $@
-	
-.Graph.o: Geometry/Graph.cpp Geometry/Graph.h
-	$(CC) $(CFLAGS) $< -o $@
-	
-.Geometry.o: ./Geometry/Geometry.cpp ./Geometry/Geometry.h
-	$(CC) $(CFLAGS) $< -o $@
+#Classes with template methods
+CLT = \
+Geometry/Parametric_Surface
 
+#Template Classes
+TCL = \
+Geometry/PointVector
+
+all: $(EXECUTABLE)
+
+$(EXECUTABLE): $(addsuffix .o,$(CLS) $(SRC) $(CLT)) $(addsuffix .h.gch,$(TCL))
+	$(CC) $(addsuffix .o,$(CLS) $(SRC) $(CLT)) $(LIBS) -o $(EXECUTABLE)
+	
+define PROGRAM_SRC
+
+$(1).o: $(1).cpp
+	$(CC) $(CFLAGS) $(1).cpp -o $(1).o
+
+endef
+
+$(foreach standalone,$(SRC),$(eval $(call PROGRAM_SRC,$(standalone))))
+
+define PROGRAM_CLS
+
+$(1).o: $(1).cpp $(1).h
+	$(CC) $(CFLAGS) $(1).cpp -o $(1).o
+
+endef
+
+$(foreach class,$(CLS),$(eval $(call PROGRAM_CLS,$(class))))
+
+define PROGRAM_CLT
+
+$(1).o: $(1).cpp $(1).hpp $(1).h
+	$(CC) $(CFLAGS) $(1).cpp -o $(1).o
+
+endef
+
+$(foreach class,$(CLT),$(eval $(call PROGRAM_CLT,$(class))))
+
+define PROGRAM_TCL
+
+$(1).h.gch: $(1).hpp $(1).h
+	$(CC) $(CFLAGS) $(1).h
+
+endef
+
+$(foreach class,$(TCL),$(eval $(call PROGRAM_TCL,$(class))))
+	
 clean:
-	rm -f .*.o
+	rm $(addsuffix .o,$(SRC) $(CLS) $(CLT))

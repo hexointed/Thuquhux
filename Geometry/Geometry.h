@@ -8,33 +8,38 @@
 #ifndef GEOMETRY_H
 #define	GEOMETRY_H
 
-#include "../PointVector.h"
+#include "PointVector.h"
+#include <vector>
 
 namespace Geometry{
 	
 	template<const int Sides, const int Dim = 3>
 	class Polygon{
 	public:
-		Polygon();
+		friend class Triangle;
+		
+		Polygon() = default;
+		template<typename Head, typename... Trail>
+		Polygon(Head head, Trail... trail);
 		Polygon(PointVector<Dim>* sides);
-		//Polygon(const Polygon<Sides, Dim>& orig);
-		virtual ~Polygon();
+		virtual ~Polygon() = default;
 		
 		PointVector<Dim> vertecies[Sides];
 	};
 	
-	class Triangle : public Polygon<3> {
+	class Triangle {
 	public:
+		Triangle() = default;
 		Triangle(PointVector<>* sides);
-		//Triangle(const Triangle& orig);
-		virtual ~Triangle();
+		Triangle(PointVector<> a, PointVector<> b, PointVector<> c);
+		virtual ~Triangle() = default;
 		
 		bool passesThrough(PointVector<>& max, PointVector<>& min);
-		bool collisionWith(Triangle& a);
+		std::pair<bool, PointVector<>> intersectionWith(Polygon<2> a);
+		std::pair<bool, std::vector<PointVector<>>> intersectionWith(Triangle a);
 		void draw();
 		
-	private:
-		bool coll(Triangle& a);
+		PointVector<> vertecies[3];
 	};
 }
 
