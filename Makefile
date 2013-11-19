@@ -26,7 +26,8 @@ Simplexnoise \
 Physics/PhysObject \
 Physics/Material \
 Geometry/Graph \
-Geometry/Geometry
+Geometry/Geometry \
+NPC/NPC
 
 #Classes with template methods
 CLT = \
