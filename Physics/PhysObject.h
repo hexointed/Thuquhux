@@ -10,7 +10,9 @@
 
 #include "../Geometry/PointVector.h"
 #include "Material.h"
-//#include "Geometry/Parametric_Surface.h"
+#include "../Geometry/Parametric_Surface.h"
+
+using Geometry::Parametric_Surface;
 
 class PhysObject {
 public:
@@ -30,11 +32,12 @@ public:
 	double& volume();
 	PointVector<>& position();
 	PointVector<>& velocity();
+
 	PointVector<>& acceleration();
 
 	std::vector<std::pair<PointVector<> , double>>& impulses();
 
-	//Parametric_Surface& surface();
+	Parametric_Surface& surface();
 	
 	void calcVolume();
 	void accelerate(PointVector<> a);
@@ -48,11 +51,15 @@ private:
 	double _volume;
 	PointVector<> _position;
 	PointVector<> _velocity;
+<<<<<<< HEAD
 	PointVector<> _acceleration;
 
 	std::vector<std::pair<PointVector<> , double>> _impulses;
 
 	//Parametric_Surface _surface;
+=======
+	Parametric_Surface _surface;
+>>>>>>> origin/phys
 	PointVector<> _rotation;
 	
 	

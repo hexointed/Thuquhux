@@ -10,6 +10,7 @@
 
 #include "PointVector.h"
 #include "Geometry.h"
+#include "Triangle_Mesh.h"
 #include <vector>
 
 namespace Geometry{
@@ -51,7 +52,7 @@ namespace Geometry{
 		void calculate_mesh(Functor pfunc);
 		
 	private:
-		std::vector<Triangle> mesh_vertecies;
+		Geometry::Triangle_Mesh mesh_vertecies;
 		
 		int mesh_detail;
 		const int mesh_length;

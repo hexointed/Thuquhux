@@ -7,6 +7,8 @@
 #include "Geometry/Parametric_Surface.h"
 #include "Geometry/PointVector.h"
 #include "Geometry/Geometry.h"
+#include "Geometry/Triangle_Mesh.h"
+#include "Physics/PhysObject.h"
 
 void InitLight();
 void InitGlut(int argc, char **argv);
@@ -40,13 +42,15 @@ PointVector<> pp[] = {PointVector<>(0.0,-0.3,-0.2), PointVector<>(-0.4,0.2,-0.2)
 
 PointVector<> tp{0,0,0};
 
-Triangle d(qq);
-Triangle e(pp);
+Triangle d{qq};
+Triangle e{pp};
+
+PhysObject phA{};
 
 double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];
 
 int main(int argc, char **argv)
-{	
+{
     srand(time(0));
     a->genGround(g_width, g_depth,arot,0, vertecies);
     
@@ -166,7 +170,7 @@ void Display()
     glMatrixMode(GL_MODELVIEW);
 	
 	c->position.setdx(cpos);
-    e.vertecies[1].set(0,tpos);
+	e.move({tpos,0,0});
 	
 	double color[3] {c->pointIsWithin(tp)?1.0:0.0, c->isIntersecting(*b)?1.0:0.0, d.intersectionWith(e).first?1.0:0.0};
 	glClearColor(color[0], color[1], color[2], 0);
@@ -197,7 +201,7 @@ void Display()
 	
 	glPushMatrix();
 		glTranslated(-1.0, 1, 0);
-        glRotatef(rot, 0,1,0);
+		glRotatef(rot, 0,1,0);
 		glScalef(0.125, 0.125, 0.125);
 		b->drawMesh();
 		c->drawMesh();
@@ -210,6 +214,7 @@ void Display()
 		glRotatef(rot, 0, 1, 0);
 		d.draw();
 		e.draw();
+		phA.surface().drawMesh();
 	glPopMatrix();
     glutSwapBuffers();
     

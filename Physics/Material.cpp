@@ -7,13 +7,17 @@
 
 #include "Material.h"
 
-Material::Material() {
+Material::Material():
+	_density{1},
+	_restitution{}
+{
 }
 
 //Material::Material(const Material& orig) {
 //}
 
-Material::~Material() {
+Material::~Material()
+{
 }
 
 double& Material::density() {
