@@ -29,8 +29,8 @@ namespace Geometry{
 			b. tri = Triangle{	mesh_vertecies[((i+1)*md + n) % ml], 
 								mesh_vertecies[(i* md + n  + 1) % ml],
 								mesh_vertecies[((i+1)*md + n + 1) % ml]};
-			result.elem.push_back(a);
-			result.elem.push_back(b);
+			result.elem.insert(a);
+			result.elem.insert(b);
 			}
 		}
 		return result;

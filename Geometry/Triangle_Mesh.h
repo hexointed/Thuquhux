@@ -29,13 +29,14 @@ namespace Geometry{
 		class Element{
 		public:
 			Element();
+			Element(Triangle* t);
 			Element& first_valid_connection();
 			bool single_valid_connection();
 			bool connected_with(const Element& e);
 			
 		public:
 			Triangle* tri;
-			Element* connected[3];
+			Triangle* connected[3];
 			
 		public:
 			struct Elementcompare{
@@ -74,7 +75,7 @@ namespace Geometry{
 		void remove(const Triangle& t);
 		
 	private:
-		std::vector<Element> elem;
+		Element_set elem;
 		
 	private:
 		Triangle_Mesh construct_mesh(Element a, Element b, Element_map c);
@@ -95,9 +96,6 @@ namespace Geometry{
 			Iterator	operator++(int);
 			Iterator	operator--();
 			Iterator	operator--(int);
-			Iterator	operator +(int p) const;
-			Iterator	operator -(int p) const;
-			int			operator -(Iterator i) const;
 			bool		operator!=(Iterator i) const;
 			
 		private:
