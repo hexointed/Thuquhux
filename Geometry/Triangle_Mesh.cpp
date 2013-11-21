@@ -8,7 +8,7 @@
 #include "Parametric_Surface.h"
 
 using Geometry::Triangle_Mesh;
-
+/*
 std::vector<Triangle_Mesh> Triangle_Mesh::intersection(Triangle_Mesh a){
 	std::vector<const Element*> intersecting_elements;
 	for(const Element& e: elem){
@@ -33,7 +33,7 @@ std::vector<Triangle_Mesh> Triangle_Mesh::intersection(Triangle_Mesh a){
 			
 		}
 	}
-}
+}*/
 
 long int Triangle_Mesh::size(){
 	return elem.size();
@@ -137,8 +137,10 @@ bool Triangle_Mesh::Element::single_valid_connection(){
 
 bool Triangle_Mesh::Element::connected_with(const Element& e){
 	for(const Element* ptr: connected){
-		
+		if(&e == ptr)
+			return true;
 	}
+	return false;
 }
 
 Geometry::Triangle& Triangle_Mesh::Iterator::operator *(){

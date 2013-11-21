@@ -20,7 +20,7 @@ namespace Geometry{
 		int ml = md*md;
 		Triangle_Mesh result;
 		for(int i = 0; i < md; ++i){
-			for(int n = 0; n < md; ++n){		//"connect" the points, so that they can be drawn using Triangle methods
+			for(int n = 0; n < md; ++n){	//"connect" the points, so that they can be drawn using Triangle methods
 			Element a;
 			a.tri = Triangle{	mesh_vertecies[(i* md + n) % ml], 
 								mesh_vertecies[(i* md + n  + 1) % ml],
