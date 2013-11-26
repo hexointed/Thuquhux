@@ -1,49 +1,63 @@
 #include "NPC.h"
 
-static PointVector<> PLACEHOLDER_PLAYER_POSITION{};
-std::vector<PointVector<>> PLACEHOLDER_LINE_OF_TRAVEL;
-PointVector<> GRAVITY_CENTER;
-double RADIUS;
+static PointVector<> PLACEHOLDER_PLAYER_POSITION{70,15,35};
+std::vector<PointVector<>> PLACEHOLDER_LINE_OF_TRAVEL{PLACEHOLDER_PLAYER_POSITION};
+PointVector<> GRAVITY_CENTER{0,0,0};
+double RADIUS = 25.0;
 
-void NPC::makePosition(){
+NPC::NPC(){
+	position = {4,600,17845};
+	//position = makePosition();
+	direction = 0; //randomBool();
+	velocityx = 8; //makeVelocityx();
+	velocityy = 3; //makeVelocityy();
+	velocityz = 4; //makeVelocityz();
+	climbingAbilityx = 1.0/0.0; //makeClimbingAbilityx();
+	climbingAbilityy = 1.0/0.0; //makeClimbingAbilityy();
+	climbingAbilityz = 1.0/0.0; //makeClimbingAbilityz();
+}
+
+PointVector<> NPC::makePosition(){
 	srand(time(0));
 	position.setdx(rand());
 	position.setdy(rand());
 	position.setdz(rand());
+
+	return position;
 }
 
 
-double NPC::climbingAbilityx(){
+double NPC::makeClimbingAbilityx(){
 	return rand() % 11;
 }
 
 
-double NPC::climbingAbilityy(){
+double NPC::makeClimbingAbilityy(){
 	return rand() % 11;
 }
 
 
-double NPC::climbingAbilityz(){
+double NPC::makeClimbingAbilityz(){
 	return rand() % 11;
 }
 
 
-double NPC::velocityx(){
+int NPC::makeVelocityx(){
 	return rand() % 30;
 }
 
 
-double NPC::velocityy(){
+int NPC::makeVelocityy(){
 	return rand() % 30;
 }
 
 
-double NPC::velocityz(){
+int NPC::makeVelocityz(){
 	return rand() % 30;
 }
 
 
-bool randomBool(){
+bool NPC::randomBool(){
 	return rand() % 2;
 }
 
@@ -53,46 +67,48 @@ int NPC::randomInt(){
 }
 
 
-double NPC::updatePosition(double deltaT){
+
+PointVector<> NPC::updatePosition(double deltaT){
 	
 	double infinity = 1.0/0.0;
+	
+	double sx = deltaT*velocityx;
+	double sy = deltaT*velocityy;
+	double sz = deltaT*velocityz;
 
-	double sx = deltaT*velocityx();
-	double sy = deltaT*velocityy();
-	double sz = deltaT*velocityz();
 
-
-	if(randomInt() == 2){
+	/*if(randomInt() == 2){
 		position.setdx(position.getdx());
 		position.setdy(position.getdy());
 		position.setdz(position.getdz());
  	}
 	
-	else{
-		int k = randomBool() == 1 ? 1 : -1;
+	else{*/
+		int k = direction == 1 ? 1 : -1;
 
 		if(GRAVITY_CENTER.getdx() > position.getdx()){
-			CAx = infinity;
+			climbingAbilityx = infinity;
 		}
 	
 	
 		if(GRAVITY_CENTER.getdy() > position.getdy()){
-			CAy = infinity;
+			climbingAbilityy = infinity;
 		} 
 
 
 		if(GRAVITY_CENTER.getdz() > position.getdz()){
-			CAz = infinity;
+			climbingAbilityz = infinity;
 		}
 
-		for(;;){
-			int p = 1;
-			int q = 1;
-			int r = 1;
+		
+			static int p = 0;
+			static int q = 0;
+			static int r = 0;
+
 		
 			if(position.getdx() != PLACEHOLDER_LINE_OF_TRAVEL[p].getdx()){
 
-				if(sx<CAx){
+				if(sx<climbingAbilityx){
 
 					if((PLACEHOLDER_LINE_OF_TRAVEL[p].getdx() - (position.getdx() + k*sx)) >= 0){
 						position.setdx(position.getdx() + k*sx);
@@ -110,13 +126,13 @@ double NPC::updatePosition(double deltaT){
 			}
 			
 			else{
-				p++;
+				position.setdx(position.getdx());
 			}
 			
 			
 			if(position.getdy() != PLACEHOLDER_LINE_OF_TRAVEL[q].getdy()){
 
-				if(sy<CAy){
+				if(sy<climbingAbilityy){
 
 					if((PLACEHOLDER_LINE_OF_TRAVEL[q].getdy() - (position.getdy() + k*sy)) >= 0){
 						position.setdy(position.getdy() + k*sy);
@@ -134,13 +150,13 @@ double NPC::updatePosition(double deltaT){
 			}
 			
 			else{
-				q++;
+				position.setdy(position.getdy());
 			}			
 		
 		
 			if(position.getdz() != PLACEHOLDER_LINE_OF_TRAVEL[r].getdz()){
 
-				if(sz<CAz){
+				if(sz<climbingAbilityz){
 
 					if((PLACEHOLDER_LINE_OF_TRAVEL[r].getdz() - (position.getdz() + k*sz)) >= 0){
 						position.setdz(position.getdz() + k*sz);
@@ -158,17 +174,16 @@ double NPC::updatePosition(double deltaT){
 			}
 			
 			else{
-				r++;
+				position.setdz(position.getdz());
 			}		
 		
 		
-		}
+		
 		
 		
 
-	return position.getdx();
-	return position.getdy();
-	return position.getdz();
-	}
-
+	
+	//}
+	return position;
+}
 

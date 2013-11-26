@@ -7,6 +7,7 @@
 #include "Geometry/Parametric_Surface.h"
 #include "Geometry/PointVector.h"
 #include "Geometry/Geometry.h"
+#include "NPC/NPC.h"
 
 void InitLight();
 void InitGlut(int argc, char **argv);
@@ -43,10 +44,12 @@ PointVector<> tp{0,0,0};
 Triangle d(qq);
 Triangle e(pp);
 
+NPC joline;
+
 double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];
 
 int main(int argc, char **argv)
-{	
+{
     srand(time(0));
     a->genGround(g_width, g_depth,arot,0, vertecies);
     
@@ -164,6 +167,9 @@ void Display()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
+	
+	joline.updatePosition(0.5);
+	std::cout<<joline.position.getdx()<<std::endl;
 	
 	c->position.setdx(cpos);
     e.vertecies[1].set(0,tpos);

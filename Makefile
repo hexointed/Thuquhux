@@ -11,7 +11,7 @@ ERRFLAGS = -pedantic -Wall -Wextra -Wpointer-arith -Wcast-qual -fstrict-overflow
 CFLAGS = -c -std=c++11 $(ERRFLAGS)
 
 #Linked libraries
-LIBS = -lglut -lGLU -lGLEW
+LIBS = -lGL -lglut -lGLU -lGLEW
 
 #Executable output file
 EXECUTABLE = ./$(PROJ).elf

@@ -1,40 +1,44 @@
 #ifndef NPC_H
 #define NPC_H
 
-#include "NPC.h"
 #include "../Geometry/PointVector.h"
 #include <time.h>
 #include "../Physics/PhysObject.h"
 #include <vector>
 #include <iostream>
-#define _USE_MATH_DEFINES
 
 class NPC{
 
 public:
 
+	NPC();
+	PointVector<> updatePosition(double deltaT);
+	PointVector<> position;
 private:
 
-	
-	PointVector<> position;
-	double CAx; //Climbing Ability
-	double CAy;
-	double CAz;
-	
+	bool direction;
 	bool randomBool(); /*NPC moving towards or away from player*/
 	int randomInt();
 
-	double velocityx();
-	double velocityy();
-	double velocityz();
+	int velocityx;
+	int velocityy;
+	int velocityz;
 
-	double climbingAbilityx();
-	double climbingAbilityy();
-	double climbingAbilityz();
+	int makeVelocityx();
+	int makeVelocityy();
+	int makeVelocityz();
+
+	double climbingAbilityx;
+	double climbingAbilityy;
+	double climbingAbilityz;
+
+	double makeClimbingAbilityx();
+	double makeClimbingAbilityy();
+	double makeClimbingAbilityz();
 
 	double getPosition(); 
-	void makePosition();
-	double updatePosition(double deltaT);
+	PointVector<> makePosition();
+
 };
 
 #endif /*NPC_H*/
