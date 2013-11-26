@@ -9,6 +9,7 @@
 #include "Geometry/Geometry.h"
 #include "Geometry/Triangle_Mesh.h"
 #include "Physics/PhysObject.h"
+#include "Physics/PhysHandler.h"
 
 void InitLight();
 void InitGlut(int argc, char **argv);
@@ -45,8 +46,6 @@ PointVector<> tp{0,0,0};
 Triangle d{qq};
 Triangle e{pp};
 
-PhysObject phA{};
-
 double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];
 
 int main(int argc, char **argv)
@@ -68,7 +67,9 @@ int main(int argc, char **argv)
     
     glClearColor(0,0,0,0);
     glPointSize(10);
-
+	
+	PhysObject{};
+	
     glutMainLoop();   
    
   return 0;
@@ -169,6 +170,7 @@ void Display()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
 	
+	PhysObject::default_handler.handle(0.05);
 	c->position.setdx(cpos);
 	e.move({tpos,0,0});
 	
@@ -214,7 +216,7 @@ void Display()
 		glRotatef(rot, 0, 1, 0);
 		d.draw();
 		e.draw();
-		phA.surface().drawMesh();
+		PhysObject::default_handler.physObjects[0].surface().drawMesh();
 	glPopMatrix();
     glutSwapBuffers();
     

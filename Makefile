@@ -11,7 +11,7 @@ ERRFLAGS = -pedantic -Wall -Wextra -Wpointer-arith -Wcast-qual -fstrict-overflow
 CFLAGS = -c -std=c++0x -g $(ERRFLAGS)
 
 #Linked libraries
-LIBS = -lglut -lGLU -lGLEW
+LIBS = -lGL -lglut -lGLU -lGLEW
 
 #Executable output file
 EXECUTABLE = ./$(PROJ).elf
@@ -25,6 +25,7 @@ TerrainGenerator \
 Simplexnoise \
 Physics/PhysObject \
 Physics/Material \
+Physics/PhysHandler \
 Geometry/Triangle_Mesh \
 Geometry/Geometry
 

@@ -11,12 +11,15 @@
 #include "../Geometry/PointVector.h"
 #include "Material.h"
 #include "../Geometry/Parametric_Surface.h"
+#include "PhysHandler.h"
 
 using Geometry::Parametric_Surface;
 
 class PhysObject {
 public:
-	PhysObject();
+	static PhysHandler default_handler;
+
+	PhysObject(Parametric_Surface surface = {Geometry::def_param_axis_func}, PhysHandler handler = default_handler, PointVector<> velocity = {0,0,0});
 	PhysObject(const PhysObject& orig);
 	virtual ~PhysObject();
     
@@ -41,7 +44,7 @@ public:
 	
 	void calcVolume();
 	void accelerate(PointVector<> a);
-	void addImpulse(Pointvector a, double time)	
+	void addImpulse(PointVector<> a, double time);
 	
 	
 	static void collision(PhysObject&,PhysObject&);
@@ -49,18 +52,17 @@ public:
 private:
 	Material _material;
 	double _volume;
-	PointVector<> _position;
 	PointVector<> _velocity;
-<<<<<<< HEAD
+
 	PointVector<> _acceleration;
 
 	std::vector<std::pair<PointVector<> , double>> _impulses;
 
-	//Parametric_Surface _surface;
-=======
 	Parametric_Surface _surface;
->>>>>>> origin/phys
+
 	PointVector<> _rotation;
+
+public:
 	
 	
 };
