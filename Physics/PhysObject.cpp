@@ -55,6 +55,10 @@ PointVector<>& PhysObject::acceleration(){
 	return _acceleration;
 }
 
+std::pair<PointVector<>, double> PhysObject::rotation(){
+	return _rotation;
+}
+
 std::vector<std::pair<PointVector<> , double>>& PhysObject::impulses(){
 	return _impulses;
 }
@@ -79,5 +83,6 @@ void PhysObject::accelerate(PointVector<> a){
 void PhysObject::collision(PhysObject& obj1,PhysObject& obj2){
 	obj1._velocity = (obj1._velocity.getMagnitude()*(obj1.density()*obj1._volume-obj2.density()*obj2._volume)+2.0*obj2.density()*obj2._volume*obj2._velocity.getMagnitude())/(obj1._volume*obj1.density() + obj2._volume*obj2.density()) * obj1._velocity.reflect(2.0*obj1.position()-obj2.position()).make_unit();
 	obj2._velocity = (obj2._velocity.getMagnitude()*(obj2.density()*obj2._volume-obj1.density()*obj1._volume)+2.0*obj1.density()*obj1._volume*obj1._velocity.getMagnitude())/(obj2._volume*obj2.density() + obj1._volume*obj1.density()) * obj2._velocity.reflect(2.0*obj2.position()-obj1.position()).make_unit();
+
 }
 

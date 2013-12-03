@@ -36,6 +36,7 @@ public:
 	double& volume();
 	PointVector<>& position();
 	PointVector<>& velocity();
+	std::pair<PointVector<>, double> rotation();
 
 	PointVector<>& acceleration();
 
@@ -56,14 +57,10 @@ private:
 	Material _material;
 	double _volume;
 	PointVector<> _velocity;
-
 	PointVector<> _acceleration;
-
 	std::vector<std::pair<PointVector<> , double>> _impulses;
-
 	Parametric_Surface _surface;
-
-	PointVector<> _rotation;
+	std::pair<PointVector<>, double> _rotation;
 
 public:
 	

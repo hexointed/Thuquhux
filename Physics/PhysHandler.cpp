@@ -14,6 +14,13 @@ PhysHandler::PhysHandler(){
 }
 
 void PhysHandler::handle(double time){
+	for(unsigned int i = 0; i < physObjects.size() ; i++){
+		for(unsigned int j = i+1 ; j < physObjects.size() ; j++){
+			if(physObjects[i].surface().isIntersecting(physObjects[j].surface())){
+				PhysObject::collision(physObjects[i],physObjects[j]);
+			}
+		}
+	}
 	
 	for(PhysObject& i : physObjects){
 		/*
@@ -28,12 +35,11 @@ void PhysHandler::handle(double time){
 		}
 		*/
 		
-
-		
 		i.position() = i.position() + i.velocity() * time + i.acceleration()*time*time / 2.0;
 		i.velocity() = i.velocity() + i.acceleration() * time;
 		i.acceleration() = PointVector<>{0,0,2};
-
+		
+		i.surface().rotate(i.rotation().first, i.rotation().second*time);
 	}
 
 
