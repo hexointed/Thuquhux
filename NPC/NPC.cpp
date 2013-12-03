@@ -1,15 +1,15 @@
 #include "NPC.h"
 
-static PointVector<> PLACEHOLDER_PLAYER_POSITION{70,15,35};
-std::vector<PointVector<>> PLACEHOLDER_LINE_OF_TRAVEL{PLACEHOLDER_PLAYER_POSITION};
+static PointVector<> PLACEHOLDER_PLAYER_POSITION{80,90,35};
+static PointVector<> PLACEHOLDER_TMP{130, 50, 28};
+std::vector<PointVector<>> PLACEHOLDER_LINE_OF_TRAVEL{PLACEHOLDER_PLAYER_POSITION, PLACEHOLDER_TMP};
 PointVector<> GRAVITY_CENTER{0,0,0};
 double RADIUS = 25.0;
 
 NPC::NPC(){
-	position = {4,600,17845};
-	//position = makePosition();
-	direction = 0; //randomBool();
-	velocityx = 8; //makeVelocityx();
+	position = {30,4,4};//makePosition();
+	direction = 1; //randomBool();
+	velocityx = 10; //makeVelocityx();
 	velocityy = 3; //makeVelocityy();
 	velocityz = 4; //makeVelocityz();
 	climbingAbilityx = 1.0/0.0; //makeClimbingAbilityx();
@@ -19,9 +19,9 @@ NPC::NPC(){
 
 PointVector<> NPC::makePosition(){
 	srand(time(0));
-	position.setdx(rand());
-	position.setdy(rand());
-	position.setdz(rand());
+	position.setdx(rand() % 100);
+	position.setdy(rand() % 100);
+	position.setdz(rand() % 100);
 
 	return position;
 }
@@ -58,7 +58,8 @@ int NPC::makeVelocityz(){
 
 
 bool NPC::randomBool(){
-	return rand() % 2;
+	int e = rand() % 30;
+	return e == 1 ? 0 : 1;
 }
 
 
@@ -76,14 +77,6 @@ PointVector<> NPC::updatePosition(double deltaT){
 	double sy = deltaT*velocityy;
 	double sz = deltaT*velocityz;
 
-
-	/*if(randomInt() == 2){
-		position.setdx(position.getdx());
-		position.setdy(position.getdy());
-		position.setdz(position.getdz());
- 	}
-	
-	else{*/
 		int k = direction == 1 ? 1 : -1;
 
 		if(GRAVITY_CENTER.getdx() > position.getdx()){
@@ -101,7 +94,7 @@ PointVector<> NPC::updatePosition(double deltaT){
 		}
 
 		
-			static int p = 0;
+			static int p = PLACEHOLDER_LINE_OF_TRAVEL.size()-1;
 			static int q = 0;
 			static int r = 0;
 
@@ -110,23 +103,35 @@ PointVector<> NPC::updatePosition(double deltaT){
 
 				if(sx<climbingAbilityx){
 
-					if((PLACEHOLDER_LINE_OF_TRAVEL[p].getdx() - (position.getdx() + k*sx)) >= 0){
+					if((PLACEHOLDER_LINE_OF_TRAVEL[p].getdx() - (position.getdx() + k*sx)) > 0){
 						position.setdx(position.getdx() + k*sx);
+					}
+					
+					else if((PLACEHOLDER_LINE_OF_TRAVEL[p].getdx() - (position.getdx() + k*sx)) < 0){
+						position.setdx(position.getdx() - k*sx);
 					}
 
 					else{
 						position.setdx(PLACEHOLDER_LINE_OF_TRAVEL[p].getdx());
+
 					}
 				}
 		
 				else{
-					position.setdx(position.getdx() - k*sx);	
+					position.setdx(position.getdx());	
 				}
 			
 			}
 			
 			else{
 				position.setdx(position.getdx());
+
+				if((p)<PLACEHOLDER_LINE_OF_TRAVEL.size()){
+					if(p>=1){
+						p--;
+					}
+
+				}
 			}
 			
 			
@@ -134,8 +139,12 @@ PointVector<> NPC::updatePosition(double deltaT){
 
 				if(sy<climbingAbilityy){
 
-					if((PLACEHOLDER_LINE_OF_TRAVEL[q].getdy() - (position.getdy() + k*sy)) >= 0){
+					if((PLACEHOLDER_LINE_OF_TRAVEL[q].getdy() - (position.getdy() + k*sy)) > 0){
 						position.setdy(position.getdy() + k*sy);
+					}
+
+					else if((PLACEHOLDER_LINE_OF_TRAVEL[q].getdy() - (position.getdy() + k*sy)) < 0){
+						position.setdy(position.getdy() - k*sy);
 					}
 
 					else{
@@ -144,13 +153,20 @@ PointVector<> NPC::updatePosition(double deltaT){
 				}
 		
 				else{
-					position.setdy(position.getdy() - k*sy);	
+					position.setdy(position.getdy());	
 				}
 			
 			}
 			
 			else{
 				position.setdy(position.getdy());
+
+				if((q)<PLACEHOLDER_LINE_OF_TRAVEL.size()){
+					if(q>=1){
+						q--;
+					}
+
+				}
 			}			
 		
 		
@@ -158,24 +174,38 @@ PointVector<> NPC::updatePosition(double deltaT){
 
 				if(sz<climbingAbilityz){
 
-					if((PLACEHOLDER_LINE_OF_TRAVEL[r].getdz() - (position.getdz() + k*sz)) >= 0){
+					if((PLACEHOLDER_LINE_OF_TRAVEL[r].getdz() - (position.getdz() + k*sz)) > 0){
 						position.setdz(position.getdz() + k*sz);
+					}
+
+					else if((PLACEHOLDER_LINE_OF_TRAVEL[r].getdz() - (position.getdz() + k*sz)) < 0){
+						position.setdz(position.getdz() - k*sz);
 					}
 
 					else{
 						position.setdz(PLACEHOLDER_LINE_OF_TRAVEL[r].getdz());
+						r++; 
 					}
 				}
 		
 				else{
-					position.setdz(position.getdz() - k*sz);	
+					position.setdz(position.getdz());	
 				}
 			
 			}
 			
 			else{
 				position.setdz(position.getdz());
-			}		
+
+				if((r)<PLACEHOLDER_LINE_OF_TRAVEL.size()){
+					if(r>=1){
+						r--;
+					}
+
+				}
+			}
+
+		//position.make_unit();		
 		
 		
 		
@@ -183,7 +213,7 @@ PointVector<> NPC::updatePosition(double deltaT){
 		
 
 	
-	//}
+
 	return position;
 }
 
