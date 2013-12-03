@@ -46,7 +46,10 @@ PointVector<> tp{0,0,0};
 Triangle d{qq};
 Triangle e{pp};
 
+
+
 double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];
+
 
 int main(int argc, char **argv)
 {
@@ -68,8 +71,8 @@ int main(int argc, char **argv)
     glClearColor(0,0,0,0);
     glPointSize(10);
 	
-	PhysObject{};
-	
+	PhysObject::create();
+
     glutMainLoop();   
    
   return 0;

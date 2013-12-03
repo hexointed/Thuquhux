@@ -11,13 +11,19 @@
 
 PhysHandler PhysObject::default_handler{};
 
+void PhysObject::create(Parametric_Surface surface, PhysHandler& handler, PointVector<> velocity){
+	PhysObject erland(surface, handler, velocity);
+	handler.physObjects.push_back(erland);
+
+}
+
 PhysObject::PhysObject(Parametric_Surface surface, PhysHandler handler, PointVector<> velocity):
 	_material{},
 	_volume{1},
 	_velocity{velocity},
 	_surface(surface)
 {
-	handler.physObjects.push_back(*this);
+
 }
 
 PhysObject::PhysObject(const PhysObject& /*orig*/):

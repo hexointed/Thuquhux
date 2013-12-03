@@ -19,7 +19,8 @@ class PhysObject {
 public:
 	static PhysHandler default_handler;
 
-	PhysObject(Parametric_Surface surface = {Geometry::def_param_axis_func}, PhysHandler handler = default_handler, PointVector<> velocity = {0,0,0});
+	static void create(Parametric_Surface surface = {Geometry::def_param_axis_func}, PhysHandler& handler = default_handler, PointVector<> velocity = {0,0,0});
+	
 	PhysObject(const PhysObject& orig);
 	virtual ~PhysObject();
     
@@ -50,6 +51,8 @@ public:
 	static void collision(PhysObject&,PhysObject&);
     
 private:
+	PhysObject(Parametric_Surface surface = {Geometry::def_param_axis_func}, PhysHandler handler = default_handler, PointVector<> velocity = {0,0,0});
+
 	Material _material;
 	double _volume;
 	PointVector<> _velocity;
