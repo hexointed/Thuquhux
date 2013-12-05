@@ -105,15 +105,34 @@ PointVector<> Geometry::def_param_axis_func(PointVector<2> params){
 	return PointVector<>(arr);
 }
 
+namespace{
+	void rotate_point(PointVector<>& point, PointVector<> axis, double angle){
+		axis.make_unit();
+		static const PointVector<> r1{cos(angle) + axis.getdx()*axis.getdx()*(1 - cos(angle)),
+		                 axis.getdx()*axis.getdy()*(1 - cos(angle)) - axis.getdz()*sin(angle),
+		                 axis.getdx()*axis.getdz()*(1 - cos(angle)) + axis.getdy()*sin(angle)};
+		static const PointVector<> r2{axis.getdy()*axis.getdx()*(1 - cos(angle)) + axis.getdz()*sin(angle),
+		                 cos(angle) + axis.getdy()*axis.getdy()*(1 - cos(angle)),
+		                 axis.getdy()*axis.getdz()*(1 - cos(angle)) - axis.getdx()*sin(angle)};
+		static const PointVector<> r3{axis.getdz()*axis.getdx()*(1 - cos(angle)) - axis.getdy()*sin(angle),
+		                 axis.getdz()*axis.getdy()*(1 - cos(angle)) + axis.getdx()*sin(angle),
+		                 cos(angle) + axis.getdz()*axis.getdz()*(1 - cos(angle))};
+		const PointVector<> tmp = point;
+		point = {PointVector<>::mul_comp(r1, tmp).sum_comp(),
+		         PointVector<>::mul_comp(r2, tmp).sum_comp(),
+		         PointVector<>::mul_comp(r3, tmp).sum_comp()};
+	}
+}
+
 void Parametric_Surface::rotate(PointVector<> axis, double angle){
-	axis.make_unit();
-	PointVector<> r1{cos(angle) + axis.getdx()*axis.getdx()*(1 - cos(angle)),
-	                 axis.getdx()*axis.getdy()*(1 - cos(angle)) - axis.getdz()*sin(angle),
-	                 axis.getdx()*axis.getdz()*(1 - cos(angle)) + axis.getdy()*sin(angle)};
-	PointVector<> r2{axis.getdy()*axis.getdx()*(1 - cos(angle)) + axis.getdz()*sin(angle),
-	                 cos(angle) + axis.getdy()*axis.getdy()*(1 - cos(angle)),
-	                 axis.getdy()*axis.getdz()*(1 - cos(angle)) - axis.getdx()*sin(angle)};
-	PointVector<> r3{};
+	for(auto& tri: mesh_vertecies){
+		for(int i = 0; i < 3; i++){
+			rotate_point(tri[i], axis, angle);
+		}
+	}
+	for(auto& point: bound_box){
+		rotate_point(point, axis, angle);
+	}
 }
 
 void Parametric_Surface::drawMesh(){
