@@ -105,6 +105,17 @@ PointVector<> Geometry::def_param_axis_func(PointVector<2> params){
 	return PointVector<>(arr);
 }
 
+void Parametric_Surface::rotate(PointVector<> axis, double angle){
+	axis.make_unit();
+	PointVector<> r1{cos(angle) + axis.getdx()*axis.getdx()*(1 - cos(angle)),
+	                 axis.getdx()*axis.getdy()*(1 - cos(angle)) - axis.getdz()*sin(angle),
+	                 axis.getdx()*axis.getdz()*(1 - cos(angle)) + axis.getdy()*sin(angle)};
+	PointVector<> r2{axis.getdy()*axis.getdx()*(1 - cos(angle)) + axis.getdz()*sin(angle),
+	                 cos(angle) + axis.getdy()*axis.getdy()*(1 - cos(angle)),
+	                 axis.getdy()*axis.getdz()*(1 - cos(angle)) - axis.getdx()*sin(angle)};
+	PointVector<> r3{};
+}
+
 void Parametric_Surface::drawMesh(){
 	glPushMatrix();
 	glTranslatef(position.getdx(), position.getdy(), position.getdz());
