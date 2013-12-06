@@ -9,32 +9,40 @@
 #include "Parametric_Surface.h"
 
 using Geometry::Triangle_Mesh;
-/*
+
 std::vector<Triangle_Mesh> Triangle_Mesh::intersection(Triangle_Mesh a){
-	std::vector<const Element*> intersecting_elements;
+	/* Find all elements in this that intersect elements in a */
+	std::vector<Element> intersecting_elements;
 	for(const Element& e: elem){
 		for(const Element& ae: a.elem){
-			auto collision = e.tri->intersectionWith(*ae.tri);
+			auto collision = e.triangle().intersectionWith(ae.triangle());
 			if(collision.first){
-				intersecting_elements.push_back(&e);
+				intersecting_elements.push_back(e);
 			}
 		}
 	}
+	
+	/* reconnect elements */
 	std::vector<Triangle_Mesh> results;
 	if(intersecting_elements.size() < 1){
 		return results;
 	}
-	std::vector<Element> tmp_elem{*intersecting_elements[intersecting_elements.size()-1]};
-	intersecting_elements.pop_back();
-	while(tmp_elem.size()){
-		static Element current;
-		current = tmp_elem[tmp_elem.size()-1];
-		tmp_elem.pop_back();
-		for(const Element* e: intersecting_elements){
-			
+	while(intersecting_elements.size()){
+		Triangle_Mesh temp_mesh;
+		std::vector<Element> temp_elem;
+		temp_elem.insert(intersecting_elements.back());
+		intersecting_elements.pop_back();
+		
+		bool has_added = true;
+		while(has_added){
+			has_added = false;
+			for(Element e : intersecting_elements){
+				
+			}
 		}
 	}
-}*/
+	return results;
+}
 
 long int Triangle_Mesh::size(){
 	return elem.size();
@@ -115,7 +123,7 @@ Triangle_Mesh::Element::Element(Triangle* t):
 	connected{nullptr, nullptr, nullptr}
 {}
 
-bool Triangle_Mesh::Element::single_valid_connection(){
+bool Triangle_Mesh::Element::single_valid_connection() const{
 	int b = 0;
 	for(auto a: Triangle_Mesh::Element::connected){
 		if(a != nullptr)
@@ -128,12 +136,16 @@ bool Triangle_Mesh::Element::single_valid_connection(){
 	}
 }
 
-bool Triangle_Mesh::Element::connected_with(const Element& e){
+bool Triangle_Mesh::Element::connected_with(const Element& e) const{
 	for(const Triangle* ptr: connected){
 		if(e.tri == ptr)
 			return true;
 	}
 	return false;
+}
+
+Geometry::Triangle& Triangle_Mesh::Element::triangle() const{
+	return *tri;
 }
 
 Geometry::Triangle& Triangle_Mesh::Iterator::operator *(){

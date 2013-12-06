@@ -30,9 +30,11 @@ namespace Geometry{
 		public:
 			Element();
 			Element(Triangle* t);
-			Element& first_valid_connection();
-			bool single_valid_connection();
-			bool connected_with(const Element& e);
+			Element& first_valid_connection() const;
+			bool single_valid_connection() const;
+			bool connected_with(const Element& e) const;
+			
+			Triangle& triangle() const;
 			
 		public:
 			Triangle* tri;
@@ -67,6 +69,7 @@ namespace Geometry{
 		
 		Triangle_Mesh get_single_path(Element& begin, Element& end);
 		bool is_loop();
+		bool has_element(Element e) const;
 		
 		static void test();
 		
