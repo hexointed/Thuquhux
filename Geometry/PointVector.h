@@ -177,6 +177,11 @@ namespace Boolarr{
 	bool most(std::array<bool, Dim> a);
 }
 
+namespace Geometry{
+	template<int Dimension, typename Numeral>
+	using Vector = PointVector<Dimension, Numeral>;
+}
+
 #endif	/* POINTVECTOR_H */
 
 #include "PointVector.hpp"
