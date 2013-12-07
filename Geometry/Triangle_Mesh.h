@@ -69,7 +69,8 @@ namespace Geometry{
 		
 		Triangle_Mesh get_single_path(Element& begin, Element& end);
 		bool is_loop();
-		bool has_element(Element e) const;
+		bool has_element(Element e);
+		bool element_shares_side(Element e);
 		
 		static void test();
 		

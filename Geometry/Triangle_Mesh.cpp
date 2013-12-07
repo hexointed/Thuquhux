@@ -29,17 +29,20 @@ std::vector<Triangle_Mesh> Triangle_Mesh::intersection(Triangle_Mesh a){
 	}
 	while(intersecting_elements.size()){
 		Triangle_Mesh temp_mesh;
-		std::vector<Element> temp_elem;
-		temp_elem.insert(intersecting_elements.back());
+		temp_mesh.elem.insert(intersecting_elements.back());
 		intersecting_elements.pop_back();
 		
 		bool has_added = true;
 		while(has_added){
 			has_added = false;
 			for(Element e : intersecting_elements){
-				
+				if(temp_mesh.element_shares_side(e)){
+					temp_mesh.elem.insert(e);
+					has_added = true;
+				}
 			}
 		}
+		results.push_back(temp_mesh);
 	}
 	return results;
 }
@@ -99,6 +102,21 @@ Triangle_Mesh Triangle_Mesh::construct_mesh(Element end, Element begin, Element_
 		result.elem.insert(e);
 	}
 	return result;
+}
+
+bool Triangle_Mesh::has_element(Triangle_Mesh::Element e) {
+	return elem.find(e) != elem.end();
+}
+
+bool Triangle_Mesh::element_shares_side(Triangle_Mesh::Element e) {
+	for(Element f : elem){
+		for(const auto t : f.connected){
+			if(t == e.tri){
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 void Triangle_Mesh::add(Triangle t){
