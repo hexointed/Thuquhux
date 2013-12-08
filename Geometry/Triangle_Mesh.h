@@ -50,6 +50,8 @@ namespace Geometry{
 		
 		using Element_set = std::set<Element, Element::Elementcompare>;
 		using Element_map = std::map<Element, Element, Element::Elementcompare>;
+		using Element_map_vector = std::map<Element, std::vector<Element>, 
+		                           Element::Elementcompare>;
 		
 		/* Declarations for class Triangle_Mesh :
 		 */
@@ -63,7 +65,8 @@ namespace Geometry{
 		template<template <typename> class Container>
 		static Triangle_Mesh make_mesh(Container<PointVector<> > mesh_vertecies);
 		
-		std::vector<Triangle_Mesh> intersection(Triangle_Mesh a);
+		Element_map_vector intersections(Triangle_Mesh a);
+		void slice_and_delete(Element_map_vector a);
 		Triangle& operator[](const int i);
 		long int size();
 		

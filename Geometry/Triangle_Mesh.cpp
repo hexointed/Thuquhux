@@ -10,41 +10,27 @@
 
 using Geometry::Triangle_Mesh;
 
-std::vector<Triangle_Mesh> Triangle_Mesh::intersection(Triangle_Mesh a){
+Triangle_Mesh::Element_map_vector Triangle_Mesh::intersections(Triangle_Mesh a){
 	/* Find all elements in this that intersect elements in a */
-	std::vector<Element> intersecting_elements;
+	// Mapped are all elements that intersect key
+	Element_map_vector intersecting_elements;
 	for(const Element& e: elem){
+		std::vector<Element> intersections;
 		for(const Element& ae: a.elem){
 			auto collision = e.triangle().intersectionWith(ae.triangle());
 			if(collision.first){
-				intersecting_elements.push_back(e);
+				intersections.push_back(e);
 			}
 		}
-	}
+		if(intersections.size()){
+			intersecting_elements.insert(std::make_pair(e, intersections));
+		}
+	}	
+	return intersecting_elements;
+}
+
+void Triangle_Mesh::slice_and_delete(Element_map_vector a){
 	
-	/* reconnect elements */
-	std::vector<Triangle_Mesh> results;
-	if(intersecting_elements.size() < 1){
-		return results;
-	}
-	while(intersecting_elements.size()){
-		Triangle_Mesh temp_mesh;
-		temp_mesh.elem.insert(intersecting_elements.back());
-		intersecting_elements.pop_back();
-		
-		bool has_added = true;
-		while(has_added){
-			has_added = false;
-			for(Element e : intersecting_elements){
-				if(temp_mesh.element_shares_side(e)){
-					temp_mesh.elem.insert(e);
-					has_added = true;
-				}
-			}
-		}
-		results.push_back(temp_mesh);
-	}
-	return results;
 }
 
 long int Triangle_Mesh::size(){
