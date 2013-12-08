@@ -47,6 +47,7 @@ namespace Geometry{
 		double getVolume();
 		double getSurfaceArea();
 		
+		void rotate(PointVector<> axis, double angle);
 		void drawMesh();
 		template<typename Functor>
 		void calculate_mesh(Functor pfunc);

@@ -35,12 +35,13 @@ namespace Geometry{
 		Triangle_Mesh(std::vector<Geometry::Triangle> t);
 		
 	private:
-		std::vector<PointVector<>> vertecies;
+		std::vector<PointVector<>> _vertecies;
 		std::vector<Element> elements;
 		
 	public:
 		size_t size();
 		void add(Geometry::Triangle t);
+		std::vector<PointVector<>>& vertecies() {return _vertecies;}
 		
 		decltype(elements)::iterator begin(){return elements.begin();}
 		decltype(elements)::iterator end(){return elements.end();}

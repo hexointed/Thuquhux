@@ -11,21 +11,21 @@ Geometry::Element::Element(Geometry::Triangle t, Triangle_Mesh& universe):
 	super(universe)
 {
 	for(size_t i = 0; i < 3; i++){
-		for(size_t j = 0; j < super.vertecies.size(); j++){
-			if(t[i].is_eq_comp(super.vertecies[j])){
+		for(size_t j = 0; j < super._vertecies.size(); j++){
+			if(t[i].is_eq_comp(super._vertecies[j])){
 				vertecies[i] = j;
 			}
 		}
-		super.vertecies.push_back(t[i]);
-		vertecies[i] = super.vertecies.size() - 1;
+		super._vertecies.push_back(t[i]);
+		vertecies[i] = super._vertecies.size() - 1;
 	}
 	super.elements.push_back(*this);
 }
 
 Geometry::Element::operator Geometry::Triangle (){
-	return Geometry::Triangle{super.vertecies[vertecies[0]],
-	                          super.vertecies[vertecies[1]],
-	                          super.vertecies[vertecies[2]]};
+	return Geometry::Triangle{super._vertecies[vertecies[0]],
+	                          super._vertecies[vertecies[1]],
+	                          super._vertecies[vertecies[2]]};
 }
 
 Geometry::Triangle_Mesh::Triangle_Mesh(std::vector<Geometry::Triangle> t){
