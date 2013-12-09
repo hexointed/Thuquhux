@@ -148,8 +148,13 @@ std::vector<Triangle> Triangle::split(PointVector<> pos, PointVector<> normal) c
 	PointVector<> vec1 = big_side[0] - small_side;
 	PointVector<> vec2 = big_side[1] - small_side;
 	
-	PointVector<> p1 = //wikipedia
-	PonitVector<> p2 =
+	double d1 = PointVector<>::mul_dot((pos - small_side), normal) /
+	            PointVector<>::mul_dot(vec1, normal);
+	double d2 = PointVector<>::mul_dot((pos - small_side), normal) /
+	            PointVector<>::mul_dot(vec2, normal);
+	
+	PointVector<> p1 = small_side + d1*vec1;
+	PointVector<> p2 = small_side + d2*vec2;
 	
 	if(side1.size() > side2.size()){
 		result.push_back(Triangle{side1.back(), side1.front(), p1});
