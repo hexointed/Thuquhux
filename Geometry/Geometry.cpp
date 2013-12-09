@@ -1,6 +1,6 @@
 /* 
  * File:   Triangle.cpp
- * Author: elias
+ * Author: Elias Forsberg
  * 
  * Created on May 23, 2013, 7:11 PM
  */
@@ -128,7 +128,39 @@ std::pair<bool, std::vector<PointVector<>>> Triangle::intersectionWith(Triangle&
 }
 
 std::vector<Triangle> Triangle::split(PointVector<> pos, PointVector<> normal) const {
+	std::vector<Triangle> result;
+	std::vector<PointVector<>> side1, side2;
+	for(PointVector<> p : vertecies){
+		if(PointVector<>::mul_dot(p, normal) > 0){
+			side1.push_back(p);
+		}else{
+			side2.push_back(p);
+		}
+	}
+	if(side1.size()==3 || side2.size()==3){
+		result.push_back(*this);
+		return result;
+	}
 	
+	std::vector<PointVector<>>& big_side = side1.size() > side2.size() ? side1 : side2;
+	PointVector<>& small_side = side1.size() < side2.size() ? side1.front() :  side2.front();
+	
+	PointVector<> vec1 = big_side[0] - small_side;
+	PointVector<> vec2 = big_side[1] - small_side;
+	
+	PointVector<> p1 = //wikipedia
+	PonitVector<> p2 =
+	
+	if(side1.size() > side2.size()){
+		result.push_back(Triangle{side1.back(), side1.front(), p1});
+		result.push_back(Triangle{side1.back(), side1.front(), p2});
+		result.push_back(Triangle{side2.back(), p1, p2});
+	}else{
+		result.push_back(Triangle{side2.back(), side2.front(), p1});
+		result.push_back(Triangle{side2.back(), side2.front(), p2});
+		result.push_back(Triangle{side1.back(), p1, p2});
+	}
+	return result;
 }
 
 void Triangle::draw(){

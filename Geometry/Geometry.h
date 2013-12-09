@@ -1,6 +1,6 @@
 /* 
  * File:   Triangle.h
- * Author: elias
+ * Author: Elias Forsberg
  *
  * Created on May 23, 2013, 7:11 PM
  */

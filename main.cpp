@@ -170,6 +170,7 @@ void Display()
 	c->position.setdx(cpos);
 	c->rotate({0,1,0}, 0.1);
 	e.move({tpos,0,0});
+	Triangle tritest{{-0.5,-0.5,0},{0.5,-0.5,0},{0.5,-0.5,0.5}};
 
 	double color[3] {c->pointIsWithin(tp)?1.0:0.0, c->isIntersecting(*b)?1.0:0.0, d.intersectionWith(e).first?1.0:0.0};
 	glClearColor(color[0], color[1], color[2], 0);
@@ -213,6 +214,8 @@ void Display()
 		glRotatef(rot, 0, 1, 0);
 		d.draw();
 		e.draw();
+		tritest.draw();
+		tritest.split({0,0,0},{1,0,0})[1].move({0,1,0}).draw();
 	glPopMatrix();
 	glutSwapBuffers();
 }
