@@ -30,26 +30,26 @@ namespace Geometry{
 	class Triangle {
 	public:
 		explicit Triangle() = default;
-		Triangle(const Triangle& orig);
-		Triangle(Triangle&& orig);
+		Triangle(const Triangle& orig) = default;
 		Triangle(PointVector<>* sides);
 		explicit Triangle(PointVector<> a, PointVector<> b, PointVector<> c);
 		~Triangle();
 		
 		Triangle& move(const PointVector<> diff);
 		Triangle operator +(const PointVector<> a);
-		Triangle& operator =(const Triangle& a);
-                
+		Triangle& operator =(const Triangle& a) = default;
 		PointVector<>& operator[](const int vertex);
 		
 		bool shares_side(const Triangle& with);
 		bool passesThrough(PointVector<>& max, PointVector<>& min);
 		std::pair<bool, PointVector<>> intersectionWith(Polygon<2> a);
 		std::pair<bool, std::vector<PointVector<>>> intersectionWith(Triangle& a);
+		std::vector<Triangle> split(PointVector<> pos, PointVector<> normal) const;
+		
 		void draw();
 	
 	private:	
-		PointVector<>* vertecies[3];
+		PointVector<> vertecies[3];
 	};
 }
 
