@@ -13,6 +13,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <utility>
 
 using Geometry::Parametric_Surface;
 
@@ -22,11 +23,26 @@ Parametric_Surface::~Parametric_Surface() {
 }
 
 void Parametric_Surface::Unite(Parametric_Surface a){
+	/* Deprecated *
 	PointVector<> rel_pos = a.position - position;
 	bound_box[0].set_min_comp(a.bound_box[0] + rel_pos);
 	bound_box[1].set_max_comp(a.bound_box[1] + rel_pos);
 	for(Triangle& tri: a.mesh_vertecies){
 		mesh_vertecies.add(Triangle{tri + rel_pos});
+	}
+	*/
+	
+	PointVector<> rel_pos = a.position - position;
+	bound_box[0].set_min_comp(a.bound_box[0] + rel_pos);
+	bound_box[1].set_max_comp(a.bound_box[1] + rel_pos);
+	for(Triangle& tri: mesh_vertecies){
+		std::vector<std::pair<bool, std::vector<PointVector<>>>> intersections;
+		for(Triangle& atri: a.mesh_vertecies){
+			auto collision = atri.intersectionWith(tri);
+			if(collision.first){
+				intersections.push_back(collision);
+			}
+		}
 	}
 }
 
@@ -87,6 +103,36 @@ PointVector<> Geometry::def_param_axis_func(PointVector<2> params){
 	params.mul(2*PI);
 	double arr[3] = {cos(params.getdx())*(1 + 0.25*cos(params.getdy())), sin(params.getdx())*(1 + 0.25*cos(params.getdy())), 0.25*sin(params.getdy())};
 	return PointVector<>(arr);
+}
+
+namespace{
+	void rotate_point(PointVector<>& point, PointVector<> axis, double angle){
+		axis.make_unit();
+		static const PointVector<> r1{cos(angle) + axis.getdx()*axis.getdx()*(1 - cos(angle)),
+		                 axis.getdx()*axis.getdy()*(1 - cos(angle)) - axis.getdz()*sin(angle),
+		                 axis.getdx()*axis.getdz()*(1 - cos(angle)) + axis.getdy()*sin(angle)};
+		static const PointVector<> r2{axis.getdy()*axis.getdx()*(1 - cos(angle)) + axis.getdz()*sin(angle),
+		                 cos(angle) + axis.getdy()*axis.getdy()*(1 - cos(angle)),
+		                 axis.getdy()*axis.getdz()*(1 - cos(angle)) - axis.getdx()*sin(angle)};
+		static const PointVector<> r3{axis.getdz()*axis.getdx()*(1 - cos(angle)) - axis.getdy()*sin(angle),
+		                 axis.getdz()*axis.getdy()*(1 - cos(angle)) + axis.getdx()*sin(angle),
+		                 cos(angle) + axis.getdz()*axis.getdz()*(1 - cos(angle))};
+		const PointVector<> tmp = point;
+		point = {PointVector<>::mul_comp(r1, tmp).sum_comp(),
+		         PointVector<>::mul_comp(r2, tmp).sum_comp(),
+		         PointVector<>::mul_comp(r3, tmp).sum_comp()};
+	}
+}
+
+void Parametric_Surface::rotate(PointVector<> axis, double angle){
+	for(auto& tri: mesh_vertecies){
+		for(int i = 0; i < 3; i++){
+			rotate_point(tri[i], axis, angle);
+		}
+	}
+	for(auto& point: bound_box){
+		rotate_point(point, axis, angle);
+	}
 }
 
 void Parametric_Surface::drawMesh(){

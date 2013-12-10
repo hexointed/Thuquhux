@@ -10,18 +10,49 @@
 
 #include <vector>
 #include <map>
+#include <set>
 
 #include "Geometry.h"
 
 namespace Geometry{
 
-	class Triangle_Mesh {
-	
+	class Triangle_Mesh {	
+		/* Helper classes Element and Iterator:
+		 * Element is used to keep track of a single Triangle, along with the Triangles it
+		 * is connected to.
+		 * Iterator is used so that Triangle_Meshes easily can be used with different
+		 * kinds of loops.
+		 */
+	public:
+		class Iterator;
+	private:	
+		class Element{
+		public:
+			Element();
+			Element(Triangle* t);
+			Element& first_valid_connection();
+			bool single_valid_connection();
+			bool connected_with(const Element& e);
+			
+		public:
+			Triangle* tri;
+			Triangle* connected[3];
+			
+		public:
+			struct Elementcompare{
+				bool operator()(Element a, Element b){
+					return a.tri < b.tri;
+				}
+			};
+		};
+		
+		using Element_set = std::set<Element, Element::Elementcompare>;
+		using Element_map = std::map<Element, Element, Element::Elementcompare>;
+		
+		/* Declarations for class Triangle_Mesh :
+		 */
 	public:
 		Triangle_Mesh() = default;
-		class Iterator;
-	private:
-		class Element;
 		
 	public:
 		template<template <typename> class Container>
@@ -30,6 +61,7 @@ namespace Geometry{
 		template<template <typename> class Container>
 		static Triangle_Mesh make_mesh(Container<PointVector<> > mesh_vertecies);
 		
+		std::vector<Triangle_Mesh> intersection(Triangle_Mesh a);
 		Triangle& operator[](const int i);
 		long int size();
 		
@@ -43,29 +75,10 @@ namespace Geometry{
 		void remove(const Triangle& t);
 		
 	private:
-		std::vector<Element> elem;
+		Element_set elem;
 		
-		class Element{
-		public:
-			Element();
-			Element& first_valid_connection();
-			bool single_valid_connection();
-			
-		public:
-			Triangle* tri;
-			Element* connected[3];
-			short connections;
-			
-		public:
-			struct Elementcompare{
-				bool operator()(Element a, Element b){
-					return a.tri < b.tri;
-				}
-			};
-		};	
-	
 	private:
-		Triangle_Mesh construct_mesh(Element a, Element b, std::map<Element, Element, Element::Elementcompare> c);
+		Triangle_Mesh construct_mesh(Element a, Element b, Element_map c);
 		
 	public:
 		Iterator begin() {return Iterator{elem.begin()};}
@@ -83,9 +96,6 @@ namespace Geometry{
 			Iterator	operator++(int);
 			Iterator	operator--();
 			Iterator	operator--(int);
-			Iterator	operator +(int p) const;
-			Iterator	operator -(int p) const;
-			int			operator -(Iterator i) const;
 			bool		operator!=(Iterator i) const;
 			
 		private:
