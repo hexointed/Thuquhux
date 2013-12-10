@@ -53,7 +53,7 @@ namespace Geometry{
 		void calculate_mesh(Functor pfunc);
 		
 	private:
-		Geometry::Triangle_Mesh mesh_vertecies;
+		Geometry::Triangle_Mesh mesh;
 		
 		int mesh_detail;
 		const int mesh_length;

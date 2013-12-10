@@ -27,17 +27,17 @@ void Parametric_Surface::Unite(Parametric_Surface a){
 	PointVector<> rel_pos = a.position - position;
 	bound_box[0].set_min_comp(a.bound_box[0] + rel_pos);
 	bound_box[1].set_max_comp(a.bound_box[1] + rel_pos);
-	for(Triangle tri: a.mesh_vertecies){
-		mesh_vertecies.add(Triangle{tri + rel_pos});
+	for(Triangle tri: a.mesh){
+		mesh.add(Triangle{tri + rel_pos});
 	}
 	
-	std::cout<<mesh_vertecies.size()<<std::endl;
+	std::cout<<mesh.size()<<std::endl;
 	
 	/*
 	PointVector<> rel_pos = a.position - position;
 	bound_box[0].set_min_comp(a.bound_box[0] + rel_pos);
 	bound_box[1].set_max_comp(a.bound_box[1] + rel_pos);
-	auto intersections = mesh_vertecies.intersections(a.mesh_vertecies);*/
+	auto intersections = mesh.intersections(a.mesh);*/
 }
 
 bool Parametric_Surface::is_subset_of(const Parametric_Surface& v){
@@ -77,7 +77,7 @@ bool Parametric_Surface::pointIsWithin(PointVector<> p){
 	clip_line.vertecies[0] = min;
 	clip_line.vertecies[1] = max;
 	std::vector<PointVector<>> clips;
-	for(Triangle tri: mesh_vertecies){
+	for(Triangle tri: mesh){
 		auto tmp = tri.intersectionWith(clip_line);
 		if(tmp.first)
 			clips.push_back(tmp.second);
@@ -121,7 +121,7 @@ namespace{
 }
 
 void Parametric_Surface::rotate(PointVector<> axis, double angle){
-	for(PointVector<>& p: mesh_vertecies.vertecies()){
+	for(PointVector<>& p: mesh.vertecies()){
 		rotate_point(p, axis, angle);
 	}
 	for(auto& point: bound_box){
@@ -132,7 +132,7 @@ void Parametric_Surface::rotate(PointVector<> axis, double angle){
 void Parametric_Surface::drawMesh(){
 	glPushMatrix();
 	glTranslatef(position.getdx(), position.getdy(), position.getdz());
-	for(Triangle tri: mesh_vertecies){
+	for(Triangle tri: mesh){
 		tri.draw();
 	}
 	glPopMatrix();

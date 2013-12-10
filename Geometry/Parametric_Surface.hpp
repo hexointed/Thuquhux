@@ -22,7 +22,6 @@ Geometry::Parametric_Surface::Parametric_Surface(Functor f, PointVector<> pos):
 	bound_box{{0,0,0},{0,0,0}},
 	position{pos}
 {
-	//mesh_vertecies.reserve(mesh_length);
 	calculate_mesh(f);
 }
 
@@ -45,12 +44,12 @@ void Geometry::Parametric_Surface::calculate_mesh(Functor pfunc){
 	for(int i = 0; i < mesh_detail; ++i){
 		for(int n = 0; n < mesh_detail; ++n){
 			//"connect" the points, so that they can be drawn using Triangle methods
-			mesh_vertecies.add(Triangle{vertecies[(i* mesh_detail + n) % ml], 
-			                            vertecies[(i* mesh_detail + n  + 1) % ml],
-			                            vertecies[((i+1)*mesh_detail + n) % ml]});
-			mesh_vertecies.add(Triangle{vertecies[((i+1)*mesh_detail + n) % ml], 
-			                            vertecies[(i* mesh_detail + n  + 1) % ml],
-			                            vertecies[((i+1)*mesh_detail + n + 1) % ml]});
+			mesh.add(Triangle{vertecies[(i* mesh_detail + n) % ml], 
+			                  vertecies[(i* mesh_detail + n  + 1) % ml],
+			                  vertecies[((i+1)*mesh_detail + n) % ml]});
+			mesh.add(Triangle{vertecies[((i+1)*mesh_detail + n) % ml], 
+			                  vertecies[(i* mesh_detail + n  + 1) % ml],
+			                  vertecies[((i+1)*mesh_detail + n + 1) % ml]});
 		}
 	}
 }
