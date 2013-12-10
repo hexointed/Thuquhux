@@ -16,8 +16,7 @@ public:
 	PointVector<> position;
 private:
 
-	bool direction;
-	bool randomBool(); /*NPC moving towards or away from player*/
+	bool randomBool(); 
 	int randomInt();
 
 	int velocityx;

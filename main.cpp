@@ -45,6 +45,7 @@ Triangle d(qq);
 Triangle e(pp);
 
 NPC joline;
+NPC nyNPC;
 
 double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];
 
@@ -168,8 +169,11 @@ void Display()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
 	
-	joline.updatePosition(0.5);
+	joline.updatePosition(0.1);
 	std::cout<<joline.position.getdx()<<std::endl;
+
+	nyNPC.updatePosition(0.1);
+	//std::cout<<nyNPC.position.getdx()<<std::endl;
 	
 	c->position.setdx(cpos);
     e.vertecies[1].set(0,tpos);
@@ -209,6 +213,8 @@ void Display()
 		c->drawMesh();
 		glBegin(GL_POINTS);
 			glVertex3dv((double*)&tp);
+			glVertex3dv((double*)&joline.position);
+			glVertex3dv((double*)&nyNPC.position);
 		glEnd();
 	glPopMatrix();
 	

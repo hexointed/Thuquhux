@@ -1,26 +1,27 @@
 #include "NPC.h"
 
-static PointVector<> PLACEHOLDER_PLAYER_POSITION{};
-static PointVector<> PLACEHOLDER_TMP{};
-std::vector<PointVector<>> PLACEHOLDER_LINE_OF_TRAVEL{};
-PointVector<> GRAVITY_CENTER{};
-double RADIUS;
+static PointVector<> PLACEHOLDER_PLAYER_POSITION{2, 1, 0};
+static PointVector<> PLACEHOLDER_TMP{5,0,0};
+static PointVector<> DDD{10,0,0};
+std::vector<PointVector<>> PLACEHOLDER_LINE_OF_TRAVEL{DDD, PLACEHOLDER_PLAYER_POSITION, PLACEHOLDER_TMP};
+PointVector<> GRAVITY_CENTER{0,0,0};
+double RADIUS = 1;
 
 NPC::NPC(){
 	position = makePosition();
-	velocityx = makeVelocityx();
-	velocityy = makeVelocityy();
-	velocityz = makeVelocityz();
-	climbingAbilityx = makeClimbingAbilityx();
-	climbingAbilityy = makeClimbingAbilityy();
-	climbingAbilityz = makeClimbingAbilityz();
+	velocityx = 4; // makeVelocityx();
+	velocityy = 4;//makeVelocityy();
+	velocityz = 4;//makeVelocityz();
+	climbingAbilityx = 1.0/0.0; // makeClimbingAbilityx();
+	climbingAbilityy = 1.0/0.0; //makeClimbingAbilityy();
+	climbingAbilityz = 1.0/0.0; //makeClimbingAbilityz();
 }
 
 PointVector<> NPC::makePosition(){
 	srand(time(0));
-	position.setdx(RADIUS + rand() % 50);
-	position.setdy(RADIUS + rand() % 50);
-	position.setdz(RADIUS + rand() % 50);
+	position.setdx(RADIUS + rand() % 8);
+	position.setdy(RADIUS + rand() % 8);
+	position.setdz(RADIUS + rand() % 8);
 
 	return position;
 }
@@ -100,17 +101,14 @@ PointVector<> NPC::updatePosition(double deltaT){
 
 				if(sx<climbingAbilityx){
 
-					if((PLACEHOLDER_LINE_OF_TRAVEL[p].getdx() - (position.getdx() + sx)) > 0){
+					if(((PLACEHOLDER_LINE_OF_TRAVEL[p].getdx() - (position.getdx() + sx)) > 0) && PLACEHOLDER_LINE_OF_TRAVEL[p].getdx() - position.getdx() >0){
 						position.setdx(position.getdx() + sx);
 					}
 					
-					else if((PLACEHOLDER_LINE_OF_TRAVEL[p].getdx() - (position.getdx() + sx)) < 0){
+					else if(((PLACEHOLDER_LINE_OF_TRAVEL[p].getdx() - (position.getdx() + sx)) < 0) && PLACEHOLDER_LINE_OF_TRAVEL[p].getdx() - position.getdx() <0){
 						position.setdx(position.getdx() - sx);
 					}
 					
-					else if((PLACEHOLDER_LINE_OF_TRAVEL[p].getdx() - (position.getdx() + sx)) < 0){
-						position.setdx(position.getdx() - sx);
-					}
 
 					else{
 						position.setdx(PLACEHOLDER_LINE_OF_TRAVEL[p].getdx());
@@ -140,17 +138,14 @@ PointVector<> NPC::updatePosition(double deltaT){
 
 				if(sy<climbingAbilityy){
 
-					if((PLACEHOLDER_LINE_OF_TRAVEL[q].getdy() - (position.getdy() + sy)) > 0){
+					if(((PLACEHOLDER_LINE_OF_TRAVEL[q].getdy() - (position.getdy() + sy)) > 0) && PLACEHOLDER_LINE_OF_TRAVEL[q].getdy() - position.getdy() >0){
 						position.setdy(position.getdy() + sy);
 					}
 
-					else if((PLACEHOLDER_LINE_OF_TRAVEL[q].getdy() - (position.getdy() + sy)) < 0){
+					else if(((PLACEHOLDER_LINE_OF_TRAVEL[q].getdy() - (position.getdy() + sy)) < 0) && PLACEHOLDER_LINE_OF_TRAVEL[q].getdy() - position.getdy() <0){
 						position.setdy(position.getdy() - sy);
 					}
 
-					else if((PLACEHOLDER_LINE_OF_TRAVEL[q].getdy() - (position.getdy() + sy)) < 0){
-						position.setdy(position.getdy() - sy);
-					}
 
 					else{
 						position.setdy(PLACEHOLDER_LINE_OF_TRAVEL[q].getdy());
@@ -179,17 +174,14 @@ PointVector<> NPC::updatePosition(double deltaT){
 
 				if(sz<climbingAbilityz){
 
-					if((PLACEHOLDER_LINE_OF_TRAVEL[r].getdz() - (position.getdz() + sz)) > 0){
+					if(((PLACEHOLDER_LINE_OF_TRAVEL[r].getdz() - (position.getdz() + sz)) > 0) && PLACEHOLDER_LINE_OF_TRAVEL[r].getdz() - position.getdz() >0){
 						position.setdz(position.getdz() + sz);
 					}
 
-					else if((PLACEHOLDER_LINE_OF_TRAVEL[r].getdz() - (position.getdz() + sz)) < 0){
+					else if(((PLACEHOLDER_LINE_OF_TRAVEL[r].getdz() - (position.getdz() + sz)) < 0) && PLACEHOLDER_LINE_OF_TRAVEL[r].getdz() - position.getdz() <0){
 						position.setdz(position.getdz() - sz);
 					}
 
-					else if((PLACEHOLDER_LINE_OF_TRAVEL[r].getdz() - (position.getdz() + sz)) < 0){
-						position.setdz(position.getdz() - sz);
-					}
 
 					else{
 						position.setdz(PLACEHOLDER_LINE_OF_TRAVEL[r].getdz());
