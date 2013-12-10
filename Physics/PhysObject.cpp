@@ -8,6 +8,7 @@
 #include "PhysObject.h"
 #include "Material.h"
 #include "PhysHandler.h"
+#include <iostream>
 
 PhysHandler PhysObject::default_handler{};
 
@@ -80,9 +81,25 @@ void PhysObject::accelerate(PointVector<> a){
 }
 
 
-void PhysObject::collision(PhysObject& obj1,PhysObject& obj2){
-	obj1._velocity = (obj1._velocity.getMagnitude()*(obj1.density()*obj1._volume-obj2.density()*obj2._volume)+2.0*obj2.density()*obj2._volume*obj2._velocity.getMagnitude())/(obj1._volume*obj1.density() + obj2._volume*obj2.density()) * obj1._velocity.reflect(2.0*obj1.position()-obj2.position()).make_unit();
-	obj2._velocity = (obj2._velocity.getMagnitude()*(obj2.density()*obj2._volume-obj1.density()*obj1._volume)+2.0*obj1.density()*obj1._volume*obj1._velocity.getMagnitude())/(obj2._volume*obj2.density() + obj1._volume*obj1.density()) * obj2._velocity.reflect(2.0*obj2.position()-obj1.position()).make_unit();
+void PhysObject::collision(PhysObject& obj1,PhysObject& obj2, PointVector<> collide_at){
+	//double mass1 = obj1._volume*obj1.density();
+	//double mass2 = obj2._volume*obj2.density();
+	PointVector<> init1_velocity = obj1._velocity;
 
+	double mass1 = 2;
+	double mass2 = 2;
+	obj2._velocity = PointVector<>{0,0.1,0};	
+	std::cout << mass1 << ", " << mass2 << std::endl;
+
+	obj1._velocity = (obj1._velocity.getMagnitude()*(mass1-mass2)+2.0*mass2*obj2._velocity.getMagnitude())/(mass1 + mass2) * obj1._velocity.reflect(2.0*obj1.position()-obj2.position()).make_unit();
+	obj2._velocity = (obj2._velocity.getMagnitude()*(mass2-mass1)+2.0*mass1*init1_velocity.getMagnitude())/(mass2 + mass1) * obj2._velocity.reflect(2.0*obj2.position()-obj1.position()).make_unit();
+	std::cout << obj1._velocity.getdx() << ", " << obj1._velocity.getdy() << ", " << obj1._velocity.getdz() << std::endl;
+	std::cout << obj2._velocity.getdx() << ", " << obj2._velocity.getdy() << ", " << obj2._velocity.getdz() << std::endl;
+	/*
+	obj1._rotation.first = (PointVector<>::mul_cross(obj1._velocity, obj1.position() - collide_at).make_unit() + obj1._rotation.first.make_unit()).make_unit();
+	obj1._rotation.second = (obj1.position() - collide_at).getMagnitude() - obj1._rotation.second;
+	obj2._rotation.first = (PointVector<>::mul_cross(obj2._velocity, obj2.position() - collide_at).make_unit() + obj2._rotation.first.make_unit()).make_unit();
+	obj2._rotation.second = (obj2.position() - collide_at).getMagnitude() - obj2._rotation.second;
+	*/
 }
 

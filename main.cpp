@@ -55,6 +55,10 @@ double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];
 int main(int argc, char **argv)
 {
 	PhysObject::create();
+	PhysObject::create();
+	PhysObject::default_handler.physObjects[1].position() = PhysObject::default_handler.physObjects[0].position()-PointVector<>{0,2,3};
+	PhysObject::default_handler.physObjects[0].velocity() = PointVector<>{0,0,-2};
+
 	srand(time(0));
 	a->genGround(g_width, g_depth,arot,0, vertecies);
 
@@ -220,6 +224,7 @@ void Display()
 		d.draw();
 		e.draw();
 		PhysObject::default_handler.physObjects[0].surface().drawMesh();
+		PhysObject::default_handler.physObjects[1].surface().drawMesh();
 	glPopMatrix();
 	glutSwapBuffers();
 }

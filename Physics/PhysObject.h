@@ -49,7 +49,7 @@ public:
 	void addImpulse(PointVector<> a, double time);
 	
 	
-	static void collision(PhysObject&,PhysObject&);
+	static void collision(PhysObject& obj1,PhysObject& obj2, PointVector<> collide_at);
     
 private:
 	PhysObject(Parametric_Surface surface = {Geometry::def_param_axis_func}, PhysHandler handler = default_handler, PointVector<> velocity = {0,0,0});
