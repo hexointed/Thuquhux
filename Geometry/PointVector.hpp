@@ -91,6 +91,11 @@ Numeric PointVector<Dim, Numeric>::sum_comp() const{
 }
 
 template<int Dim, typename Numeric>
+Numeric& PointVector<Dim, Numeric>::operator[](int i) const{
+	return comp[i];
+}
+
+template<int Dim, typename Numeric>
 void PointVector<Dim, Numeric>::set(int i, Numeric d){
 	assert(i <= Dim);
 	comp[i] = d;
@@ -452,6 +457,19 @@ std::array<bool, Dim> PointVector<Dim, Numeric>::operator <=(PointVector<Dim, Nu
 		result[i] = comp[i] <= p.comp[i];
 	}
 	return result;
+}
+
+template<int Dim, typename Numeric>
+std::ostream& PointVector<Dim, Numeric>::operator<<(std::ostream& out) const {
+	out << "{";
+	for(int i = 0; i < Dim; i++){
+		out << comp[i];
+		if(i < Dim - 1){
+			out << ", ";
+		}
+	}
+	out << "}";
+	return out;
 }
 
 template<int Dim, typename Numeric>

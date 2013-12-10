@@ -12,6 +12,7 @@
 #define	POINTVECTOR_H
 
 #include <array>
+#include <ostream>
 
 /*
  * Dim is the dimension of the PointVector, and Numberic is the type used to represent
@@ -54,6 +55,7 @@ public:
 	Numeric getdy() const;
 	Numeric getdz() const;
 	
+	Numeric& operator[](int i) const;
 	Numeric getMagnitude() const;
 	Numeric sum_comp() const;
 	
@@ -147,6 +149,13 @@ public:
 	std::array<bool, Dim> operator< 	(PointVector p) const;
 	std::array<bool, Dim> operator>=	(PointVector p) const;
 	std::array<bool, Dim> operator<=	(PointVector p) const;
+	
+	/*
+	 * operator<< for ostream to be able to print PointVectors easily. This
+	 * requires that Numeric overloads operator << 
+	 */
+	
+	std::ostream& operator << (std::ostream& out) const;
 	
 	/*
 	 * Cross_product is a class that handles computation of cross products by using 
