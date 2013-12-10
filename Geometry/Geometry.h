@@ -46,6 +46,7 @@ namespace Geometry{
 		std::pair<bool, std::vector<PointVector<>>> intersectionWith(Triangle& a);
 		std::vector<Triangle> split(PointVector<> pos, PointVector<> normal) const;
 		
+		PointVector<> normal() const;
 		void draw();
 	
 	private:	

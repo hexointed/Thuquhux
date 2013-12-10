@@ -43,6 +43,9 @@ namespace Geometry{
 		void add(Geometry::Triangle t);
 		std::vector<PointVector<>>& vertecies() {return _vertecies;}
 		
+		std::vector<Triangle> all_triangles();
+		std::vector<Triangle> intersecting_triangles(Triangle t);
+		
 		decltype(elements)::iterator begin(){return elements.begin();}
 		decltype(elements)::iterator end(){return elements.end();}
 	};

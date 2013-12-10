@@ -41,3 +41,21 @@ size_t Geometry::Triangle_Mesh::size(){
 void Geometry::Triangle_Mesh::add(Geometry::Triangle t){
 	Geometry::Element(t, *this);
 }
+
+std::vector<Geometry::Triangle> Geometry::Triangle_Mesh::all_triangles(){
+	std::vector<Geometry::Triangle> result;
+	for(Geometry::Triangle t : elements){
+		result.push_back(t);
+	}
+	return result;
+}
+
+std::vector<Geometry::Triangle> Geometry::Triangle_Mesh::intersecting_triangles(Geometry::Triangle with){
+	std::vector<Geometry::Triangle> result;
+	for(Geometry::Triangle t : elements){
+		if(with.intersectionWith(t).first){
+			result.push_back(t);
+		}
+	}
+	return result;
+}

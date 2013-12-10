@@ -11,7 +11,9 @@
 #include "PointVector.h"
 #include "Geometry.h"
 #include "Triangle_Mesh.h"
+
 #include <vector>
+#include <functional>
 
 namespace Geometry{
 
@@ -19,14 +21,15 @@ namespace Geometry{
 
 	class Parametric_Surface {
 	public:
+		Parametric_Surface(PointVector<> pos);
 		template<typename Functor>
 		Parametric_Surface(Functor f, PointVector<> pos = {0,0,0});
 		virtual ~Parametric_Surface();
 		
-		friend Parametric_Surface Unite(Parametric_Surface a, Parametric_Surface b, PointVector<> pos);
-		friend Parametric_Surface Intersect(Parametric_Surface a, Parametric_Surface b, PointVector<> pos);
-		friend Parametric_Surface Complement(Parametric_Surface a, Parametric_Surface b, PointVector<> pos);
-		friend Parametric_Surface Differatiate(Parametric_Surface a, Parametric_Surface b, PointVector<> pos);
+		static Parametric_Surface Union(Parametric_Surface a, Parametric_Surface b);
+		friend Parametric_Surface Intersect(Parametric_Surface a, Parametric_Surface b);
+		friend Parametric_Surface Complement(Parametric_Surface a, Parametric_Surface b);
+		friend Parametric_Surface Differatiate(Parametric_Surface a, Parametric_Surface b);
 		
 		void Unite(Parametric_Surface a);
 		void Intersect(Parametric_Surface a);
@@ -64,6 +67,10 @@ namespace Geometry{
 	public:
 		PointVector<> bound_box[2];
 		PointVector<> position;
+	
+	private:
+		void slice_and_erase(Parametric_Surface a, 
+		                     std::function<bool(Triangle,Parametric_Surface,Parametric_Surface)> f);
 	};
 		
 }

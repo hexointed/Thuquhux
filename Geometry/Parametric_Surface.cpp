@@ -19,7 +19,60 @@ using Geometry::Parametric_Surface;
 
 double PI = 3.14159265358979;
 
+Parametric_Surface::Parametric_Surface(PointVector<> pos):
+	mesh_detail{10},
+	mesh_length{mesh_detail*mesh_detail*2},
+	bound_box{{0,0,0},{0,0,0}},
+	position{pos}
+{}
+
 Parametric_Surface::~Parametric_Surface() {
+}
+
+namespace{
+	std::vector<Triangle> continuous_split(Triangle t, std::vector<Triangle> splits){
+		std::vector<Triangle> tris{t};
+		while(splits.size()){
+			PointVector<> normal = splits.back().normal();
+			PointVector<> pos = splits.back()[0];
+			Triangle tr = tris.back()
+			tris.pop_back();
+			splits.pop_back();
+			auto new_tri = tr.split(pos, normal);
+			tris.insert(tris.end(), new_tri.begin(), new_tri.end());
+		}
+		return tris;
+	}
+	
+	Parametric_Surface split_many(std::vector<Triangle> t, std::vector<Triangle> splits){
+		std:::vector result;
+		for(Triangle tri : t){
+			std::vector<Triangle> intersections;
+			for(Triangle tris){
+				if(tri.collisionWith(tris).first){
+					intersections.push_back(tris)
+				}
+			}
+			if(intersections.size()==0){
+				result.push_back(t);
+				continue;
+			}
+			auto tmp = continuous_split(t, intersections);
+			result.insert(result.end(), tmp.begin(), tmp.end());
+		}
+		return result;
+	}
+}
+
+Parametric_Surface Parametric_Surface::Union(Parametric_Surface a, Parametric_Surface b){
+	Parametric_Surface ret(a.position);
+	auto lambda = [&](Triangle t){
+	              		PointVector<> avg = (t[0] + t[1] +t[2])/3;
+	              		return a.pointIsWithin(avg);
+	                };
+	
+	Triangle_Mesh& result = ret.mesh;
+	return ret;
 }
 
 void Parametric_Surface::Unite(Parametric_Surface a){
@@ -32,12 +85,6 @@ void Parametric_Surface::Unite(Parametric_Surface a){
 	}
 	
 	std::cout<<mesh.size()<<std::endl;
-	
-	/*
-	PointVector<> rel_pos = a.position - position;
-	bound_box[0].set_min_comp(a.bound_box[0] + rel_pos);
-	bound_box[1].set_max_comp(a.bound_box[1] + rel_pos);
-	auto intersections = mesh.intersections(a.mesh);*/
 }
 
 bool Parametric_Surface::is_subset_of(const Parametric_Surface& v){

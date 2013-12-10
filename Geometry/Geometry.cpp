@@ -168,6 +168,10 @@ std::vector<Triangle> Triangle::split(PointVector<> pos, PointVector<> normal) c
 	return result;
 }
 
+PointVector<> Triangle::normal() const {
+	return PointVector<>::mul_cross(vertecies[1] - vertecies[0], vertecies[2] - vertecies[0]);
+}
+
 void Triangle::draw(){
 	//glTranslatef(0,0,0);
 	glBegin(GL_TRIANGLES);
