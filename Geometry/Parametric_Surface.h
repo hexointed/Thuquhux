@@ -23,7 +23,7 @@ namespace Geometry{
 	public:
 		Parametric_Surface(PointVector<> pos);
 		template<typename Functor>
-		Parametric_Surface(Functor f, PointVector<> pos = {0,0,0});
+		Parametric_Surface(Functor f, PointVector<> pos);
 		virtual ~Parametric_Surface();
 		
 		static Parametric_Surface Union(Parametric_Surface a, Parametric_Surface b);

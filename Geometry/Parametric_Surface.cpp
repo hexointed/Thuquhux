@@ -16,6 +16,7 @@
 #include <utility>
 
 using Geometry::Parametric_Surface;
+using Geometry::Triangle;
 
 double PI = 3.14159265358979;
 
@@ -35,29 +36,31 @@ namespace{
 		while(splits.size()){
 			PointVector<> normal = splits.back().normal();
 			PointVector<> pos = splits.back()[0];
-			Triangle tr = tris.back()
-			tris.pop_back();
 			splits.pop_back();
-			auto new_tri = tr.split(pos, normal);
-			tris.insert(tris.end(), new_tri.begin(), new_tri.end());
+			std::vector<Triangle> tmp_tris;
+			for(Triangle tri : tris){
+				auto new_tri = tri.split(pos, normal);
+				tmp_tris.insert(tris.end(), new_tri.begin(), new_tri.end());
+			}
+			tris = tmp_tris;
 		}
 		return tris;
 	}
 	
-	Parametric_Surface split_many(std::vector<Triangle> t, std::vector<Triangle> splits){
-		std:::vector result;
+	std::vector<Triangle> split_many(std::vector<Triangle> t, std::vector<Triangle> splits){
+		std::vector<Triangle> result;
 		for(Triangle tri : t){
 			std::vector<Triangle> intersections;
-			for(Triangle tris){
-				if(tri.collisionWith(tris).first){
-					intersections.push_back(tris)
+			for(Triangle tris : splits){
+				if(tri.intersectionWith(tris).first){
+					intersections.push_back(tris);
 				}
 			}
 			if(intersections.size()==0){
-				result.push_back(t);
+				result.push_back(tri);
 				continue;
 			}
-			auto tmp = continuous_split(t, intersections);
+			auto tmp = continuous_split(tri, intersections);
 			result.insert(result.end(), tmp.begin(), tmp.end());
 		}
 		return result;
@@ -70,8 +73,6 @@ Parametric_Surface Parametric_Surface::Union(Parametric_Surface a, Parametric_Su
 	              		PointVector<> avg = (t[0] + t[1] +t[2])/3;
 	              		return a.pointIsWithin(avg);
 	                };
-	
-	Triangle_Mesh& result = ret.mesh;
 	return ret;
 }
 

@@ -34,8 +34,8 @@ TerrainGenerator *a = new TerrainGenerator();
 using Geometry::Parametric_Surface;
 using Geometry::Triangle;
 
-Parametric_Surface *b = new Parametric_Surface(Geometry::def_param_axis_func);
-Parametric_Surface *c = new Parametric_Surface(Geometry::def_param_axis_func);
+Parametric_Surface *b = new Parametric_Surface(Geometry::def_param_axis_func, {0,0,0});
+Parametric_Surface *c = new Parametric_Surface(Geometry::def_param_axis_func, {0,0,0});
 
 PointVector<> qq[] = {PointVector<>(0.5,0.2,-3.50), PointVector<>(0.1,-0.3,0), PointVector<>(-0.2,0.1,0)};
 PointVector<> pp[] = {PointVector<>(0.0,-0.3,-0.2), PointVector<>(-0.4,0.2,-0.2), PointVector<>(-0.3,-0.4,-0.2)};
