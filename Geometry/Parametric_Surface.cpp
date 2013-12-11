@@ -68,11 +68,31 @@ namespace{
 }
 
 Parametric_Surface Parametric_Surface::Union(Parametric_Surface a, Parametric_Surface b){
-	Parametric_Surface ret(a.position);
-	auto lambda = [&](Triangle t){
-	              		PointVector<> avg = (t[0] + t[1] +t[2])/3;
-	              		return a.pointIsWithin(avg);
+	Parametric_Surface ret(a.position + PointVector<>{5,0,0});
+	auto a_test = [&](Triangle t){
+	              		PointVector<> avg = (t[0] + t[1] + t[2])/3.0;
+	              		return !b.pointIsWithin(avg);
 	                };
+	auto b_test = [&](Triangle t){
+	              		PointVector<> avg = (t[0] + t[1] + t[2])/3.0;
+	              		return !a.pointIsWithin(avg);
+	              	};
+	std::vector<Triangle> t_a = a.mesh.all_triangles();
+	std::vector<Triangle> t_b = b.mesh.all_triangles();
+	
+	auto s_a = split_many(t_a, t_b);
+	auto s_b = split_many(t_b, t_a);
+	
+	for(Triangle t : s_a){
+		if(a_test(t)){
+			ret.mesh.add(t);
+		}
+	}
+	for(Triangle t : s_b){
+		if(b_test(t)){
+			ret.mesh.add(t);
+		}
+	}
 	return ret;
 }
 

@@ -21,6 +21,8 @@ namespace Geometry{
 
 	class Parametric_Surface {
 	public:
+		Parametric_Surface() = delete;
+		Parametric_Surface(const Parametric_Surface&) = delete;
 		Parametric_Surface(PointVector<> pos);
 		template<typename Functor>
 		Parametric_Surface(Functor f, PointVector<> pos);
