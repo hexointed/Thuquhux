@@ -24,14 +24,14 @@ namespace Geometry{
 		size_t connected[3];
 		Triangle_Mesh& super;
 	public:
-		operator Geometry::Triangle ();
+		operator Geometry::Triangle () const;
 	};
 	
 	class Triangle_Mesh{
 		friend class Element;
 	public:
 		Triangle_Mesh() = default;
-		Triangle_Mesh(const Triangle_Mesh&) = default;
+		Triangle_Mesh(const Triangle_Mesh& orig);
 		Triangle_Mesh(std::vector<Geometry::Triangle> t);
 		
 	private:
@@ -43,7 +43,7 @@ namespace Geometry{
 		void add(Geometry::Triangle t);
 		std::vector<PointVector<>>& vertecies() {return _vertecies;}
 		
-		std::vector<Triangle> all_triangles();
+		std::vector<Triangle> all_triangles() const;
 		std::vector<Triangle> intersecting_triangles(Triangle t);
 		
 		decltype(elements)::iterator begin(){return elements.begin();}

@@ -20,6 +20,16 @@ using Geometry::Triangle;
 
 double PI = 3.14159265358979;
 
+Parametric_Surface::Parametric_Surface(const Parametric_Surface& orig):
+	mesh{orig.mesh},
+	mesh_detail{orig.mesh_detail},
+	mesh_length{orig.mesh_length},
+	prop_updated{orig.prop_updated},
+	volume{orig.volume},
+	bound_box{orig.bound_box[0], orig.bound_box[1]},
+	position{orig.position}
+{}
+
 Parametric_Surface::Parametric_Surface(PointVector<> pos):
 	mesh_detail{10},
 	mesh_length{mesh_detail*mesh_detail*2},
@@ -40,7 +50,7 @@ namespace{
 			std::vector<Triangle> tmp_tris;
 			for(Triangle tri : tris){
 				auto new_tri = tri.split(pos, normal);
-				tmp_tris.insert(tris.end(), new_tri.begin(), new_tri.end());
+				tmp_tris.insert(tmp_tris.end(), new_tri.begin(), new_tri.end());
 			}
 			tris = tmp_tris;
 		}

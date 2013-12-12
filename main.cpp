@@ -164,6 +164,7 @@ void KeyboardHandler(unsigned char key, int /*x*/, int /*y*/)
 
 void Display()
 {
+	Parametric_Surface::Union(*b, *c);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 

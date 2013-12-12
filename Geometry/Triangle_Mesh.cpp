@@ -22,10 +22,17 @@ Geometry::Element::Element(Geometry::Triangle t, Triangle_Mesh& universe):
 	super.elements.push_back(*this);
 }
 
-Geometry::Element::operator Geometry::Triangle (){
+Geometry::Element::operator Geometry::Triangle () const{
 	return Geometry::Triangle{super._vertecies[vertecies[0]],
 	                          super._vertecies[vertecies[1]],
 	                          super._vertecies[vertecies[2]]};
+}
+
+Geometry::Triangle_Mesh::Triangle_Mesh(const Triangle_Mesh& orig)
+{
+	for(Triangle t : orig.all_triangles()){
+		Geometry::Element(t, *this);
+	}
 }
 
 Geometry::Triangle_Mesh::Triangle_Mesh(std::vector<Geometry::Triangle> t){
@@ -42,9 +49,9 @@ void Geometry::Triangle_Mesh::add(Geometry::Triangle t){
 	Geometry::Element(t, *this);
 }
 
-std::vector<Geometry::Triangle> Geometry::Triangle_Mesh::all_triangles(){
+std::vector<Geometry::Triangle> Geometry::Triangle_Mesh::all_triangles() const {
 	std::vector<Geometry::Triangle> result;
-	for(Geometry::Triangle t : elements){
+	for(const Geometry::Triangle t : elements){
 		result.push_back(t);
 	}
 	return result;
