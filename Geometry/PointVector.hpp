@@ -406,6 +406,22 @@ Numeric PointVector<Dim, Numeric>::taxicab_distance(PointVector p, PointVector q
 }
 
 template<int Dim, typename Numeric>
+PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::op_comp(std::function<void(Numeric&)> op){
+	for(Numeric& n : comp){
+		op(n);
+	}
+	return *this;
+}
+
+template<int Dim, typename Numeric>
+PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::op_comp(std::function<void(Numeric&, Numeric)> op, PointVector<Dim, Numeric> p){
+	for(int i = 0; i < Dim; i++){
+		op(comp[i], p.comp[i]);
+	}
+	return *this;
+}
+
+template<int Dim, typename Numeric>
 std::array<bool, Dim> PointVector<Dim, Numeric>::operator ==(PointVector<Dim, Numeric> p) const{
 	std::array<bool, Dim> result;
 	for(int i = 0; i < Dim; i++){
@@ -460,19 +476,6 @@ std::array<bool, Dim> PointVector<Dim, Numeric>::operator <=(PointVector<Dim, Nu
 }
 
 template<int Dim, typename Numeric>
-std::ostream& PointVector<Dim, Numeric>::operator<<(std::ostream& out) const {
-	out << "{";
-	for(int i = 0; i < Dim; i++){
-		out << comp[i];
-		if(i < Dim - 1){
-			out << ", ";
-		}
-	}
-	out << "}";
-	return out;
-}
-
-template<int Dim, typename Numeric>
 PointVector<Dim, Numeric>::Cross_product::Cross_product(PointVector<Dim, Numeric> t, PointVector<Dim, Numeric> u){
 	q = t;
 	p = u;
@@ -498,6 +501,19 @@ PointVector<Dim, Numeric>::Cross_product::operator PointVector<7, Numeric> () co
 	res.comp[5] = q.comp[6] * p.comp[1] - q.comp[1] * p.comp[6] + q.comp[0] * p.comp[4] - q.comp[4] * p.comp[0] + q.comp[2] * p.comp[3] - q.comp[3] * p.comp[2];
 	res.comp[6] = q.comp[0] * p.comp[2] - q.comp[2] * p.comp[0] + q.comp[1] * p.comp[5] - q.comp[5] * p.comp[1] + q.comp[3] * p.comp[4] - q.comp[4] * p.comp[3];
 	return res;
+}
+
+template<int Dim, typename Numeric>
+std::ostream& operator<<(std::ostream& out, PointVector<Dim, Numeric> d) {
+	out << "{";
+	for(int i = 0; i < Dim; i++){
+		out << d.comp[i];
+		if(i < Dim - 1){
+			out << ", ";
+		}
+	}
+	out << "}";
+	return out;
 }
 
 template<int Dim, typename Numeric>

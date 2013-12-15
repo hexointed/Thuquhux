@@ -13,6 +13,7 @@
 
 #include <array>
 #include <ostream>
+#include <functional>
 
 /*
  * Dim is the dimension of the PointVector, and Numberic is the type used to represent
@@ -111,7 +112,7 @@ public:
 	static PointVector pow_comp(PointVector p, PointVector q);
 	
 	/*
-	 * a is considered max_comp(b) if all components of a are equal or bigger
+	 * a is considered max_comp(b) if all components of a are equal to or bigger
 	 * than their respective component in b
 	 */
 	
@@ -143,6 +144,13 @@ public:
 	static PointVector project(PointVector p, PointVector q);
 	static Numeric taxicab_distance(PointVector p, PointVector q);
 	
+	/*
+	 * Gerneral composant-wise unary and binary operator for user-defined operations.
+	 */
+	
+	PointVector& op_comp(std::function<void(Numeric&)> op);
+	PointVector& op_comp(std::function<void(Numeric&, Numeric)> op, PointVector p);
+	
 	std::array<bool, Dim> operator==	(PointVector p) const;
 	std::array<bool, Dim> operator!=	(PointVector p) const;
 	std::array<bool, Dim> operator> 	(PointVector p) const;
@@ -155,7 +163,8 @@ public:
 	 * requires that Numeric overloads operator << 
 	 */
 	
-	std::ostream& operator << (std::ostream& out) const;
+	template<int D, typename N>
+	friend std::ostream& operator << (std::ostream& out, PointVector<D,N> d);
 	
 	/*
 	 * Cross_product is a class that handles computation of cross products by using 
