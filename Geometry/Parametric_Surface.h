@@ -38,7 +38,7 @@ namespace Geometry{
 		void Complement(Parametric_Surface a);
 		void Differatiate(Parametric_Surface a);
 		
-		Parametric_Surface& operator=(Parametric_Surface v) const;
+		Parametric_Surface& operator=(const Parametric_Surface& orig) = default;
 		
 		bool is_equal_to(const Parametric_Surface& v);
 		bool is_subset_of(const Parametric_Surface& v);
@@ -61,7 +61,7 @@ namespace Geometry{
 		Geometry::Triangle_Mesh mesh;
 		
 		int mesh_detail;
-		const int mesh_length;
+		int mesh_length;
 		
 		bool prop_updated;
 		double volume;

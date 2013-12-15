@@ -42,8 +42,8 @@ namespace Geometry{
 		
 		bool shares_side(const Triangle& with);
 		bool passesThrough(PointVector<>& max, PointVector<>& min);
-		std::pair<bool, PointVector<>> intersectionWith(Polygon<2> a);
-		std::pair<bool, std::vector<PointVector<>>> intersectionWith(Triangle& a);
+		std::pair<bool, PointVector<>> intersectionWith(Polygon<2> a) const;
+		std::pair<bool, std::vector<PointVector<>>> intersectionWith(Triangle a) const;
 		std::vector<Triangle> split(PointVector<> pos, PointVector<> normal) const;
 		
 		PointVector<> normal() const;

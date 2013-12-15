@@ -71,7 +71,7 @@ bool Triangle::passesThrough(PointVector<>& /*max*/, PointVector<>& /*min*/){
 	return result;
 }
 
-std::pair<bool, PointVector<>> Triangle::intersectionWith(Polygon<2> p){
+std::pair<bool, PointVector<>> Triangle::intersectionWith(Polygon<2> p) const{
 	auto no_true = std::make_pair(false, PointVector<>{});
 	
 	auto& q = *this;
@@ -103,8 +103,8 @@ std::pair<bool, PointVector<>> Triangle::intersectionWith(Polygon<2> p){
 	return std::make_pair(true, q.vertecies[0] + si*u + ti*v);
 }
 
-std::pair<bool, std::vector<PointVector<>>> Triangle::intersectionWith(Triangle& q){
-	Triangle& p = *this;
+std::pair<bool, std::vector<PointVector<>>> Triangle::intersectionWith(Triangle q) const{
+	Triangle p = *this;
 	std::vector<PointVector<>> results;
 	for(int i = 0; i < 2; i++){
 		
@@ -123,7 +123,6 @@ std::pair<bool, std::vector<PointVector<>>> Triangle::intersectionWith(Triangle&
 		}
 		std::swap(p,q);
 	}
-	std::swap(p,q);
 	return std::make_pair(false,results);
 }
 

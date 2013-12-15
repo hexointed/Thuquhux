@@ -36,6 +36,7 @@ using Geometry::Triangle;
 
 Parametric_Surface *b = new Parametric_Surface(Geometry::def_param_axis_func, {0,0,0});
 Parametric_Surface *c = new Parametric_Surface(Geometry::def_param_axis_func, {0,0,0});
+Parametric_Surface elias{{0,0,0}};
 
 PointVector<> qq[] = {PointVector<>(0.5,0.2,-3.50), PointVector<>(0.1,-0.3,0), PointVector<>(-0.2,0.1,0)};
 PointVector<> pp[] = {PointVector<>(0.0,-0.3,-0.2), PointVector<>(-0.4,0.2,-0.2), PointVector<>(-0.3,-0.4,-0.2)};
@@ -156,6 +157,10 @@ void KeyboardHandler(unsigned char key, int /*x*/, int /*y*/)
 		{
 			tp.setdy(tp.getdy() + 0.125127);
 		} break;
+		case 'p':
+		{
+			elias = Parametric_Surface::Union(*b, *c);
+		}
 		default:
 		{} break;
 	}
@@ -164,11 +169,11 @@ void KeyboardHandler(unsigned char key, int /*x*/, int /*y*/)
 
 void Display()
 {
-	Parametric_Surface::Union(*b, *c);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 
 	c->position.setdx(cpos);
+	elias.position = {3,0,0};
 	c->rotate({0,1,0}, 0.1);
 	e.move({tpos,0,0});
 	Triangle tritest{{-0.5,-0.5,0},{0.5,-0.5,0},{0.5,-0.5,0.5}};
@@ -206,6 +211,7 @@ void Display()
 		glScalef(0.125, 0.125, 0.125);
 		b->drawMesh();
 		c->drawMesh();
+		elias.drawMesh();
 		glBegin(GL_POINTS);
 			glVertex3dv((double*)&tp);
 		glEnd();

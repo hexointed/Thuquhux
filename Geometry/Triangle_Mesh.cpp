@@ -7,7 +7,11 @@
 
 #include "Triangle_Mesh.h"
 
-Geometry::Element::Element(Geometry::Triangle t, Triangle_Mesh& universe):
+using Geometry::Triangle;
+using Geometry::Element;
+using Geometry::Triangle_Mesh;
+
+Element::Element(Triangle t, Triangle_Mesh& universe):
 	super(universe)
 {
 	for(size_t i = 0; i < 3; i++){
@@ -22,44 +26,53 @@ Geometry::Element::Element(Geometry::Triangle t, Triangle_Mesh& universe):
 	super.elements.push_back(*this);
 }
 
-Geometry::Element::operator Geometry::Triangle () const{
-	return Geometry::Triangle{super._vertecies[vertecies[0]],
+Element::operator Triangle () const{
+	return Triangle{super._vertecies[vertecies[0]],
 	                          super._vertecies[vertecies[1]],
 	                          super._vertecies[vertecies[2]]};
 }
 
-Geometry::Triangle_Mesh::Triangle_Mesh(const Triangle_Mesh& orig)
+Triangle_Mesh::Triangle_Mesh(const Triangle_Mesh& orig)
 {
 	for(Triangle t : orig.all_triangles()){
-		Geometry::Element(t, *this);
+		Element(t, *this);
 	}
 }
 
-Geometry::Triangle_Mesh::Triangle_Mesh(std::vector<Geometry::Triangle> t){
-	for(Geometry::Triangle tri : t){
-		Geometry::Element(tri, *this);
+Triangle_Mesh::Triangle_Mesh(std::vector<Triangle> t){
+	for(Triangle tri : t){
+		Element(tri, *this);
 	}
 }
 
-size_t Geometry::Triangle_Mesh::size(){
+Triangle_Mesh& Triangle_Mesh::operator=(const Triangle_Mesh& orig){
+	elements.clear();
+	_vertecies.clear();
+	for(Triangle tri : orig){
+		Element(tri, *this);
+	}
+	return *this;
+}
+
+size_t Triangle_Mesh::size(){
 	return elements.size();
 }
 
-void Geometry::Triangle_Mesh::add(Geometry::Triangle t){
-	Geometry::Element(t, *this);
+void Triangle_Mesh::add(Triangle t){
+	Element(t, *this);
 }
 
-std::vector<Geometry::Triangle> Geometry::Triangle_Mesh::all_triangles() const {
-	std::vector<Geometry::Triangle> result;
-	for(const Geometry::Triangle t : elements){
+std::vector<Triangle> Triangle_Mesh::all_triangles() const {
+	std::vector<Triangle> result;
+	for(const Triangle t : elements){
 		result.push_back(t);
 	}
 	return result;
 }
 
-std::vector<Geometry::Triangle> Geometry::Triangle_Mesh::intersecting_triangles(Geometry::Triangle with){
-	std::vector<Geometry::Triangle> result;
-	for(Geometry::Triangle t : elements){
+std::vector<Triangle> Triangle_Mesh::intersecting_triangles(Triangle with){
+	std::vector<Triangle> result;
+	for(Triangle t : elements){
 		if(with.intersectionWith(t).first){
 			result.push_back(t);
 		}

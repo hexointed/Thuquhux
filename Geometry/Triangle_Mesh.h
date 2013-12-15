@@ -33,6 +33,7 @@ namespace Geometry{
 		Triangle_Mesh() = default;
 		Triangle_Mesh(const Triangle_Mesh& orig);
 		Triangle_Mesh(std::vector<Geometry::Triangle> t);
+		Triangle_Mesh& operator=(const Triangle_Mesh& orig);
 		
 	private:
 		std::vector<PointVector<>> _vertecies;
@@ -48,6 +49,8 @@ namespace Geometry{
 		
 		decltype(elements)::iterator begin(){return elements.begin();}
 		decltype(elements)::iterator end(){return elements.end();}
+		decltype(elements)::const_iterator begin() const {return elements.begin();}
+		decltype(elements)::const_iterator end() const {return elements.end();}
 	};
 }
 
