@@ -9,12 +9,12 @@ double RADIUS = 1;
 
 NPC::NPC(){
 	position = makePosition();
-	velocityx = 4; // makeVelocityx();
-	velocityy = 4;//makeVelocityy();
-	velocityz = 4;//makeVelocityz();
-	climbingAbilityx = 1.0/0.0; // makeClimbingAbilityx();
-	climbingAbilityy = 1.0/0.0; //makeClimbingAbilityy();
-	climbingAbilityz = 1.0/0.0; //makeClimbingAbilityz();
+	velocityx = makeVelocityx();
+	velocityy = makeVelocityy();
+	velocityz = makeVelocityz();
+	climbingAbilityx = makeClimbingAbilityx();
+	climbingAbilityy = makeClimbingAbilityy();
+	climbingAbilityz = makeClimbingAbilityz();
 }
 
 PointVector<> NPC::makePosition(){

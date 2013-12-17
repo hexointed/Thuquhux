@@ -10,25 +10,62 @@
 
 #include "../Geometry/PointVector.h"
 #include "Material.h"
+#include "../Geometry/Parametric_Surface.h"
+#include "PhysHandler.h"
+
+using Geometry::Parametric_Surface;
 
 class PhysObject {
 public:
-    PhysObject();
-    PhysObject(const PhysObject& orig);
-    virtual ~PhysObject();
-    
-    void Unite(PhysObject a);
-    void Intersect(PhysObject a);
-    void Complement(PhysObject a);
-    void Differentiate(PhysObject);
-    
-    bool isInObject(PointVector<> a);
+	static PhysHandler default_handler;
+
+	static void create(Parametric_Surface surface = {Geometry::def_param_axis_func}, PhysHandler& handler = default_handler, PointVector<> velocity = {0,0,0});
 	
-	Material material;
-	double volume;
+	PhysObject(const PhysObject& orig);
+	virtual ~PhysObject();
+    
+	void unite(PhysObject a);
+	void intersect(PhysObject a);
+	void complement(PhysObject a);
+	void differentiate(PhysObject);
+    
+	bool isInObject(PointVector<> a);
+	
+	double& density();
+	Material& material();
+	double& volume();
+	PointVector<>& previous_position();
+	PointVector<>& position();
+	PointVector<>& velocity();
+	std::pair<PointVector<>, double> rotation();
+
+	PointVector<>& acceleration();
+
+	std::vector<std::pair<PointVector<> , double>>& impulses();
+
+	Parametric_Surface& surface();
+	
+	void calcVolume();
+	void accelerate(PointVector<> a);
+	void addImpulse(PointVector<> a, double time);
+	
+	
+	static void collision(PhysObject& obj1,PhysObject& obj2, PointVector<> collide_at, PointVector<> normal);
     
 private:
-	void setMass(double mass);
+	PhysObject(Parametric_Surface surface = {Geometry::def_param_axis_func}, PhysHandler handler = default_handler, PointVector<> velocity = {0,0,0});
+
+	PointVector<> _previous_position;
+	Material _material;
+	double _volume;
+	PointVector<> _velocity;
+	PointVector<> _acceleration;
+	std::vector<std::pair<PointVector<> , double>> _impulses;
+	Parametric_Surface _surface;
+	std::pair<PointVector<>, double> _rotation;
+
+public:
+	
 	
 };
 

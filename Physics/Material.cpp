@@ -7,16 +7,24 @@
 
 #include "Material.h"
 
-Material::Material() {
+Material::Material():
+	_density{1},
+	_restitution{}
+{
 }
 
 //Material::Material(const Material& orig) {
 //}
 
-Material::~Material() {
+Material::~Material()
+{
 }
 
-void Material::setDensity(double density){
-	inertialDens = density;
-	gravitationDens = density;
+double& Material::density() {
+	
+	return _density;
+}
+
+double& Material::restitution(){
+	return _restitution;
 }
