@@ -63,7 +63,6 @@ void PhysHandler::handle(double time){
 		i.first.position = i.second.position();
 		i.first.updatePosition(time);
 		i.second.position() = i.first.position;
-		std::cout << i.first.position.getdx() << " " << i.second.position().getdx() << std::endl;
 	}
 
 }
