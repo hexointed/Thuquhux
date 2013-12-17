@@ -55,7 +55,7 @@ public:
 	static void collision(PhysObject& obj1,PhysObject& obj2, PointVector<> collide_at, PointVector<> normal);
     
 private:
-	PhysObject(Parametric_Surface surface = {Geometry::def_param_axis_func}, PhysHandler handler = default_handler, PointVector<> velocity = {0,0,0});
+	PhysObject(Parametric_Surface surface = {Geometry::def_param_axis_func}, PointVector<> velocity = {0,0,0});
 
 	PointVector<> _previous_position;
 	Material _material;
