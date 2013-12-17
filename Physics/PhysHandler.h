@@ -8,7 +8,7 @@
 
 #ifndef PHYSHANDLER_H
 #define PHYSHANDLER_H
-
+#include "../NPC/NPC.h"
 #include <vector>
 
 class PhysObject;
@@ -21,6 +21,7 @@ public:
 	void addPhysObject(PhysObject a);
 	
 	std::vector<PhysObject> physObjects;
+	std::vector<std::pair<NPC , PhysObject>> NPCs;
 private:
 	
 };

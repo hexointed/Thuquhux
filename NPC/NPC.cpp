@@ -1,11 +1,12 @@
 #include "NPC.h"
+#include "../Physics/PhysObject.h"
 
 static PointVector<> PLACEHOLDER_PLAYER_POSITION{2, 1, 0};
 static PointVector<> PLACEHOLDER_TMP{5,0,0};
 static PointVector<> DDD{10,0,0};
 std::vector<PointVector<>> PLACEHOLDER_LINE_OF_TRAVEL{DDD, PLACEHOLDER_PLAYER_POSITION, PLACEHOLDER_TMP};
-PointVector<> GRAVITY_CENTER{0,0,0};
-double RADIUS = 1;
+PointVector<> GRAVITY_CENTER{};
+double RADIUS;
 
 NPC::NPC(){
 	position = makePosition();
@@ -14,7 +15,8 @@ NPC::NPC(){
 	velocityz = makeVelocityz();
 	climbingAbilityx = makeClimbingAbilityx();
 	climbingAbilityy = makeClimbingAbilityy();
-	climbingAbilityz = makeClimbingAbilityz();
+	climbingAbilityz =  makeClimbingAbilityz();
+	make_physObject();
 }
 
 PointVector<> NPC::makePosition(){
@@ -67,7 +69,10 @@ int NPC::randomInt(){
 	return rand() % 50;
 }
 
+void NPC::make_physObject(){
+	PhysObject::default_handler.NPCs.push_back(std::make_pair(*this,PhysObject::create_return()));
 
+}
 
 PointVector<> NPC::updatePosition(double deltaT){
 	

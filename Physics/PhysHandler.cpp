@@ -6,7 +6,7 @@
  */
 #include "PhysHandler.h"
 #include "PhysObject.h"
-
+#include "../NPC/NPC.h"
 
 PhysHandler::PhysHandler(){
 
@@ -57,6 +57,13 @@ void PhysHandler::handle(double time){
 				PhysObject::collision(physObjects[i], physObjects[j], collide_at(physObjects[i].surface(), physObjects[j].surface()), collision_normal(physObjects[i].surface(), physObjects[j].surface()));
 			}
 		}
+	}
+	
+	for(std::pair<NPC, PhysObject>& i : NPCs){
+		i.first.position = i.second.position();
+		i.first.updatePosition(time);
+		i.second.position() = i.first.position;
+		std::cout << i.first.position.getdx() << " " << i.second.position().getdx() << std::endl;
 	}
 
 }

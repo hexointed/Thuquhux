@@ -18,6 +18,12 @@ void PhysObject::create(Parametric_Surface surface, PhysHandler& handler, PointV
 
 }
 
+PhysObject& PhysObject::create_return(Parametric_Surface surface, PhysHandler& handler, PointVector<> velocity){
+	PhysObject erland(surface, handler, velocity);
+	handler.physObjects.push_back(erland);
+	return erland;
+}
+
 PhysObject::PhysObject(Parametric_Surface surface, PhysHandler handler, PointVector<> velocity):
 	_material{},
 	_volume{1},

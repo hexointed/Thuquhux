@@ -3,7 +3,6 @@
 
 #include "../Geometry/PointVector.h"
 #include <time.h>
-#include "../Physics/PhysObject.h"
 #include <vector>
 #include <iostream>
 
@@ -14,6 +13,7 @@ public:
 	NPC();
 	PointVector<> updatePosition(double deltaT);
 	PointVector<> position;
+
 private:
 
 	bool randomBool(); 
@@ -38,6 +38,7 @@ private:
 	double getPosition(); 
 	PointVector<> makePosition();
 
+	void make_physObject();
 };
 
 #endif /*NPC_H*/

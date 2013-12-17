@@ -17,10 +17,12 @@ using Geometry::Parametric_Surface;
 
 class PhysObject {
 public:
+	
 	static PhysHandler default_handler;
 
 	static void create(Parametric_Surface surface = {Geometry::def_param_axis_func}, PhysHandler& handler = default_handler, PointVector<> velocity = {0,0,0});
-	
+	static PhysObject& create_return(Parametric_Surface surface = {Geometry::def_param_axis_func}, PhysHandler& handler = default_handler, PointVector<> velocity = {0,0,0});	
+
 	PhysObject(const PhysObject& orig);
 	virtual ~PhysObject();
     

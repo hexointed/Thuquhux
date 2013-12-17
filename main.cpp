@@ -58,12 +58,9 @@ double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];
 
 int main(int argc, char **argv)
 {
-	PhysObject::create();
-	PhysObject::create();
-	PhysObject::default_handler.physObjects[1].position() = PhysObject::default_handler.physObjects[0].position()-PointVector<>{0,2,3};
-	PhysObject::default_handler.physObjects[0].velocity() = PointVector<>{0,0,-2};
-	PhysObject::default_handler.physObjects[1].velocity() = PointVector<>{0,0,0};
+	PhysObject::default_handler.physObjects[1].position() = PointVector<>{0,0,10};
 
+	
 	srand(time(0));
 	a->genGround(g_width, g_depth,arot,0, vertecies);
 
@@ -179,11 +176,6 @@ void KeyboardHandler(unsigned char key, int /*x*/, int /*y*/)
 
 void Display()
 {	
-	joline.updatePosition(0.1);
-	std::cout<<joline.position.getdx()<<std::endl;
-
-	nyNPC.updatePosition(0.1);
-	//std::cout<<nyNPC.position.getdx()<<std::endl;
 	
 	PhysObject::default_handler.handle(0.05);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -238,7 +230,6 @@ void Display()
 		d.draw();
 		e.draw();
 		PhysObject::default_handler.physObjects[0].surface().drawMesh();
-		PhysObject::default_handler.physObjects[1].surface().drawMesh();
 	glPopMatrix();
 	glutSwapBuffers();
 }
