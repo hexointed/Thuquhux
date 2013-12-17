@@ -20,8 +20,8 @@ public:
 	
 	static PhysHandler default_handler;
 
-	static void create(bool addToList = 1, Parametric_Surface surface = {Geometry::def_param_axis_func}, PhysHandler& handler = default_handler, PointVector<> velocity = {0,0,0});
-	static PhysObject& create_return(bool addToList = 1, Parametric_Surface surface = {Geometry::def_param_axis_func}, PhysHandler& handler = default_handler, PointVector<> velocity = {0,0,0});	
+	static void create(bool addToList = 1, Parametric_Surface surface = Parametric_Surface(Geometry::def_param_axis_func, {0,0,0}), PhysHandler& handler = default_handler, PointVector<> velocity = {0,0,0});
+	static PhysObject& create_return(bool addToList = 1, Parametric_Surface surface = Parametric_Surface(Geometry::def_param_axis_func, {0,0,0}), PhysHandler& handler = default_handler, PointVector<> velocity = {0,0,0});	
 
 	PhysObject(const PhysObject& orig);
 	virtual ~PhysObject();
@@ -55,7 +55,7 @@ public:
 	static void collision(PhysObject& obj1,PhysObject& obj2, PointVector<> collide_at, PointVector<> normal);
     
 private:
-	PhysObject(Parametric_Surface surface = {Geometry::def_param_axis_func}, PhysHandler handler = default_handler, PointVector<> velocity = {0,0,0});
+	PhysObject(Parametric_Surface surface = Parametric_Surface(Geometry::def_param_axis_func, {0,0,0}), PhysHandler handler = default_handler, PointVector<> velocity = {0,0,0});
 
 	PointVector<> _previous_position;
 	Material _material;

@@ -1,6 +1,6 @@
 /* 
  * File:   Triangle_Mesh.h
- * Author: elias
+ * Author: Elias Forsberg
  *
  * Created on September 6, 2013, 5:36 PM
  */
@@ -9,102 +9,49 @@
 #define	TRIANGLE_MESH_H
 
 #include <vector>
-#include <map>
-#include <set>
 
+#include "PointVector.h"
 #include "Geometry.h"
 
 namespace Geometry{
-
-	class Triangle_Mesh {	
-		/* Helper classes Element and Iterator:
-		 * Element is used to keep track of a single Triangle, along with the Triangles it
-		 * is connected to.
-		 * Iterator is used so that Triangle_Meshes easily can be used with different
-		 * kinds of loops.
-		 */
+	class Triangle_Mesh;
+	
+	class Element{
 	public:
-		class Iterator;
-	private:	
-		class Element{
-		public:
-			Element();
-			Element(Triangle* t);
-			Element& first_valid_connection();
-			bool single_valid_connection();
-			bool connected_with(const Element& e);
-			
-		public:
-			Triangle* tri;
-			Triangle* connected[3];
-			
-		public:
-			struct Elementcompare{
-				bool operator()(Element a, Element b){
-					return a.tri < b.tri;
-				}
-			};
-		};
-		
-		using Element_set = std::set<Element, Element::Elementcompare>;
-		using Element_map = std::map<Element, Element, Element::Elementcompare>;
-		
-		/* Declarations for class Triangle_Mesh :
-		 */
+		Element(Geometry::Triangle t, Triangle_Mesh& universe);
+	private:
+		size_t vertecies[3];
+		size_t connected[3];
+		Triangle_Mesh& super;
+	public:
+		operator Geometry::Triangle () const;
+	};
+	
+	class Triangle_Mesh{
+		friend class Element;
 	public:
 		Triangle_Mesh() = default;
-		
-	public:
-		template<template <typename> class Container>
-		static Container<Triangle_Mesh> make_mesh(Container<Triangle*> triangles);
-		
-		template<template <typename> class Container>
-		static Triangle_Mesh make_mesh(Container<PointVector<> > mesh_vertecies);
-		
-		std::vector<Triangle_Mesh> intersection(Triangle_Mesh a);
-		Triangle& operator[](const int i);
-		long int size();
-		
-		Triangle_Mesh get_single_path(Element& begin, Element& end);
-		bool is_loop();
-		
-		static void test();
-		
-		void add(Triangle t);
-		void add(Triangle& t);
-		void remove(const Triangle& t);
+		Triangle_Mesh(const Triangle_Mesh& orig);
+		Triangle_Mesh(std::vector<Geometry::Triangle> t);
+		Triangle_Mesh& operator=(const Triangle_Mesh& orig);
 		
 	private:
-		Element_set elem;
-		
-	private:
-		Triangle_Mesh construct_mesh(Element a, Element b, Element_map c);
+		std::vector<PointVector<>> _vertecies;
+		std::vector<Element> elements;
 		
 	public:
-		Iterator begin() {return Iterator{elem.begin()};}
-		Iterator end() {return Iterator{elem.end()};}
-		using iterator = Iterator;
+		size_t size();
+		void add(Geometry::Triangle t);
+		std::vector<PointVector<>>& vertecies() {return _vertecies;}
 		
-		class Iterator{
-		public:
-			Iterator(decltype(elem)::iterator i){
-				it = i;
-			}
-			
-			Triangle&	operator *();
-			Iterator	operator++();
-			Iterator	operator++(int);
-			Iterator	operator--();
-			Iterator	operator--(int);
-			bool		operator!=(Iterator i) const;
-			
-		private:
-			decltype(elem)::iterator it;
-		};
-
+		std::vector<Triangle> all_triangles() const;
+		std::vector<Triangle> intersecting_triangles(Triangle t);
+		
+		decltype(elements)::iterator begin(){return elements.begin();}
+		decltype(elements)::iterator end(){return elements.end();}
+		decltype(elements)::const_iterator begin() const {return elements.begin();}
+		decltype(elements)::const_iterator end() const {return elements.end();}
 	};
 }
 
 #endif	/* TRIANGLE_MESH_H */
-
-#include "Triangle_Mesh.hpp"

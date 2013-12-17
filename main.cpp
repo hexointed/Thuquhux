@@ -37,11 +37,12 @@ TerrainGenerator *a = new TerrainGenerator();
 using Geometry::Parametric_Surface;
 using Geometry::Triangle;
 
-Parametric_Surface *b = new Parametric_Surface(Geometry::def_param_axis_func);
-Parametric_Surface *c = new Parametric_Surface(Geometry::def_param_axis_func);
+Parametric_Surface *b = new Parametric_Surface(Geometry::def_param_axis_func, {0,0,0});
+Parametric_Surface *c = new Parametric_Surface(Geometry::def_param_axis_func, {0,0,0});
+Parametric_Surface elias{{0,0,0}};
 
-PointVector<> qq[] = {PointVector<>(0.5,0.2,-3.50), PointVector<>(0.1,-0.3,0), PointVector<>(-0.2,0.1,0)};
-PointVector<> pp[] = {PointVector<>(0.0,-0.3,-0.2), PointVector<>(-0.4,0.2,-0.2), PointVector<>(-0.3,-0.4,-0.2)};
+PointVector<> qq[] = {PointVector<>({0.5,0.2,-3.50}), PointVector<>({0.1,-0.3,0}), PointVector<>({-0.2,0.1,0})};
+PointVector<> pp[] = {PointVector<>({0.0,-0.3,-0.2}), PointVector<>({-0.4,0.2,-0.2}), PointVector<>({-0.3,-0.4,-0.2})};
 
 PointVector<> tp{0,0,0};
 
@@ -167,6 +168,10 @@ void KeyboardHandler(unsigned char key, int /*x*/, int /*y*/)
 		{
 			tp.setdy(tp.getdy() + 0.125127);
 		} break;
+		case 'p':
+		{
+			elias = Parametric_Surface::unite(*b, *c);
+		}
 		default:
 		{} break;
 	}
@@ -182,7 +187,10 @@ void Display()
 
 
 	c->position.setdx(cpos);
+	elias.position = {3,0,0};
+	c->rotate({0,1,0}, 0.1);
 	e.move({tpos,0,0});
+	Triangle tritest{{-0.5,-0.5,0},{0.5,-0.5,0},{0.5,-0.5,0.5}};
 
 	double color[3] {c->pointIsWithin(tp)?1.0:0.0, c->isIntersecting(*b)?1.0:0.0, d.intersectionWith(e).first?1.0:0.0};
 	glClearColor(color[0], color[1], color[2], 0);
@@ -217,6 +225,7 @@ void Display()
 		glScalef(0.125, 0.125, 0.125);
 		b->drawMesh();
 		c->drawMesh();
+		elias.drawMesh();
 		glBegin(GL_POINTS);
 			glVertex3dv((double*)&tp);
 			glVertex3dv((double*)&joline.position);
@@ -229,6 +238,9 @@ void Display()
 		d.draw();
 		e.draw();
 		PhysObject::default_handler.NPCs[0].second.surface().drawMesh();
+
+		tritest.draw();
+		tritest.split({0,0,0},{1,0,0})[1].move({0,1,0}).draw();
 	glPopMatrix();
 	glutSwapBuffers();
 }
