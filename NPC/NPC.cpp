@@ -70,7 +70,7 @@ int NPC::randomInt(){
 }
 
 void NPC::make_physObject(){
-	PhysObject::default_handler.NPCs.push_back(std::make_pair(*this,PhysObject::create_return()));
+	PhysObject::default_handler.NPCs.push_back(std::make_pair(*this,PhysObject::create_return(0)));
 
 }
 

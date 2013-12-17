@@ -12,15 +12,19 @@
 
 PhysHandler PhysObject::default_handler{};
 
-void PhysObject::create(Parametric_Surface surface, PhysHandler& handler, PointVector<> velocity){
+void PhysObject::create(bool addToList, Parametric_Surface surface, PhysHandler& handler, PointVector<> velocity){
 	PhysObject erland(surface, handler, velocity);
-	handler.physObjects.push_back(erland);
+	if(addToList){
+		handler.physObjects.push_back(erland);
+	}
 
 }
 
-PhysObject& PhysObject::create_return(Parametric_Surface surface, PhysHandler& handler, PointVector<> velocity){
+PhysObject& PhysObject::create_return(bool addToList, Parametric_Surface surface, PhysHandler& handler, PointVector<> velocity){
 	PhysObject erland(surface, handler, velocity);
-	handler.physObjects.push_back(erland);
+	if(addToList){
+		handler.physObjects.push_back(erland);
+	}
 	return erland;
 }
 

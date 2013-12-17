@@ -58,7 +58,6 @@ double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];
 
 int main(int argc, char **argv)
 {
-	PhysObject::default_handler.physObjects[1].position() = PointVector<>{0,0,10};
 
 	
 	srand(time(0));
@@ -229,7 +228,7 @@ void Display()
 		glRotatef(rot, 0, 1, 0);
 		d.draw();
 		e.draw();
-		PhysObject::default_handler.physObjects[0].surface().drawMesh();
+		PhysObject::default_handler.NPCs[0].second.surface().drawMesh();
 	glPopMatrix();
 	glutSwapBuffers();
 }
