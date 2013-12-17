@@ -58,6 +58,7 @@ int main(int argc, char **argv)
 	PhysObject::create();
 	PhysObject::default_handler.physObjects[1].position() = PhysObject::default_handler.physObjects[0].position()-PointVector<>{0,2,3};
 	PhysObject::default_handler.physObjects[0].velocity() = PointVector<>{0,0,-2};
+	PhysObject::default_handler.physObjects[1].velocity() = PointVector<>{0,0,0};
 
 	srand(time(0));
 	a->genGround(g_width, g_depth,arot,0, vertecies);

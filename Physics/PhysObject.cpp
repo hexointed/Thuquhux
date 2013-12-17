@@ -51,6 +51,9 @@ PointVector<>& PhysObject::velocity(){
 	return _velocity;
 }
 
+PointVector<>& PhysObject::previous_position(){
+	return _previous_position;
+}
 
 PointVector<>& PhysObject::acceleration(){
 	return _acceleration;
@@ -86,22 +89,29 @@ void PhysObject::collision(PhysObject& obj1,PhysObject& obj2, PointVector<> coll
 	//double mass2 = obj2._volume*obj2.density();
 	double mass1 = 2;
 	double mass2 = 2;
-	
-	PointVector cun1 = (collide_at - obj1.position()).mul_cross(normal);
-	PointVector cun2 = (collide_at - obj2.position()).mul_cross(normal);
 
-	double lambda = 2.0 * (PointVector::mul_dot(obj1._velocity - obj2._velocity, normal) + PointVector::mul_dot(obj1._rotation.first*obj1._rotation.second, cun1) - PointVector::mul_dot(obj2._rotation.first*obj2._rotation.second, cun2)) / ((1.0/mass1) + (1.0/mass2) + PointVector::mul_dot(cun1,cun1) + PointVector::mul_dot(cun2,cun2)); 
+	
+	PointVector<> cun1 = PointVector<>::mul_cross(collide_at - obj1.position(), normal);
+	PointVector<> cun2 = PointVector<>::mul_cross(collide_at - obj2.position(), normal);
+	std::cout <<  cun1.getdx() << ", " << cun1.getdy() << ", " << cun1.getdz() << " rumpa" << std::endl;
+
+
+	double lambda = 2.0 * (PointVector<>::mul_dot(obj1._velocity - obj2._velocity, normal) + PointVector<>::mul_dot(obj1._rotation.first*obj1._rotation.second, cun1) - PointVector<>::mul_dot(obj2._rotation.first*obj2._rotation.second, cun2)) / ((1.0/mass1) + (1.0/mass2) + PointVector<>::mul_dot(cun1,cun1) + PointVector<>::mul_dot(cun2,cun2)); 
 
 	PointVector<> finalVel1 = obj1._velocity - lambda/mass1 * normal;
 	PointVector<> finalVel2 = obj2._velocity + lambda/mass2 * normal;
-	PointVector<> finalRotation1 = obj1._rotation.first * obj1._rotation.second-lambda/cun1;
-	PointVector<> finalRotation2 = obj2._rotation.first * obj2._rotation.second-lambda/cun2;
+	PointVector<> finalRotation1 = (obj1._rotation.first * obj1._rotation.second)-lambda*cun1;
+	PointVector<> finalRotation2 = (obj2._rotation.first * obj2._rotation.second)+lambda*cun2;
+
+	std::cout << finalRotation1.getdx() << ", " << finalRotation1.getdy() << ", " << finalRotation1.getdz() << " ... " << lambda << std::endl;
 
 	obj1._rotation.first = finalRotation1.make_unit();
 	obj1._rotation.second = finalRotation1.getMagnitude();
 	obj2._rotation.first = finalRotation2.make_unit();
 	obj2._rotation.second = finalRotation2.getMagnitude();
+
 	obj1._velocity = finalVel1;
 	obj2._velocity = finalVel2;
+	
 }
 

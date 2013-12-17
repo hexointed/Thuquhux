@@ -34,6 +34,7 @@ public:
 	double& density();
 	Material& material();
 	double& volume();
+	PointVector<>& previous_position();
 	PointVector<>& position();
 	PointVector<>& velocity();
 	std::pair<PointVector<>, double> rotation();
@@ -49,11 +50,12 @@ public:
 	void addImpulse(PointVector<> a, double time);
 	
 	
-	static void collision(PhysObject& obj1,PhysObject& obj2, PointVector<> collide_at);
+	static void collision(PhysObject& obj1,PhysObject& obj2, PointVector<> collide_at, PointVector<> normal);
     
 private:
 	PhysObject(Parametric_Surface surface = {Geometry::def_param_axis_func}, PhysHandler handler = default_handler, PointVector<> velocity = {0,0,0});
 
+	PointVector<> _previous_position;
 	Material _material;
 	double _volume;
 	PointVector<> _velocity;
