@@ -130,7 +130,7 @@ std::vector<Triangle> Triangle::split(PointVector<> pos, PointVector<> normal) c
 	std::vector<Triangle> result;
 	std::vector<PointVector<>> side1, side2;
 	for(PointVector<> p : vertecies){
-		if(PointVector<>::mul_dot(p, normal) > 0){
+		if(PointVector<>::mul_dot(pos - p, normal) > 0){
 			side1.push_back(p);
 		}else{
 			side2.push_back(p);
@@ -155,6 +155,11 @@ std::vector<Triangle> Triangle::split(PointVector<> pos, PointVector<> normal) c
 	PointVector<> p1 = small_side + d1*vec1;
 	PointVector<> p2 = small_side + d2*vec2;
 	
+	result.push_back(Triangle{big_side[0], big_side[1], p1});
+	result.push_back(Triangle{big_side[1], p1, p2});
+	result.push_back(Triangle{small_side , p2, p1});
+	
+	/*
 	if(side1.size() > side2.size()){
 		result.push_back(Triangle{side1.back(), side1.front(), p1});
 		result.push_back(Triangle{side1.back(), side1.front(), p2});
@@ -164,6 +169,7 @@ std::vector<Triangle> Triangle::split(PointVector<> pos, PointVector<> normal) c
 		result.push_back(Triangle{side2.back(), side2.front(), p2});
 		result.push_back(Triangle{side1.back(), p1, p2});
 	}
+	*/
 	return result;
 }
 

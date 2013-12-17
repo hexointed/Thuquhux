@@ -35,7 +35,22 @@ Parametric_Surface::Parametric_Surface(PointVector<> pos):
 	mesh_length{mesh_detail*mesh_detail*2},
 	bound_box{{0,0,0},{0,0,0}},
 	position{pos}
-{}
+{
+	double size = 0.5;
+	mesh.add(Triangle({size,size,size},{size,size,-size},{-size,size,-size}));
+	mesh.add(Triangle({size,size,size},{-size,size,-size},{-size,size,size}));
+	mesh.add(Triangle({size,size,size},{-size,size,size},{-size,-size,size}));
+	mesh.add(Triangle({size,size,size},{-size,-size,size},{size,-size,size}));
+	mesh.add(Triangle({size,size,size},{size,-size,size},{size,-size,-size}));
+	mesh.add(Triangle({size,size,size},{size,-size,-size},{size,size,-size}));
+	
+	mesh.add(Triangle({-size,-size,-size},{size,size,-size},{size,-size,-size}));
+	mesh.add(Triangle({-size,-size,-size},{size,-size,-size},{size,-size,size}));
+	mesh.add(Triangle({-size,-size,-size},{size,-size,size},{-size,-size,size}));
+	mesh.add(Triangle({-size,-size,-size},{-size,-size,size},{-size,size,size}));
+	mesh.add(Triangle({-size,-size,-size},{-size,size,size},{-size,size,-size}));
+	mesh.add(Triangle({-size,-size,-size},{-size,size,-size},{size,size,-size}));
+}
 
 Parametric_Surface::~Parametric_Surface() {
 }
@@ -77,7 +92,10 @@ namespace{
 	}
 }
 
-Parametric_Surface Parametric_Surface::Union(Parametric_Surface a, Parametric_Surface b){
+Parametric_Surface Parametric_Surface::unite(Parametric_Surface a, Parametric_Surface b){
+	for(PointVector<>& v : b.mesh.vertecies()){
+		v += b.position - a.position;
+	}
 	Parametric_Surface ret(a.position + PointVector<>{5,0,0});
 	auto a_test = [&](Triangle t){
 	              		PointVector<> avg = (t[0] + t[1] + t[2])/3.0;
@@ -86,6 +104,38 @@ Parametric_Surface Parametric_Surface::Union(Parametric_Surface a, Parametric_Su
 	auto b_test = [&](Triangle t){
 	              		PointVector<> avg = (t[0] + t[1] + t[2])/3.0;
 	              		return !a.pointIsWithin(avg);
+	              	};
+	std::vector<Triangle> t_a = a.mesh.all_triangles();
+	std::vector<Triangle> t_b = b.mesh.all_triangles();
+	
+	auto s_a = split_many(t_a, t_b);
+	auto s_b = split_many(t_b, t_a);
+	
+	for(Triangle t : s_a){
+		if(a_test(t)){
+			ret.mesh.add(t);
+		}
+	}
+	for(Triangle t : s_b){
+		if(b_test(t)){
+			ret.mesh.add(t);
+		}
+	}
+	return ret;
+}
+
+Parametric_Surface Parametric_Surface::intersect(Parametric_Surface a, Parametric_Surface b){
+	for(PointVector<>& v : b.mesh.vertecies()){
+		v += b.position - a.position;
+	}
+	Parametric_Surface ret(a.position + PointVector<>{5,0,0});
+	auto a_test = [&](Triangle t){
+	              		PointVector<> avg = (t[0] + t[1] + t[2])/3.0;
+	              		return a.pointIsWithin(avg);
+	                };
+	auto b_test = [&](Triangle t){
+	              		PointVector<> avg = (t[0] + t[1] + t[2])/3.0;
+	              		return b.pointIsWithin(avg);
 	              	};
 	std::vector<Triangle> t_a = a.mesh.all_triangles();
 	std::vector<Triangle> t_b = b.mesh.all_triangles();

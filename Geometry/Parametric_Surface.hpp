@@ -17,7 +17,7 @@
 
 template<typename Functor>
 Geometry::Parametric_Surface::Parametric_Surface(Functor f, PointVector<> pos):
-	mesh_detail{10},
+	mesh_detail{4},
 	mesh_length{mesh_detail*mesh_detail*2},
 	bound_box{{0,0,0},{0,0,0}},
 	position{pos}

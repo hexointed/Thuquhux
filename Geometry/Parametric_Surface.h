@@ -28,10 +28,9 @@ namespace Geometry{
 		Parametric_Surface(Functor f, PointVector<> pos);
 		virtual ~Parametric_Surface();
 		
-		static Parametric_Surface Union(Parametric_Surface a, Parametric_Surface b);
-		friend Parametric_Surface Intersect(Parametric_Surface a, Parametric_Surface b);
-		friend Parametric_Surface Complement(Parametric_Surface a, Parametric_Surface b);
-		friend Parametric_Surface Differatiate(Parametric_Surface a, Parametric_Surface b);
+		static Parametric_Surface unite(Parametric_Surface a, Parametric_Surface b);
+		static Parametric_Surface intersect(Parametric_Surface a, Parametric_Surface b);
+		static Parametric_Surface differatiate(Parametric_Surface a, Parametric_Surface b);
 		
 		void Unite(Parametric_Surface a);
 		void Intersect(Parametric_Surface a);
