@@ -13,7 +13,7 @@
 PhysHandler PhysObject::default_handler{};
 
 void PhysObject::create(bool addToList, Parametric_Surface surface, PhysHandler& handler, PointVector<> velocity){
-	PhysObject erland(surface, handler, velocity);
+	PhysObject erland(surface, velocity);
 	if(addToList){
 		handler.physObjects.push_back(erland);
 	}
@@ -21,14 +21,14 @@ void PhysObject::create(bool addToList, Parametric_Surface surface, PhysHandler&
 }
 
 PhysObject& PhysObject::create_return(bool addToList, Parametric_Surface surface, PhysHandler& handler, PointVector<> velocity){
-	PhysObject erland(surface, handler, velocity);
+	PhysObject erland(surface, velocity);
 	if(addToList){
 		handler.physObjects.push_back(erland);
 	}
-	return erland;
+	return handler.physObjects.back();
 }
 
-PhysObject::PhysObject(Parametric_Surface surface, PhysHandler handler, PointVector<> velocity):
+PhysObject::PhysObject(Parametric_Surface surface, PointVector<> velocity):
 	_material{},
 	_volume{1},
 	_velocity{velocity},

@@ -130,7 +130,7 @@ PointVector<> NPC::updatePosition(double deltaT){
 			else{
 				position.setdx(position.getdx());
 
-				if((p)<PLACEHOLDER_LINE_OF_TRAVEL.size()){
+				if((p)<(signed)PLACEHOLDER_LINE_OF_TRAVEL.size()){
 					if(p>=1){
 						p--;
 					}
@@ -166,7 +166,7 @@ PointVector<> NPC::updatePosition(double deltaT){
 			else{
 				position.setdy(position.getdy());
 
-				if((q)<PLACEHOLDER_LINE_OF_TRAVEL.size()){
+				if((q)<(signed)PLACEHOLDER_LINE_OF_TRAVEL.size()){
 					if(q>=1){
 						q--;
 					}
@@ -203,7 +203,7 @@ PointVector<> NPC::updatePosition(double deltaT){
 			else{
 				position.setdz(position.getdz());
 
-				if((r)<PLACEHOLDER_LINE_OF_TRAVEL.size()){
+				if((r)<(signed)PLACEHOLDER_LINE_OF_TRAVEL.size()){
 					if(r>=1){
 						r--;
 					}

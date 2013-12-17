@@ -17,7 +17,7 @@ PointVector<> collide_at(Parametric_Surface a, Parametric_Surface b){
 }
 
 PointVector<> collision_normal(Parametric_Surface a, Parametric_Surface b){
-	return PointVector<>{0,0,1};
+	return 2.0*a.position - b.position;
 }
 
 void PhysHandler::handle(double time){
