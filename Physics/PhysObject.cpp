@@ -81,25 +81,27 @@ void PhysObject::accelerate(PointVector<> a){
 }
 
 
-void PhysObject::collision(PhysObject& obj1,PhysObject& obj2, PointVector<> collide_at){
+void PhysObject::collision(PhysObject& obj1,PhysObject& obj2, PointVector<> collide_at, PointVector<> normal){
 	//double mass1 = obj1._volume*obj1.density();
 	//double mass2 = obj2._volume*obj2.density();
-	PointVector<> init1_velocity = obj1._velocity;
-
 	double mass1 = 2;
 	double mass2 = 2;
-	obj2._velocity = PointVector<>{0,0.1,0};	
-	std::cout << mass1 << ", " << mass2 << std::endl;
+	
+	PointVector cun1 = (collide_at - obj1.position()).mul_cross(normal);
+	PointVector cun2 = (collide_at - obj2.position()).mul_cross(normal);
 
-	obj1._velocity = (obj1._velocity.getMagnitude()*(mass1-mass2)+2.0*mass2*obj2._velocity.getMagnitude())/(mass1 + mass2) * obj1._velocity.reflect(2.0*obj1.position()-obj2.position()).make_unit();
-	obj2._velocity = (obj2._velocity.getMagnitude()*(mass2-mass1)+2.0*mass1*init1_velocity.getMagnitude())/(mass2 + mass1) * obj2._velocity.reflect(2.0*obj2.position()-obj1.position()).make_unit();
-	std::cout << obj1._velocity.getdx() << ", " << obj1._velocity.getdy() << ", " << obj1._velocity.getdz() << std::endl;
-	std::cout << obj2._velocity.getdx() << ", " << obj2._velocity.getdy() << ", " << obj2._velocity.getdz() << std::endl;
-	/*
-	obj1._rotation.first = (PointVector<>::mul_cross(obj1._velocity, obj1.position() - collide_at).make_unit() + obj1._rotation.first.make_unit()).make_unit();
-	obj1._rotation.second = (obj1.position() - collide_at).getMagnitude() - obj1._rotation.second;
-	obj2._rotation.first = (PointVector<>::mul_cross(obj2._velocity, obj2.position() - collide_at).make_unit() + obj2._rotation.first.make_unit()).make_unit();
-	obj2._rotation.second = (obj2.position() - collide_at).getMagnitude() - obj2._rotation.second;
-	*/
+	double lambda = 2.0 * (PointVector::mul_dot(obj1._velocity - obj2._velocity, normal) + PointVector::mul_dot(obj1._rotation.first*obj1._rotation.second, cun1) - PointVector::mul_dot(obj2._rotation.first*obj2._rotation.second, cun2)) / ((1.0/mass1) + (1.0/mass2) + PointVector::mul_dot(cun1,cun1) + PointVector::mul_dot(cun2,cun2)); 
+
+	PointVector<> finalVel1 = obj1._velocity - lambda/mass1 * normal;
+	PointVector<> finalVel2 = obj2._velocity + lambda/mass2 * normal;
+	PointVector<> finalRotation1 = obj1._rotation.first * obj1._rotation.second-lambda/cun1;
+	PointVector<> finalRotation2 = obj2._rotation.first * obj2._rotation.second-lambda/cun2;
+
+	obj1._rotation.first = finalRotation1.make_unit();
+	obj1._rotation.second = finalRotation1.getMagnitude();
+	obj2._rotation.first = finalRotation2.make_unit();
+	obj2._rotation.second = finalRotation2.getMagnitude();
+	obj1._velocity = finalVel1;
+	obj2._velocity = finalVel2;
 }
 

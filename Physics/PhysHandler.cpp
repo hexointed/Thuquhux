@@ -20,7 +20,7 @@ void PhysHandler::handle(double time){
 	for(unsigned int i = 0; i < physObjects.size() ; i++){
 		for(unsigned int j = i+1 ; j < physObjects.size() ; j++){
 			if(physObjects[i].surface().isIntersecting(physObjects[j].surface())){
-				PhysObject::collision(physObjects[i],physObjects[j], collide_at(physObjects[i].surface(),physObjects[j].surface()));
+				PhysObject::collision(physObjects[i], physObjects[j], collide_at(physObjects[i].surface(), physObjects[j].surface()), collision_normal(physObjects[i], physObjects[j]));
 			}
 		}
 	}
@@ -36,6 +36,8 @@ void PhysHandler::handle(double time){
 				i.impulses()[j].second = i.impulses()[j].second - time;
 			}
 		}
+
+		//Removing impulses that have finished
 		for(unsigned int j = 0; j < to_delete.size() ; j++){
 			std::pair<PointVector<>, double> temp = i.impulses()[i.impulses().size()-1];
 			i.impulses().back() = i.impulses()[to_delete[to_delete.size()-j-1]];
