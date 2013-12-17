@@ -2,44 +2,54 @@
  * File:   Parametric_Surface.hpp
  * Author: Elias Forsberg
  *
- * Created on June 1, 2013, 10:26 AM
+ * Created on  June 1, 2013, 10:26 AM
  */
 
 #ifndef PARAMETRIC_SURFACE_HPP
 #define	PARAMETRIC_SURFACE_HPP
 
+#include <iostream>
 #include "Parametric_Surface.h"
-#include "../PointVector.h"
+#include "PointVector.h"
+#include "Geometry.h"
+#include "GL/freeglut.h"
 #include <vector>
 
 template<typename Functor>
-Geometry::Parametric_Surface::Parametric_Surface(Functor f):
-	mesh_detail(400),
-	mesh_length((mesh_detail + 2)*(mesh_detail + 1)*2)
+Geometry::Parametric_Surface::Parametric_Surface(Functor f, PointVector<> pos):
+	mesh_detail{4},
+	mesh_length{mesh_detail*mesh_detail*2},
+	bound_box{{0,0,0},{0,0,0}},
+	position{pos}
 {
-	mesh_vertecies.push_back(new PointVector<>[mesh_length]);
-
-	this->bound_box[0] = new PointVector<>(0,0,0);
-	this->bound_box[1] = new PointVector<>(0,0,0);
-	
-	this->position = new PointVector<>(0,0,0);
 	calculate_mesh(f);
 }
 
+	
+/*This method calculates all vertecies using a parametric function pfunc*/
 template<typename Functor>
 void Geometry::Parametric_Surface::calculate_mesh(Functor pfunc){
-	int count = 0;
-	for(double t = 0; t <= 1 + 1.0/mesh_detail; t += 1.0/mesh_detail){
-		for(double u = 0; u <= 1; u += 1.0/mesh_detail){
-			PointVector<2> params(t,u);
-			PointVector<2> dparams(t + 1.0/mesh_detail,u);
-			PointVector<> p(pfunc(params));
-			PointVector<> dp(pfunc(dparams));
-			mesh_vertecies.at(0)[count] = p;
-			mesh_vertecies.at(0)[count +1] = dp;
-			bound_box[0]->set_min_comp(p);
-			bound_box[1]->set_max_comp(p);
-			count += 2;
+	std::vector<PointVector<>> vertecies;
+	vertecies.reserve(mesh_detail*mesh_detail);
+	for(double t = 0; t < 1; t += 1.0/mesh_detail){
+		for(double u = 0; u < 1; u += 1.0/mesh_detail){		
+			//iterate through all points we need from pfunc
+			PointVector<2> params({t,u});
+			vertecies.push_back(pfunc(params));
+			bound_box[0].set_min_comp(vertecies.back());
+			bound_box[1].set_max_comp(vertecies.back());
+		}
+	}
+	int ml = mesh_detail * mesh_detail;
+	for(int i = 0; i < mesh_detail; ++i){
+		for(int n = 0; n < mesh_detail; ++n){
+			//"connect" the points, so that they can be drawn using Triangle methods
+			mesh.add(Triangle{vertecies[(i* mesh_detail + n) % ml], 
+			                  vertecies[(i* mesh_detail + n  + 1) % ml],
+			                  vertecies[((i+1)*mesh_detail + n) % ml]});
+			mesh.add(Triangle{vertecies[((i+1)*mesh_detail + n) % ml], 
+			                  vertecies[(i* mesh_detail + n  + 1) % ml],
+			                  vertecies[((i+1)*mesh_detail + n + 1) % ml]});
 		}
 	}
 }
