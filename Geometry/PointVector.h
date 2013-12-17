@@ -148,8 +148,8 @@ public:
 	 * Gerneral composant-wise unary and binary operator for user-defined operations.
 	 */
 	
-	PointVector& op_comp(std::function<void(Numeric&)> op);
-	PointVector& op_comp(std::function<void(Numeric&, Numeric)> op, PointVector p);
+	PointVector& op_comp(std::function<Numeric(Numeric)> op);
+	PointVector& op_comp(std::function<Numeric(Numeric, Numeric)> op, PointVector p);
 	
 	std::array<bool, Dim> operator==	(PointVector p) const;
 	std::array<bool, Dim> operator!=	(PointVector p) const;

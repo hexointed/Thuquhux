@@ -406,17 +406,17 @@ Numeric PointVector<Dim, Numeric>::taxicab_distance(PointVector p, PointVector q
 }
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::op_comp(std::function<void(Numeric&)> op){
+PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::op_comp(std::function<Numeric(Numeric)> op){
 	for(Numeric& n : comp){
-		op(n);
+		n = op(n);
 	}
 	return *this;
 }
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::op_comp(std::function<void(Numeric&, Numeric)> op, PointVector<Dim, Numeric> p){
+PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::op_comp(std::function<Numeric(Numeric, Numeric)> op, PointVector<Dim, Numeric> p){
 	for(int i = 0; i < Dim; i++){
-		op(comp[i], p.comp[i]);
+		comp[i] = op(comp[i], p.comp[i]);
 	}
 	return *this;
 }
