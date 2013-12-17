@@ -11,6 +11,7 @@
 #include "PointVector.h"
 #include <math.h>
 #include <cassert>
+#include <stdexcept>
 
 template<int Dim, typename Numeric>
 PointVector<Dim, Numeric>::PointVector():
@@ -360,6 +361,8 @@ bool PointVector<Dim, Numeric>::is_eq_comp(PointVector<Dim, Numeric> p) const{
 template<int Dim, typename Numeric>
 PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::make_unit(){
 	Numeric mag = getMagnitude();
+	if(mag==0)
+		throw std::length_error("Zero vector has no direction");
 	for(int i = 0; i < Dim; i++){
 		comp[i] /= mag; 
 	}
