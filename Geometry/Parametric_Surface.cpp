@@ -164,8 +164,6 @@ void Parametric_Surface::Unite(Parametric_Surface a){
 	for(Triangle tri: a.mesh){
 		mesh.add(Triangle{tri + rel_pos});
 	}
-	
-	std::cout<<mesh.size()<<std::endl;
 }
 
 bool Parametric_Surface::is_subset_of(const Parametric_Surface& v){
