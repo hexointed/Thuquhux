@@ -8,10 +8,10 @@ CC = g++-4.8
 
 #Flags
 ERRFLAGS = -pedantic -Wall -Wextra -Wpointer-arith -Wcast-qual -fstrict-overflow -Wstrict-overflow=3
-CFLAGS = -c -std=c++11 $(ERRFLAGS)
+CFLAGS = -c -std=c++0x -g $(ERRFLAGS)
 
 #Linked libraries
-LIBS = -lglut -lGLU -lGLEW
+LIBS = -lGL -lglut -lGLU -lGLEW
 
 #Executable output file
 EXECUTABLE = ./$(PROJ).elf
@@ -25,8 +25,10 @@ TerrainGenerator \
 Simplexnoise \
 Physics/PhysObject \
 Physics/Material \
-Geometry/Graph \
-Geometry/Geometry
+Geometry/Geometry \
+NPC/NPC \
+Physics/PhysHandler \
+Geometry/Triangle_Mesh 
 
 #Classes with template methods
 CLT = \
