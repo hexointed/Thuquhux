@@ -25,7 +25,7 @@
 template<int Dim = 3, typename Numeric = double>
 class PointVector{
 public:
-    
+    using Numeric_type = Numeric;
     
 public:
 	PointVector();
