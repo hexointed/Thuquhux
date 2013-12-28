@@ -521,35 +521,4 @@ std::ostream& operator<<(std::ostream& out, PointVector<Dim, Numeric> d) {
 	return out;
 }
 
-template<int Dim, typename Numeric>
-bool Boolarr::all(std::array<bool,Dim> a){
-	for(int i = 0; i < Dim; i++){
-		if(!a[i]){
-			return false;
-		}
-	}
-	return true;
-}
-
-template<int Dim, typename Numeric>
-bool Boolarr::any(std::array<bool,Dim> a){
-	for(int i = 0; i < Dim; i++){
-		if(a[i]){
-			return true;
-		}
-	}
-	return false;
-}
-
-template<int Dim, typename Numeric>
-bool Boolarr::most(std::array<bool,Dim> a){
-	int temp = 0;
-	for(int i = 0; i < Dim; i++){
-		if(a[i]){
-			temp++;
-		}
-	}
-	return temp >= Dim/2.0;
-}
-
 #endif /*POINTVECTOR_CPP*/

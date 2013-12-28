@@ -1,5 +1,12 @@
-#include <cstdio>
+#include <iostream>
+#include <cmath>
+#include <ctime>
+#include "Simplex.h"
+
+using namespace std;
 
 int main(){
-	printf("Hello World\n");
+	
+	Simplex<2> tri;
+	tri.move_relative({2,2,2});
 }

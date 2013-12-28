@@ -188,15 +188,6 @@ private:
 	
 };
 
-namespace Boolarr{
-	template<int Dim>
-	bool all(std::array<bool, Dim> a);
-	template<int Dim>
-	bool any(std::array<bool, Dim> a);
-	template<int Dim>
-	bool most(std::array<bool, Dim> a);
-}
-
 namespace Geometry{
 	template<int Dimension, typename Numeral>
 	using Vector = PointVector<Dimension, Numeral>;
