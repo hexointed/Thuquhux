@@ -186,12 +186,40 @@ bool Parametric_Surface::is_superset_of(const Parametric_Surface& v){
 }
 
 bool Parametric_Surface::isIntersecting(const Parametric_Surface& v){
-	auto p = bound_box[1];
-	auto q = v.bound_box[1];
-	auto r = bound_box[0];
-	auto s = v.bound_box[0];
-	return p.add(position).is_max_comp(s.add(v.position)) &&
-	       r.add(position).is_min_comp(q.add(v.position));
+	for(Triangle tri : mesh){
+		for(Triangle vtri : v.mesh){
+			vtri.move(position - v.position);
+			if(tri.intersectionWith(vtri).first){
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+std::pair<PointVector<>, PointVector<>> Parametric_Surface::collision_data(const Parametric_Surface& v){
+	std::pair<PointVector<>, PointVector<>> result; //position, normal
+	std::vector<Triangle> intersections;
+	std::vector<Triangle> intersections_v;
+	for(Triangle t : mesh){
+		for(Triangle vt : v.mesh){
+			if(t.intersectionWith(vt).first){
+				intersections.push_back(t);
+				intersections_v.push_back(vt);
+			}
+		}
+	}
+	for(Triangle t : intersections){
+		result.first += (t[0] + t[1] + t[2])/3.0;
+		result.second -= t.normal();
+	}
+	for(Triangle t : intersections_v){
+		result.first += (t[0] + t[1] + t[2])/3.0;
+		result.second += t.normal();
+	}
+	result.second /= double(intersections.size() + intersections_v.size());
+	result.second /= double(intersections.size() + intersections_v.size());
+	return result;
 }
 
 bool Parametric_Surface::pointIsWithin(PointVector<> p){

@@ -51,19 +51,24 @@ Triangle e{pp};
 
 
 
-NPC joline;
-NPC nyNPC;
+//NPC joline;
+//NPC nyNPC;
 
 double (*vertecies)[3] = new double[a->getGroundVertexSize()][3];
 
 
 int main(int argc, char **argv)
 {
-
+	PhysObject::create();
+	PhysObject::create();
+	PhysObject::default_handler.physObjects[0].addImpulse({0,0,4},7);
+	PhysObject::default_handler.physObjects[0].addImpulse({0,0,-4},5);
+	PhysObject::default_handler.physObjects[0].velocity() = PointVector<>{0,-0,-1};
+	PhysObject::default_handler.physObjects[1].position() = PointVector<>{0,-0,-2};
 	
 	srand(time(0));
 	a->genGround(g_width, g_depth,arot,0, vertecies);
-
+	
 	InitGlut(argc, argv);
 	InitLight();
 
@@ -184,8 +189,7 @@ void Display()
 	PhysObject::default_handler.handle(0.05);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
-
-
+	
 	c->position.setdx(cpos);
 	elias.position = {3,0,0};
 	c->rotate({0,1,0}, 0.1);
@@ -228,8 +232,6 @@ void Display()
 		elias.drawMesh();
 		glBegin(GL_POINTS);
 			glVertex3dv((double*)&tp);
-			glVertex3dv((double*)&joline.position);
-			glVertex3dv((double*)&nyNPC.position);
 		glEnd();
 	glPopMatrix();
 
@@ -237,8 +239,9 @@ void Display()
 		glRotatef(rot, 0, 1, 0);
 		d.draw();
 		e.draw();
-		PhysObject::default_handler.NPCs[0].second.surface().drawMesh();
-
+		for(PhysObject& p : PhysObject::default_handler.physObjects){
+			p.surface().drawMesh();
+		}
 		tritest.draw();
 		tritest.split({0,0,0},{1,0,0})[1].move({0,1,0}).draw();
 	glPopMatrix();
