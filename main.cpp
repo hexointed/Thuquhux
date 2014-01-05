@@ -83,10 +83,6 @@ void initgl(){
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(0,0,0,0);
 	
-	Graphics::Program shprog{Graphics::Shader(GL_VERTEX_SHADER, "")
-	                         Graphics::Shader(GL_FRAGMENT_SHADER, "")};
-	shprog.use();
-	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(50,1,0.1,1000);

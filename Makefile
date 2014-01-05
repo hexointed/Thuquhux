@@ -17,7 +17,8 @@ LIBS = -lGL -lGLU -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi -lm
 EXECUTABLE = ./$(PROJ).elf
 
 #Scource code
-SRC = main
+SRC = main \
+Shaders/Shaders
 
 #Classes
 CLS = \
