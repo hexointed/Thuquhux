@@ -5,14 +5,14 @@
  * Created on May 15, 2013, 7:28 PM
  */
 
+#include <GL/glew.h>
+#define GLFW_INCLUDE_GLU
+#include <GLFW/glfw3.h>
+
 #include <iostream>
 #include <fstream>
 #include <stdio.h>
 #include <string.h>
-
-#include <GL/glew.h>
-#include <GL/freeglut.h>
-#include <GL/glext.h>
 
 #include "Shaders.h"
 
@@ -70,7 +70,7 @@ void InitGLSLShader(){
 	glCompileShader(handle);
 	
 	char result[4096];
-	int * l;
+	int* l = nullptr;
 	glGetShaderInfoLog(handle, 4096, l, result);
 	
 	std::cout<<result<<std::endl;

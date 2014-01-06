@@ -8,6 +8,7 @@
  * This file is mostly a demonstration of some capabilities of the Thuquhux engine.
  */
 
+#include <GL/glew.h>
 #define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
 
@@ -15,7 +16,7 @@
 #include <vector>
 
 #include "Physics/PhysObject.h"
-#include "Graphics/Graphics.h"
+#include "Shaders/Shaders.h"
 
 void demo_loop(GLFWwindow* widow);
 GLFWwindow* loadglfw();
@@ -23,6 +24,7 @@ void initgl();
 
 int main (){
 	auto window = loadglfw();
+	glewInit();
 	initgl();
 	
 	demo_loop(window);
