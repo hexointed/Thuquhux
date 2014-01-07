@@ -1,10 +1,7 @@
 #include "NPC.h"
 #include "../Physics/PhysObject.h"
 
-static PointVector<> PLACEHOLDER_PLAYER_POSITION{2, 1, 0};
-static PointVector<> PLACEHOLDER_TMP{5,0,0};
-static PointVector<> DDD{10,0,0};
-std::vector<PointVector<>> PLACEHOLDER_LINE_OF_TRAVEL{DDD, PLACEHOLDER_PLAYER_POSITION, PLACEHOLDER_TMP};
+std::vector<PointVector<>> PLACEHOLDER_LINE_OF_TRAVEL{};
 PointVector<> GRAVITY_CENTER{};
 double RADIUS;
 
@@ -16,7 +13,7 @@ NPC::NPC(){
 	climbingAbilityx = makeClimbingAbilityx();
 	climbingAbilityy = makeClimbingAbilityy();
 	climbingAbilityz =  makeClimbingAbilityz();
-	make_physObject();
+	//make_physObject();
 }
 
 PointVector<> NPC::makePosition(){
