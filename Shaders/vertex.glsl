@@ -3,7 +3,7 @@
 //varying vec3 lightPos;
 
 void main(void){
-	vec3 lightPos = {0,0,5};
+	vec3 lightPos = {0,1,5};
 	float lightRadius = 5;
 	gl_Position = ftransform();
 	vec4 col = {0.5,1,0.7,0};

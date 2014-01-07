@@ -54,7 +54,7 @@ void PhysHandler::handle(double time){
 			if(physObjects[i].surface().isIntersecting(physObjects[j].surface())){
 				//physObjects[i].position() = physObjects[i].previous_position();
 				//physObjects[j].position() = physObjects[j].previous_position();
-				auto data = physObjects[i].surface().collision_data(physObjects[j].surface());
+				//auto data = physObjects[i].surface().collision_data(physObjects[j].surface());
 				//PhysObject::collision(physObjects[i], physObjects[j], data.first, data.second);
 				PhysObject::collision(physObjects[i], physObjects[j], collide_at(physObjects[i].surface(), physObjects[j].surface()), collision_normal(physObjects[i].surface(), physObjects[j].surface()));
 			}
