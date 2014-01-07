@@ -1,12 +1,14 @@
 #version 110
 
-varying vec3 lightPos;
+//varying vec3 lightPos;
 
 void main(void){
+	vec3 lightPos = {0,0,5};
+	float lightRadius = 5;
 	gl_Position = ftransform();
-	vec4 col = {0,1,0.5,0};
-	vec4 mul = {3,3,3,1};
-	float dist = distance(gl_Position, gl_LightSource[0].position);
+	vec4 col = {0.5,1,0.7,0};
+	float dist = distance(gl_Position.xyz, lightPos);
 	
-	gl_FrontColor = (gl_Color * col * 2)/dist;
+	float denom = (dist/lightRadius + 1);
+	gl_FrontColor = (gl_Color * col * 2)/(denom*denom);
 }

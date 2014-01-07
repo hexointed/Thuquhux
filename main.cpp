@@ -21,6 +21,23 @@
 void demo_loop(GLFWwindow* widow);
 GLFWwindow* loadglfw();
 void initgl();
+void mouse_fn(GLFWwindow* w, int a, int b, int c){
+	if(b == GLFW_RELEASE)
+		return;
+	double x = 0;
+	double y = 0;
+	glfwGetCursorPos(w,&x,&y);
+	int dx = 0, dy = 0;
+	glfwGetWindowSize(w, &dx, &dy);
+	x = (x/double(dx) - x/(2.0*dx))*2;
+	y = (y/double(dy) - y/(2.0*dy))*2;
+	
+	std::cout<<x<<", "<<y<<"\n";
+	
+	PhysObject::create();
+	PhysObject::default_handler.physObjects.back().position() = {x,y,0};
+	PhysObject::default_handler.physObjects.back().velocity() = {0,0,0.2};
+}
 
 int main (){
 	auto window = loadglfw();
@@ -54,7 +71,8 @@ double get_time(){
 void demo_loop(GLFWwindow* window){
 	PhysObject::create();
 	PhysObject::create();
-	PhysObject::default_handler.physObjects[0].velocity() = {0,0,0.3};
+	PhysObject::default_handler.physObjects[0].velocity() = {0,0,3.7};
+	PhysObject::default_handler.physObjects[1].position() = {-0.2,0.5,3};
 	while(!glfwWindowShouldClose(window)){
 		double delta_time = get_time();
 		fix_gl_stuff(window);
@@ -78,12 +96,15 @@ GLFWwindow* loadglfw(){
 		std::exit(1);
 	}
 	glfwMakeContextCurrent(window);
+	glfwSetMouseButtonCallback(window, mouse_fn);
 	return window;
 }
 
 void initgl(){
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(0,0,0,0);
+	
+	InitGLSLShader();
 	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();

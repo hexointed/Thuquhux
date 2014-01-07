@@ -44,6 +44,8 @@ namespace Geometry{
 		bool is_superset_of(const Parametric_Surface& v);
 		bool isIntersecting(const Parametric_Surface& v);
 		
+		std::pair<PointVector<>,PointVector<>> collision_data(const Parametric_Surface& v);
+		
 		double distance_between(const Parametric_Surface& v);
 		bool pointIsWithin(PointVector<> p);
 		bool lineIsWithin(PointVector<> p);

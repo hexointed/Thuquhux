@@ -73,7 +73,7 @@ void InitGLSLShader(){
 	int* l = nullptr;
 	glGetShaderInfoLog(handle, 4096, l, result);
 	
-	std::cout<<result<<std::endl;
+	std::cout<<result;
 	
 	GLuint shaderprgrm = glCreateProgram();
 	glAttachShader(shaderprgrm, handle);

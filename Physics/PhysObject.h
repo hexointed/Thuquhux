@@ -39,7 +39,7 @@ public:
 	PointVector<>& previous_position();
 	PointVector<>& position();
 	PointVector<>& velocity();
-	std::pair<PointVector<>, double> rotation();
+	std::pair<PointVector<>, double>& rotation();
 
 	PointVector<>& acceleration();
 
