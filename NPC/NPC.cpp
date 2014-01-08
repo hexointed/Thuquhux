@@ -17,6 +17,9 @@ NPC::NPC(){
 	climbingAbilityy = makeClimbingAbilityy();
 	climbingAbilityz =  makeClimbingAbilityz();
 	make_physObject();
+	p = PLACEHOLDER_LINE_OF_TRAVEL.size()-1;
+	q = PLACEHOLDER_LINE_OF_TRAVEL.size()-1;
+	r = PLACEHOLDER_LINE_OF_TRAVEL.size()-1;
 }
 
 PointVector<> NPC::makePosition(){
@@ -82,6 +85,7 @@ PointVector<> NPC::updatePosition(double deltaT){
 	double sy = deltaT*velocityy;
 	double sz = deltaT*velocityz;
 
+
 		if(GRAVITY_CENTER.getdx() > position.getdx()){
 			climbingAbilityx = infinity;
 		}
@@ -95,11 +99,6 @@ PointVector<> NPC::updatePosition(double deltaT){
 		if(GRAVITY_CENTER.getdz() > position.getdz()){
 			climbingAbilityz = infinity;
 		}
-
-		
-			static int p = PLACEHOLDER_LINE_OF_TRAVEL.size()-1;
-			static int q = PLACEHOLDER_LINE_OF_TRAVEL.size()-1;
-			static int r = PLACEHOLDER_LINE_OF_TRAVEL.size()-1;
 
 		
 			if(position.getdx() != PLACEHOLDER_LINE_OF_TRAVEL[p].getdx()){

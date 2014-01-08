@@ -35,6 +35,10 @@ private:
 	double makeClimbingAbilityy();
 	double makeClimbingAbilityz();
 
+	int p;
+	int q;
+	int r;
+
 	double getPosition(); 
 	PointVector<> makePosition();
 
