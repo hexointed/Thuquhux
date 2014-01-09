@@ -14,6 +14,7 @@
 #include <array>
 #include <ostream>
 #include <functional>
+#include <initializer_list>
 
 /*
  * Dim is the dimension of the PointVector, and Numberic is the type used to represent
@@ -33,8 +34,7 @@ public:
 	template<int D2>
 	PointVector(PointVector<D2> orig);
 	
-	template<typename... Tail>
-	PointVector(Tail... t);
+	PointVector(std::initializer_list<Numeric> list);
 
 private:
 	/*

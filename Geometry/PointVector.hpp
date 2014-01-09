@@ -33,10 +33,12 @@ PointVector<Dim, Numeric>::PointVector(PointVector<D2> orig):
 }
 
 template<int Dim, typename Numeric>
-template<typename... Tail>
-PointVector<Dim, Numeric>::PointVector(Tail... t){
-	PointVector();
-	pconstruct(0, t...);
+PointVector<Dim, Numeric>::PointVector(std::initializer_list<Numeric> list){
+	int i = 0;
+	for(Numeric n : list){
+		comp[i] = n;
+		i++;
+	}
 }
 
 template<int Dim, typename Numeric>

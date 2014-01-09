@@ -11,13 +11,14 @@ ERRFLAGS = -pedantic -Wall -Wextra -Wpointer-arith -Wcast-qual -fstrict-overflow
 CFLAGS = -c -std=c++0x -g $(ERRFLAGS)
 
 #Linked libraries
-LIBS = -lGL -lglut -lGLU -lGLEW
+LIBS = -lGL -lGLU -lGLEW -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi -lm
 
 #Executable output file
 EXECUTABLE = ./$(PROJ).elf
 
 #Scource code
-SRC = main
+SRC = main \
+Shaders/Shaders
 
 #Classes
 CLS = \
