@@ -3,6 +3,10 @@
  * Author: Elias Forsberg
  *
  * Created on April 24, 2013, 4:42 PM
+ *
+ * Parametric_Surface is used to represent complex 3-dimensional shapes using a
+ * Triangle_Mesh. It also supports a few higher level operations as volume 
+ * calculation and constructive solid geometry.
  */
 
 #ifndef PARAMETRIC_SURFACE_H

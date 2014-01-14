@@ -3,6 +3,10 @@
  * Author: Elias Forsberg
  *
  * Created on September 6, 2013, 5:36 PM
+ *
+ * The class Triangle_Mesh can be used to represent trees and graphs with
+ * Triangle nodes. Mesh information is stored vertex-wise, to simplify
+ * deformation of the mesh.
  */
 
 #ifndef TRIANGLE_MESH_H
@@ -16,6 +20,12 @@
 namespace Geometry{
 	class Triangle_Mesh;
 	
+	/*
+	 * Element represents nodes in a graph. It can implicitly convert
+	 * to a Triangle. Connecting nodes are stored in terms of their 
+	 * positions in the parent Triangle_Mesh's _vertecies vector.
+	 */
+	
 	class Element{
 	public:
 		Element(Geometry::Triangle t, Triangle_Mesh& universe);
@@ -26,6 +36,12 @@ namespace Geometry{
 	public:
 		operator Geometry::Triangle () const;
 	};
+	
+	/*
+	 * Triangle_Mesh provides ways to iterate through both it's Triangles
+	 * (with begin() and end()) and vertecies (with vertecies().begin() 
+	 * etc.)
+	 */
 	
 	class Triangle_Mesh{
 		friend class Element;
