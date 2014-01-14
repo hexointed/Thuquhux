@@ -99,8 +99,8 @@ void PhysObject::accelerate(PointVector<> a){
 void PhysObject::collision(PhysObject& obj1,PhysObject& obj2, PointVector<> collide_at, PointVector<> normal){
 	//double mass1 = obj1._volume*obj1.density();
 	//double mass2 = obj2._volume*obj2.density();
-	double mass1 = 2;
-	double mass2 = 2;
+	double mass1 = 5;
+	double mass2 = 10;
 
 	
 	PointVector<> cun1 = PointVector<>::mul_cross(collide_at - obj1.position(), normal);
@@ -108,8 +108,8 @@ void PhysObject::collision(PhysObject& obj1,PhysObject& obj2, PointVector<> coll
 
 	double lambda = 2.0 * (PointVector<>::mul_dot(obj1._velocity - obj2._velocity, normal) + PointVector<>::mul_dot(obj1._rotation.first*obj1._rotation.second, cun1) - PointVector<>::mul_dot(obj2._rotation.first*obj2._rotation.second, cun2)) / ((1.0/mass1) + (1.0/mass2) + PointVector<>::mul_dot(cun1,cun1) + PointVector<>::mul_dot(cun2,cun2)); 
 
-	PointVector<> finalVel1 = obj1._velocity - lambda/mass1 * normal;
-	PointVector<> finalVel2 = obj2._velocity + lambda/mass2 * normal;
+	PointVector<> finalVel1 = (obj1._velocity - lambda/mass1 * normal);
+	PointVector<> finalVel2 = (obj2._velocity + lambda/mass2 * normal);
 	PointVector<> finalRotation1 = (obj1._rotation.first * obj1._rotation.second)-lambda*cun1;
 	PointVector<> finalRotation2 = (obj2._rotation.first * obj2._rotation.second)+lambda*cun2;
 
@@ -119,16 +119,16 @@ void PhysObject::collision(PhysObject& obj1,PhysObject& obj2, PointVector<> coll
 	}else{
 		obj1._rotation.first = finalRotation1.make_unit();
 	}
-	obj1._rotation.second = finalRotation1.getMagnitude();
+	obj1._rotation.second = finalRotation1.getMagnitude() * (obj1.position() - collide_at).getMagnitude()/sqrt(mass1);
 	if(finalRotation2.getMagnitude() == 0){
 		obj2._rotation.first = {1,0,0};
 	}else{
 		obj2._rotation.first = finalRotation1.make_unit();
 	}
-	obj2._rotation.second = finalRotation2.getMagnitude();
+	obj2._rotation.second = finalRotation2.getMagnitude() * (obj2.position() - collide_at).getMagnitude()/sqrt(mass2);
 
-	obj1._velocity = finalVel1/10.0;
-	obj2._velocity = finalVel2/10.0;
+	obj1._velocity = finalVel1;
+	obj2._velocity = finalVel2;
 	
 }
 
