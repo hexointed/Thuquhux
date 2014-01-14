@@ -39,7 +39,7 @@ PhysObject::PhysObject(Parametric_Surface surface, PointVector<> velocity):
 }
 
 PhysObject::PhysObject(const PhysObject& orig):
-	_surface(Geometry::def_param_axis_func, {0,0,0}),
+	_surface(orig._surface),
 	_rotation(orig._rotation)
 {
 }
@@ -127,8 +127,8 @@ void PhysObject::collision(PhysObject& obj1,PhysObject& obj2, PointVector<> coll
 	}
 	obj2._rotation.second = finalRotation2.getMagnitude();
 
-	obj1._velocity = finalVel1;
-	obj2._velocity = finalVel2;
+	obj1._velocity = finalVel1/10.0;
+	obj2._velocity = finalVel2/10.0;
 	
 }
 

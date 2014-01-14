@@ -52,11 +52,17 @@ void PhysHandler::handle(double time){
 	for(unsigned int i = 0; i < physObjects.size() ; i++){
 		for(unsigned int j = i+1 ; j < physObjects.size() ; j++){
 			if(physObjects[i].surface().isIntersecting(physObjects[j].surface())){
-				//physObjects[i].position() = physObjects[i].previous_position();
-				//physObjects[j].position() = physObjects[j].previous_position();
+				std::pair<PointVector<>,double> prev_rot1 = physObjects[i].rotation();
+				std::pair<PointVector<>,double> prev_rot2 = physObjects[j].rotation();
+				physObjects[i].surface().rotate(-prev_rot1.first,prev_rot1.second*time);
+				physObjects[j].surface().rotate(-prev_rot2.first,prev_rot2.second*time);
 				//auto data = physObjects[i].surface().collision_data(physObjects[j].surface());
 				//PhysObject::collision(physObjects[i], physObjects[j], data.first, data.second);
 				PhysObject::collision(physObjects[i], physObjects[j], collide_at(physObjects[i].surface(), physObjects[j].surface()), collision_normal(physObjects[i].surface(), physObjects[j].surface()));
+				
+				physObjects[i].position() = physObjects[i].previous_position();
+				physObjects[j].position() = physObjects[j].previous_position();
+				//physObjects[i].position() = {100,0,0};
 			}
 		}
 	}
