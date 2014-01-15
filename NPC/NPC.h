@@ -16,7 +16,6 @@ public:
 
 private:
 
-	bool randomBool(); 
 	int randomInt();
 
 	int velocityx;
