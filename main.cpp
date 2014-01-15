@@ -167,6 +167,10 @@ void mouse_fn_phys(GLFWwindow* w, int , int b, int ){
 void loop_init_phys(GLFWwindow*){
 	PhysObject::create();
 	PhysObject::default_handler.physObjects[0].position() = {-0.2,0.5,3};
+	PhysObject::create();
+	PhysObject::default_handler.physObjects[1].position() = {0.4,0.5,3};
+	PhysObject::default_handler.physObjects[1].surface().rotate({1,0,0},3.14/2);
+	PhysObject::default_handler.physObjects[1].rotation() = std::make_pair(PointVector<>{0,1,1},0.5);
 }
 
 void loop_op_phys(double time){

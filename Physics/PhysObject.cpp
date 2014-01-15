@@ -127,8 +127,8 @@ void PhysObject::collision(PhysObject& obj1,PhysObject& obj2, PointVector<> coll
 	}
 	obj2._rotation.second = finalRotation2.getMagnitude() * (obj2.position() - collide_at).getMagnitude()/sqrt(mass2);
 
-	obj1._velocity = finalVel1;
-	obj2._velocity = finalVel2;
+	obj1._velocity = finalVel1 * (obj1.position() - collide_at).getMagnitude()/sqrt(mass1);
+	obj2._velocity = finalVel2 * (obj1.position() - collide_at).getMagnitude()/sqrt(mass1);
 	
 }
 
