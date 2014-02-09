@@ -3,6 +3,9 @@
  * Author: Elias Forsberg
  *
  * Created on: December 21, 2013, 09:16 AM
+ *
+ * Polytope is meant to represent general geometrical objects, mostly serving as a base 
+ * class for Triangle, as well as Line and Polygon.
  */
  
 #ifndef POLYTOPE_CPP
