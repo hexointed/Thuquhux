@@ -5,31 +5,12 @@
  * Created on May 23, 2013, 7:11 PM
  */
 
-#include "Geometry.h"
+#include "Triangle.h"
 #include "../GL/freeglut.h"
 #include <iostream>
 #include <vector>
 
 using namespace Geometry;
-
-template<const int Sides, const int Dim>
-Polygon<Sides, Dim>::Polygon(PointVector<Dim>* sides){
-	for(int i = 0; i < Sides; i++){
-		this->vertecies[i] = sides[i];
-	} 
-}
-
-Triangle::Triangle(PointVector<>* sides){
-	vertecies[0] = sides[0];
-	vertecies[1] = sides[1];
-	vertecies[2] = sides[2];
-}
-
-Triangle::Triangle(PointVector<> a, PointVector<> b, PointVector<> c):
-	vertecies{a,b,c}
-{}
-
-Triangle::~Triangle(){}
 
 Triangle& Triangle::move(const PointVector<> diff){
 	this->vertecies[0] += diff;
@@ -44,10 +25,6 @@ Triangle Triangle::operator +(const PointVector<> a){
 	ret.vertecies[1] += a;
 	ret.vertecies[2] += a;
 	return ret;
-}
-
-PointVector<>& Triangle::operator [](const int vertex){
-	return vertecies[vertex];
 }
 
 bool Triangle::shares_side(const Triangle& with){
@@ -79,14 +56,14 @@ std::pair<bool, PointVector<>> Triangle::intersectionWith(Polygon<2> p) const{
 	auto v = q.vertecies[2] - q.vertecies[0];
 	auto n = PointVector<>::mul_cross(u, v);
 	
-	auto divisor = PointVector<>::mul_dot(n, p.vertecies[1]- p.vertecies[0]);
+	auto divisor = PointVector<>::mul_dot(n, p[1]- p[0]);
 	if(divisor == 0)
 		return no_true;
-	auto r = PointVector<>::mul_dot(n, q.vertecies[0] - p.vertecies[0])/divisor;
+	auto r = PointVector<>::mul_dot(n, q.vertecies[0] - p[0])/divisor;
 	if(r < 0 || r > 1)
 		return no_true;
 	
-	auto pi = p.vertecies[0] + r * (p.vertecies[1]-p.vertecies[0]);
+	auto pi = p[0] + r * (p[1]-p[0]);
 	auto w = pi - q.vertecies[0];
 	
 	auto tmp = PointVector<>::mul_dot(u,v);
@@ -110,8 +87,8 @@ std::pair<bool, std::vector<PointVector<>>> Triangle::intersectionWith(Triangle 
 		
 		for(int i = 0; i < 3; i++){
 			Polygon<2> line;
-			line.vertecies[0] = p.vertecies[i];
-			line.vertecies[1] = p.vertecies[(i+1)%3];
+			line[0] = p.vertecies[i];
+			line[1] = p.vertecies[(i+1)%3];
 			auto res = q.intersectionWith(line);
 			
 			if(!res.first)
@@ -159,17 +136,6 @@ std::vector<Triangle> Triangle::split(PointVector<> pos, PointVector<> normal) c
 	result.push_back(Triangle{big_side[1], p1, p2});
 	result.push_back(Triangle{small_side , p2, p1});
 	
-	/*
-	if(side1.size() > side2.size()){
-		result.push_back(Triangle{side1.back(), side1.front(), p1});
-		result.push_back(Triangle{side1.back(), side1.front(), p2});
-		result.push_back(Triangle{side2.back(), p1, p2});
-	}else{
-		result.push_back(Triangle{side2.back(), side2.front(), p1});
-		result.push_back(Triangle{side2.back(), side2.front(), p2});
-		result.push_back(Triangle{side1.back(), p1, p2});
-	}
-	*/
 	return result;
 }
 
@@ -178,7 +144,6 @@ PointVector<> Triangle::normal() const {
 }
 
 void Triangle::draw(){
-	//glTranslatef(0,0,0);
 	glBegin(GL_TRIANGLES);
 		glVertex3dv((double*)&vertecies[0]);
 		glVertex3dv((double*)&vertecies[1]);

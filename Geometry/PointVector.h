@@ -25,7 +25,7 @@
 template<int Dim = 3, typename Numeric = double>
 class PointVector{
 public:
-    
+    using Numeric_type = Numeric;
     
 public:
 	PointVector();
@@ -35,14 +35,6 @@ public:
 	PointVector(PointVector<D2> orig);
 	
 	PointVector(std::initializer_list<Numeric> list);
-
-private:
-	/*
-	 *  Constructor helper functions (for the variadic template constructor)
-	 */
-	template<typename First, typename... Tail>
-	inline void pconstruct(int i, First f, Tail... t);
-	inline void pconstruct(int i);
     
 private:
 	Numeric comp[Dim];
@@ -187,20 +179,6 @@ private:
 	};
 	
 };
-
-namespace Boolarr{
-	template<int Dim>
-	bool all(std::array<bool, Dim> a);
-	template<int Dim>
-	bool any(std::array<bool, Dim> a);
-	template<int Dim>
-	bool most(std::array<bool, Dim> a);
-}
-
-namespace Geometry{
-	template<int Dimension, typename Numeral>
-	using Vector = PointVector<Dimension, Numeral>;
-}
 
 #endif	/* POINTVECTOR_H */
 

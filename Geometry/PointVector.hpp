@@ -42,16 +42,6 @@ PointVector<Dim, Numeric>::PointVector(std::initializer_list<Numeric> list){
 }
 
 template<int Dim, typename Numeric>
-template<typename First, typename... Tail>
-inline void PointVector<Dim, Numeric>::pconstruct(int i, First f, Tail... t){
-	comp[i] = f;
-	pconstruct(i+1, t...);
-}
-
-template<int Dim, typename Numeric>
-inline void PointVector<Dim, Numeric>::pconstruct(int /*i*/){}
-
-template<int Dim, typename Numeric>
 Numeric PointVector<Dim, Numeric>::get(int i) const{
 	assert(i <= Dim);
 	return comp[i];
@@ -519,37 +509,6 @@ std::ostream& operator<<(std::ostream& out, PointVector<Dim, Numeric> d) {
 	}
 	out << "}";
 	return out;
-}
-
-template<int Dim, typename Numeric>
-bool Boolarr::all(std::array<bool,Dim> a){
-	for(int i = 0; i < Dim; i++){
-		if(!a[i]){
-			return false;
-		}
-	}
-	return true;
-}
-
-template<int Dim, typename Numeric>
-bool Boolarr::any(std::array<bool,Dim> a){
-	for(int i = 0; i < Dim; i++){
-		if(a[i]){
-			return true;
-		}
-	}
-	return false;
-}
-
-template<int Dim, typename Numeric>
-bool Boolarr::most(std::array<bool,Dim> a){
-	int temp = 0;
-	for(int i = 0; i < Dim; i++){
-		if(a[i]){
-			temp++;
-		}
-	}
-	return temp >= Dim/2.0;
 }
 
 #endif /*POINTVECTOR_CPP*/

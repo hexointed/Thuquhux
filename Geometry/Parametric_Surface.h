@@ -13,7 +13,7 @@
 #define	PARAMETRIC_SURFACE_H
 
 #include "PointVector.h"
-#include "Geometry.h"
+#include "Triangle.h"
 #include "Triangle_Mesh.h"
 
 #include <vector>

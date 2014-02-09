@@ -14,7 +14,6 @@
 
 #include <vector>
 
-#include "PointVector.h"
 #include "Geometry.h"
 
 namespace Geometry{
