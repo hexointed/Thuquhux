@@ -16,7 +16,6 @@ public:
 
 private:
 
-	bool randomBool(); 
 	int randomInt();
 
 	int velocityx;
@@ -34,6 +33,10 @@ private:
 	double makeClimbingAbilityx();
 	double makeClimbingAbilityy();
 	double makeClimbingAbilityz();
+
+	int p;
+	int q;
+	int r;
 
 	double getPosition(); 
 	PointVector<> makePosition();
