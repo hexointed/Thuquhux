@@ -10,37 +10,31 @@
 
 #include "PointVector.h"
 
-template<typename CRTP, int N_vertecies, typename Vertex_type>
-class Polytope_impl{
+template<int N_vertecies, typename Vertex_type = PointVector<3, double>>
+class Polytope{
 protected:
 	using Vertex_list = std::initializer_list<Vertex_type>;
 public:
-	Polytope_impl() = default;
-	Polytope_impl(const Polytope_impl&) = default;
-	Polytope_impl(Polytope_impl&&) = default;
+	Polytope() = default;
+	Polytope(const Polytope&) = default;
+	Polytope(Polytope&&) = default;
 	
-	explicit Polytope_impl(Vertex_list vertecies);
-	explicit Polytope_impl(Vertex_type* vertecies);
+	explicit Polytope(Vertex_list vertecies);
+	explicit Polytope(Vertex_type* vertecies);
 
-private:
+protected:
 	Vertex_type vertecies[N_vertecies];
 	
 public:
-	Polytope_impl& operator =(const Polytope_impl&) = default;
-	Polytope_impl& operator =(Polytope_impl&&) = default;
+	Polytope& operator =(const Polytope&) = default;
+	Polytope& operator =(Polytope&&) = default;
 	
-	Vertex_type& operator[](int vertex) const;
+	Vertex_type operator[](int vertex) const;
+	Vertex_type& operator[](int vertex);
 	Vertex_type center() const;
 	
-	CRTP& move_center(Vertex_type pos);
-	CRTP& move_relative(Vertex_type diff);
-};
-
-template<int N_vertecies, typename Vertex_type = PointVector<3, double>>
-class Polytope : 
-	public Polytope_impl<Polytope<N_vertecies, Vertex_type>, N_vertecies, Vertex_type>{
-public:
-	using Polytope::Polytope_impl::Polytope_impl;
+	void move_center(Vertex_type pos);
+	void move_relative(Vertex_type diff);
 };
 
 #include "Polytope.hpp"

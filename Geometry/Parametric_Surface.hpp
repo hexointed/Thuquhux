@@ -11,7 +11,7 @@
 #include <iostream>
 #include "Parametric_Surface.h"
 #include "PointVector.h"
-#include "Geometry.h"
+#include "Triangle.h"
 #include "GL/freeglut.h"
 #include <vector>
 

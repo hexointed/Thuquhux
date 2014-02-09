@@ -42,16 +42,6 @@ PointVector<Dim, Numeric>::PointVector(std::initializer_list<Numeric> list){
 }
 
 template<int Dim, typename Numeric>
-template<typename First, typename... Tail>
-inline void PointVector<Dim, Numeric>::pconstruct(int i, First f, Tail... t){
-	comp[i] = f;
-	pconstruct(i+1, t...);
-}
-
-template<int Dim, typename Numeric>
-inline void PointVector<Dim, Numeric>::pconstruct(int /*i*/){}
-
-template<int Dim, typename Numeric>
 Numeric PointVector<Dim, Numeric>::get(int i) const{
 	assert(i <= Dim);
 	return comp[i];

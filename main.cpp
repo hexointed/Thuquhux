@@ -6,7 +6,7 @@
 #include "TerrainGenerator.h"
 #include "Geometry/Parametric_Surface.h"
 #include "Geometry/PointVector.h"
-#include "Geometry/Geometry.h"
+#include "Geometry/Triangle.h"
 #include "NPC/NPC.h"
 #include "Geometry/Triangle_Mesh.h"
 #include "Physics/PhysObject.h"

@@ -25,7 +25,7 @@ TerrainGenerator \
 Simplexnoise \
 Physics/PhysObject \
 Physics/Material \
-Geometry/Geometry \
+Geometry/Triangle \
 NPC/NPC \
 Physics/PhysHandler \
 Geometry/Triangle_Mesh 

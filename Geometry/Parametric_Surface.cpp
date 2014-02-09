@@ -6,7 +6,7 @@
  */
 #include "PointVector.h"
 #include "Parametric_Surface.h"
-#include "Geometry.h"
+#include "Triangle.h"
 #include <math.h>
 
 #include "GL/freeglut.h"
@@ -35,22 +35,7 @@ Parametric_Surface::Parametric_Surface(PointVector<> pos):
 	mesh_length{mesh_detail*mesh_detail*2},
 	bound_box{{0,0,0},{0,0,0}},
 	position{pos}
-{
-	double size = 0.5;
-	mesh.add(Triangle({size,size,size},{size,size,-size},{-size,size,-size}));
-	mesh.add(Triangle({size,size,size},{-size,size,-size},{-size,size,size}));
-	mesh.add(Triangle({size,size,size},{-size,size,size},{-size,-size,size}));
-	mesh.add(Triangle({size,size,size},{-size,-size,size},{size,-size,size}));
-	mesh.add(Triangle({size,size,size},{size,-size,size},{size,-size,-size}));
-	mesh.add(Triangle({size,size,size},{size,-size,-size},{size,size,-size}));
-	
-	mesh.add(Triangle({-size,-size,-size},{size,size,-size},{size,-size,-size}));
-	mesh.add(Triangle({-size,-size,-size},{size,-size,-size},{size,-size,size}));
-	mesh.add(Triangle({-size,-size,-size},{size,-size,size},{-size,-size,size}));
-	mesh.add(Triangle({-size,-size,-size},{-size,-size,size},{-size,size,size}));
-	mesh.add(Triangle({-size,-size,-size},{-size,size,size},{-size,size,-size}));
-	mesh.add(Triangle({-size,-size,-size},{-size,size,-size},{size,size,-size}));
-}
+{}
 
 Parametric_Surface::~Parametric_Surface() {
 }
@@ -200,8 +185,8 @@ bool Parametric_Surface::pointIsWithin(PointVector<> p){
 	PointVector<> min {p.getdx(), p.getdy(), bound_box[0].getdz()};
 	PointVector<> max {p.getdx(), p.getdy(), bound_box[1].getdz()};
 	Polygon<2> clip_line;
-	clip_line.vertecies[0] = min;
-	clip_line.vertecies[1] = max;
+	clip_line[0] = min;
+	clip_line[1] = max;
 	std::vector<PointVector<>> clips;
 	for(Triangle tri: mesh){
 		auto tmp = tri.intersectionWith(clip_line);

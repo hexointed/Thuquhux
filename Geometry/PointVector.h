@@ -35,14 +35,6 @@ public:
 	PointVector(PointVector<D2> orig);
 	
 	PointVector(std::initializer_list<Numeric> list);
-
-private:
-	/*
-	 *  Constructor helper functions (for the variadic template constructor)
-	 */
-	template<typename First, typename... Tail>
-	inline void pconstruct(int i, First f, Tail... t);
-	inline void pconstruct(int i);
     
 private:
 	Numeric comp[Dim];
@@ -187,11 +179,6 @@ private:
 	};
 	
 };
-
-namespace Geometry{
-	template<int Dimension, typename Numeral>
-	using Vector = PointVector<Dimension, Numeral>;
-}
 
 #endif	/* POINTVECTOR_H */
 
