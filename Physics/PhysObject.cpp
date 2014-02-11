@@ -12,7 +12,7 @@
 
 PhysHandler PhysObject::default_handler{};
 
-void PhysObject::create(bool addToList, Parametric_Surface surface, PhysHandler& handler, PointVector<> velocity){
+void PhysObject::create(bool addToList, Parametric_Surface surface, PhysHandler& handler, Geometry::Vector<> velocity){
 	PhysObject erland(surface, velocity);
 	if(addToList){
 		handler.physObjects.push_back(erland);
@@ -20,7 +20,7 @@ void PhysObject::create(bool addToList, Parametric_Surface surface, PhysHandler&
 
 }
 
-PhysObject& PhysObject::create_return(bool addToList, Parametric_Surface surface, PhysHandler& handler, PointVector<> velocity){
+PhysObject& PhysObject::create_return(bool addToList, Parametric_Surface surface, PhysHandler& handler, Geometry::Vector<> velocity){
 	PhysObject erland(surface, velocity);
 	if(addToList){
 		handler.physObjects.push_back(erland);
@@ -28,7 +28,7 @@ PhysObject& PhysObject::create_return(bool addToList, Parametric_Surface surface
 	return handler.physObjects.back();
 }
 
-PhysObject::PhysObject(Parametric_Surface surface, PointVector<> velocity):
+PhysObject::PhysObject(Parametric_Surface surface, Geometry::Vector<> velocity):
 	_material{},
 	_volume{1},
 	_velocity{velocity},
@@ -55,31 +55,31 @@ Material& PhysObject::material(){
 	return _material;
 }
 
-PointVector<>& PhysObject::position(){
+Geometry::Vector<>& PhysObject::position(){
 	return _surface.position;
 }
 
-PointVector<>& PhysObject::velocity(){
+Geometry::Vector<>& PhysObject::velocity(){
 	return _velocity;
 }
 
-PointVector<>& PhysObject::previous_position(){
+Geometry::Vector<>& PhysObject::previous_position(){
 	return _previous_position;
 }
 
-PointVector<>& PhysObject::acceleration(){
+Geometry::Vector<>& PhysObject::acceleration(){
 	return _acceleration;
 }
 
-std::pair<PointVector<>, double>& PhysObject::rotation(){
+std::pair<Geometry::Vector<>, double>& PhysObject::rotation(){
 	return _rotation;
 }
 
-std::vector<std::pair<PointVector<> , double>>& PhysObject::impulses(){
+std::vector<std::pair<Geometry::Vector<> , double>>& PhysObject::impulses(){
 	return _impulses;
 }
 
-void PhysObject::addImpulse(PointVector<> a, double time){
+void PhysObject::addImpulse(Geometry::Vector<> a, double time){
 	_impulses.push_back(std::make_pair(a,time));
 }
 
@@ -91,27 +91,27 @@ void PhysObject::calcVolume(){
 	
 }
 
-void PhysObject::accelerate(PointVector<> a){
+void PhysObject::accelerate(Geometry::Vector<> a){
 	_acceleration = _acceleration + a;
 }
 
 
-void PhysObject::collision(PhysObject& obj1,PhysObject& obj2, PointVector<> collide_at, PointVector<> normal){
+void PhysObject::collision(PhysObject& obj1,PhysObject& obj2, Geometry::Vector<> collide_at, Geometry::Vector<> normal){
 	//double mass1 = obj1._volume*obj1.density();
 	//double mass2 = obj2._volume*obj2.density();
 	double mass1 = 5;
 	double mass2 = 10;
 
 	
-	PointVector<> cun1 = PointVector<>::mul_cross(collide_at - obj1.position(), normal);
-	PointVector<> cun2 = PointVector<>::mul_cross(collide_at - obj2.position(), normal);
+	Geometry::Vector<> cun1 = Geometry::Vector<>::mul_cross(collide_at - obj1.position(), normal);
+	Geometry::Vector<> cun2 = Geometry::Vector<>::mul_cross(collide_at - obj2.position(), normal);
 
-	double lambda = 2.0 * (PointVector<>::mul_dot(obj1._velocity - obj2._velocity, normal) + PointVector<>::mul_dot(obj1._rotation.first*obj1._rotation.second, cun1) - PointVector<>::mul_dot(obj2._rotation.first*obj2._rotation.second, cun2)) / ((1.0/mass1) + (1.0/mass2) + PointVector<>::mul_dot(cun1,cun1) + PointVector<>::mul_dot(cun2,cun2)); 
+	double lambda = 2.0 * (Geometry::Vector<>::mul_dot(obj1._velocity - obj2._velocity, normal) + Geometry::Vector<>::mul_dot(obj1._rotation.first*obj1._rotation.second, cun1) - Geometry::Vector<>::mul_dot(obj2._rotation.first*obj2._rotation.second, cun2)) / ((1.0/mass1) + (1.0/mass2) + Geometry::Vector<>::mul_dot(cun1,cun1) + Geometry::Vector<>::mul_dot(cun2,cun2)); 
 
-	PointVector<> finalVel1 = (obj1._velocity - lambda/mass1 * normal);
-	PointVector<> finalVel2 = (obj2._velocity + lambda/mass2 * normal);
-	PointVector<> finalRotation1 = (obj1._rotation.first * obj1._rotation.second)-lambda*cun1;
-	PointVector<> finalRotation2 = (obj2._rotation.first * obj2._rotation.second)+lambda*cun2;
+	Geometry::Vector<> finalVel1 = (obj1._velocity - lambda/mass1 * normal);
+	Geometry::Vector<> finalVel2 = (obj2._velocity + lambda/mass2 * normal);
+	Geometry::Vector<> finalRotation1 = (obj1._rotation.first * obj1._rotation.second)-lambda*cun1;
+	Geometry::Vector<> finalRotation2 = (obj2._rotation.first * obj2._rotation.second)+lambda*cun2;
 
 
 	if(finalRotation1.getMagnitude() == 0){

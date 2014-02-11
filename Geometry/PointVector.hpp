@@ -28,7 +28,7 @@ template<int D2>
 PointVector<Dim, Numeric>::PointVector(PointVector<D2> orig):
 	comp {}
 {
-	constexpr int m = std::min(Dim, D2);
+	constexpr int m = (Dim < D2) ? Dim : D2;
 	std::copy(orig.comp, orig.comp + m, comp);
 }
 
@@ -84,7 +84,12 @@ Numeric PointVector<Dim, Numeric>::sum_comp() const{
 }
 
 template<int Dim, typename Numeric>
-Numeric& PointVector<Dim, Numeric>::operator[](int i) const{
+Numeric& PointVector<Dim, Numeric>::operator[](int i) {
+	return comp[i];
+}
+
+template<int Dim, typename Numeric>
+const Numeric& PointVector<Dim, Numeric>::operator[](int i) const {
 	return comp[i];
 }
 

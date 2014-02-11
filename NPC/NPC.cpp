@@ -1,8 +1,8 @@
 #include "NPC.h"
 #include "../Physics/PhysObject.h"
 
-std::vector<PointVector<>> PLACEHOLDER_LINE_OF_TRAVEL{};
-//PointVector<> GRAVITY_CENTER{0, 0, 0};
+std::vector<Geometry::Vector<>> PLACEHOLDER_LINE_OF_TRAVEL{};
+//Geometry::Vector<> GRAVITY_CENTER{0, 0, 0};
 double RADIUS;
 
 NPC::NPC(){
@@ -19,7 +19,7 @@ NPC::NPC(){
 	r = 0;//PLACEHOLDER_LINE_OF_TRAVEL.size()-1;
 }
 
-PointVector<> NPC::makePosition(){
+Geometry::Vector<> NPC::makePosition(){
 	srand(time(0));
 	position.setdx(RADIUS + rand() % 8);
 	position.setdy(RADIUS + rand() % 8);
@@ -67,9 +67,7 @@ int NPC::randomInt(){
 
 }*/
 
-PointVector<> NPC::updatePosition(double deltaT){
-	
-	double infinity = 1.0/0.0;
+Geometry::Vector<> NPC::updatePosition(double deltaT){
 	
 	double sx = deltaT*velocityx;
 	double sy = deltaT*velocityy;

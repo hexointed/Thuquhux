@@ -51,13 +51,13 @@ namespace Geometry{
 		Triangle_Mesh& operator=(const Triangle_Mesh& orig);
 		
 	private:
-		std::vector<PointVector<>> _vertecies;
+		std::vector<Geometry::Vector<>> _vertecies;
 		std::vector<Element> elements;
 		
 	public:
 		size_t size();
 		void add(Geometry::Triangle t);
-		std::vector<PointVector<>>& vertecies() {return _vertecies;}
+		std::vector<Geometry::Vector<>>& vertecies() {return _vertecies;}
 		
 		std::vector<Triangle> all_triangles() const;
 		std::vector<Triangle> intersecting_triangles(Triangle t);

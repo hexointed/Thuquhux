@@ -41,13 +41,15 @@ Geometry/PointVector
 
 all: $(EXECUTABLE)
 
-$(EXECUTABLE): $(addsuffix .o,$(CLS) $(SRC) $(CLT)) $(addsuffix .h.gch,$(TCL))
-	$(CC) $(addsuffix .o,$(CLS) $(SRC) $(CLT)) $(LIBS) -o $(EXECUTABLE)
+$(EXECUTABLE): $(addsuffix .h.gch,$(TCL)) $(addsuffix .o,$(CLS) $(SRC) $(CLT))
+	@echo linking with $(LIBS)
+	@$(CC) $(addsuffix .o,$(CLS) $(SRC) $(CLT)) $(LIBS) -o $(EXECUTABLE)
 	
 define PROGRAM_SRC
 
 $(1).o: $(1).cpp
-	$(CC) $(CFLAGS) $(1).cpp -o $(1).o
+	@echo compiling $(1)
+	@$(CC) $(CFLAGS) $(1).cpp -o $(1).o
 
 endef
 
@@ -56,7 +58,8 @@ $(foreach standalone,$(SRC),$(eval $(call PROGRAM_SRC,$(standalone))))
 define PROGRAM_CLS
 
 $(1).o: $(1).cpp $(1).h
-	$(CC) $(CFLAGS) $(1).cpp -o $(1).o
+	@echo compiling class $(1)
+	@$(CC) $(CFLAGS) $(1).cpp -o $(1).o
 
 endef
 
@@ -65,7 +68,8 @@ $(foreach class,$(CLS),$(eval $(call PROGRAM_CLS,$(class))))
 define PROGRAM_CLT
 
 $(1).o: $(1).cpp $(1).hpp $(1).h
-	$(CC) $(CFLAGS) $(1).cpp -o $(1).o
+	@echo compiling class $(1)
+	@$(CC) $(CFLAGS) $(1).cpp -o $(1).o
 
 endef
 
@@ -74,11 +78,13 @@ $(foreach class,$(CLT),$(eval $(call PROGRAM_CLT,$(class))))
 define PROGRAM_TCL
 
 $(1).h.gch: $(1).hpp $(1).h
-	$(CC) $(CFLAGS) $(1).h
+	@echo precompling header $(1)
+	@$(CC) $(CFLAGS) $(1).h
 
 endef
 
 $(foreach class,$(TCL),$(eval $(call PROGRAM_TCL,$(class))))
 	
 clean:
-	- rm $(addsuffix .o,$(SRC) $(CLS) $(CLT)) $(addsuffix .h.gch,$(TCL))
+	@echo cleaning up
+	@- rm $(addsuffix .o,$(SRC) $(CLS) $(CLT)) $(addsuffix .h.gch,$(TCL)) 2> /dev/null
