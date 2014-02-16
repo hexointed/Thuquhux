@@ -44,6 +44,7 @@ namespace Geometry{
 	
 	class Triangle_Mesh{
 		friend class Element;
+		class Iterator;
 	public:
 		Triangle_Mesh() = default;
 		Triangle_Mesh(const Triangle_Mesh& orig);
@@ -66,6 +67,40 @@ namespace Geometry{
 		decltype(elements)::iterator end(){return elements.end();}
 		decltype(elements)::const_iterator begin() const {return elements.begin();}
 		decltype(elements)::const_iterator end() const {return elements.end();}
+	};
+	
+	class Triangle_Mesh::Iterator{
+	public:
+		Iterator(Triangle_Mesh& s, int p);
+		Iterator(const Iterator&) = default;
+		Iterator(const Iterator&&) = default;
+		
+	private:
+		Triangle_Mesh& super;
+		int pos;
+	
+	public:
+		bool operator==(Iterator) const;
+		bool operator!=(Iterator) const;
+		bool operator <(Iterator) const;
+		bool operator >(Iterator) const;
+		bool operator<=(Iterator) const;
+		bool operator>=(Iterator) const;
+		
+		Element operator *();
+		const Element operator *() const;
+		
+		void operator++();
+		void operator++(int);
+		void operator--();
+		void operator--(int);
+		
+		Iterator operator +(int) const;
+		Iterator operator -(int) const;
+		int operator -(Iterator) const;
+		
+		Element operator[](int);
+		const Element operator[](int) const;
 	};
 }
 

@@ -18,7 +18,7 @@
 
 void InitARBShader(){
 	{
-		std::ifstream in("Shaders/vertex.arbvs");
+		std::ifstream in("Graphics/vertex.arbvs");
 		std::string str((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
 		char * prgrm = new char[str.size()];
 		strcpy(prgrm, str.c_str());
@@ -60,7 +60,7 @@ void InitARBShader(){
 }
 
 void InitGLSLShader(){
-	std::string str = loadFile("Shaders/vertex.glsl");
+	std::string str = loadFile("Graphics/vertex.glsl");
 	char * prgrm = new char[str.size()];
 	strcpy(prgrm, str.c_str());
 	int lengths = str.size();

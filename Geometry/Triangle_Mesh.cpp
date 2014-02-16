@@ -79,3 +79,84 @@ std::vector<Triangle> Triangle_Mesh::intersecting_triangles(Triangle with){
 	}
 	return result;
 }
+
+/* Triangle_Mesh::Iterator */
+
+Triangle_Mesh::Iterator::Iterator(Triangle_Mesh& s, int p):
+	super{s},
+	pos{p}
+{}
+
+bool Triangle_Mesh::Iterator::operator==(Iterator i) const{
+	return (pos == i.pos) && (&super == &i.super);
+}
+
+bool Triangle_Mesh::Iterator::operator!=(Iterator i) const{
+	return (pos != i.pos) || (&super != &i.super);
+}
+
+bool Triangle_Mesh::Iterator::operator <(Iterator i) const{
+	return (pos < i.pos) && (&super == &i.super);
+}
+
+bool Triangle_Mesh::Iterator::operator >(Iterator i) const{
+	return (pos > i.pos) && (&super == &i.super);
+}
+
+bool Triangle_Mesh::Iterator::operator<=(Iterator i) const{
+	return (pos <= i.pos) && (&super == &i.super);
+}
+
+bool Triangle_Mesh::Iterator::operator>=(Iterator i) const{
+	return (pos >= i.pos) && (&super == &i.super);
+}
+
+Triangle_Mesh::Element Triangle_Mesh::Iterator::operator *(){
+	int v01 = int(pos/2.0) % super.width;
+	int v2  = (int(pos/2) == int(pos/2.0 + 0.5)) ? v01 : v01 + super.width + 1;
+	return Element(super, v01 + 1, v01 + super.width, v2);
+}
+
+const Element Triangle_Mesh::Iterator::operator *() const{
+	int v01 = int(pos/2.0) % super.width;
+	int v2  = (int(pos/2) == int(pos/2.0 + 0.5)) ? v01 : v01 + super.width + 1;
+	return Element(super, v01 + 1, v01 + super.width, v2);
+}
+
+void Triangle_Mesh::Iterator::operator++(){
+	pos++;
+}
+
+void Triangle_Mesh::Iterator::operator++(int){
+	pos++;
+}
+
+void Triangle_Mesh::Iterator::operator--(){
+	pos--;
+}
+
+void Triangle_Mesh::Iterator::operator--(int){
+	pos--;
+}
+
+Triangle_Mesh::Iterator Triangle_Mesh::Iterator::operator +(int i){
+	return Iterator(super, pos + i);
+}
+
+Triangle_Mesh::Iterator Triangle_Mesh::Iterator::operator -(int i){
+	return Iterator(super, pos - i);
+}
+
+int Triangle_Mesh::Iteator::operator -(Triangle_Mesh::Iterator i){
+	return pos - i.pos;
+}
+
+Triangle_Mesh::Element Triangle_Mesh::Iterator::operator[](int i){
+	Iterator a(super, pos + i);
+	return *a;
+}
+
+const Triangle_Mesh::Element Triangle_Mesh::Iterator::operator[](int i) const{
+	Iterator a(super, pos + i);
+	return *a;
+}

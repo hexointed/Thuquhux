@@ -17,7 +17,7 @@
 
 #include "Physics/PhysObject.h"
 #include "NPC/NPC.h"
-#include "Shaders/Shaders.h"
+#include "Graphics/Shaders.h"
 
 void demo_loop(GLFWwindow* widow);
 GLFWwindow* loadglfw();
