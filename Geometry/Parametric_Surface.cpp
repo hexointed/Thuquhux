@@ -98,12 +98,12 @@ Parametric_Surface Parametric_Surface::unite(Parametric_Surface a, Parametric_Su
 	
 	for(Triangle t : s_a){
 		if(a_test(t)){
-			ret.mesh.add(t);
+			//ret.mesh.add(t);
 		}
 	}
 	for(Triangle t : s_b){
 		if(b_test(t)){
-			ret.mesh.add(t);
+			//ret.mesh.add(t);
 		}
 	}
 	return ret;
@@ -130,12 +130,12 @@ Parametric_Surface Parametric_Surface::intersect(Parametric_Surface a, Parametri
 	
 	for(Triangle t : s_a){
 		if(a_test(t)){
-			ret.mesh.add(t);
+			//ret.mesh.add(t);
 		}
 	}
 	for(Triangle t : s_b){
 		if(b_test(t)){
-			ret.mesh.add(t);
+			//ret.mesh.add(t);
 		}
 	}
 	return ret;
@@ -146,9 +146,10 @@ void Parametric_Surface::Unite(Parametric_Surface a){
 	PointVector<> rel_pos = a.position - position;
 	bound_box[0].set_min_comp(a.bound_box[0] + rel_pos);
 	bound_box[1].set_max_comp(a.bound_box[1] + rel_pos);
-	for(Triangle tri: a.mesh){
-		mesh.add(Triangle{tri + rel_pos});
+	for(PointVector<>& v : a.mesh.vertecies()){
+		v += rel_pos;
 	}
+	mesh.add(a.mesh);
 }
 
 bool Parametric_Surface::is_subset_of(const Parametric_Surface& v){
@@ -170,7 +171,7 @@ bool Parametric_Surface::is_superset_of(const Parametric_Surface& v){
 	       r.add(position).is_min_comp(s.add(v.position));
 }
 
-bool Parametric_Surface::isIntersecting(const Parametric_Surface& v){
+bool Parametric_Surface::isIntersecting(Parametric_Surface& v){
 	for(Triangle tri : mesh){
 		for(Triangle vtri : v.mesh){
 			vtri.move(position - v.position);
@@ -182,7 +183,7 @@ bool Parametric_Surface::isIntersecting(const Parametric_Surface& v){
 	return false;
 }
 
-std::pair<PointVector<>, PointVector<>> Parametric_Surface::collision_data(const Parametric_Surface& v){
+std::pair<PointVector<>, PointVector<>> Parametric_Surface::collision_data(Parametric_Surface& v){
 	std::pair<PointVector<>, PointVector<>> result; //position, normal
 	std::vector<Triangle> intersections;
 	std::vector<Triangle> intersections_v;

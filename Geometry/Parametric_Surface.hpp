@@ -41,17 +41,25 @@ void Geometry::Parametric_Surface::calculate_mesh(Functor pfunc){
 		}
 	}
 	int ml = mesh_detail * mesh_detail;
+	std::vector<int> indices;
 	for(int i = 0; i < mesh_detail; ++i){
-		for(int n = 0; n < mesh_detail; ++n){
+		for(int n = 0; n < mesh_detail + 1; ++n){
 			//"connect" the points, so that they can be drawn using Triangle methods
+			indices.push_back( ( i    * mesh_detail + n) % ml);
+			indices.push_back( ((i+1) * mesh_detail + n) % ml);
+			/*
 			mesh.add(Triangle{vertecies[(i* mesh_detail + n) % ml], 
 			                  vertecies[(i* mesh_detail + n  + 1) % ml],
 			                  vertecies[((i+1)*mesh_detail + n) % ml]});
+			                  
 			mesh.add(Triangle{vertecies[((i+1)*mesh_detail + n) % ml], 
 			                  vertecies[(i* mesh_detail + n  + 1) % ml],
-			                  vertecies[((i+1)*mesh_detail + n + 1) % ml]});
+			                  vertecies[((i+1)*mesh_detail + n + 1) % ml]});*/
 		}
+		indices.push_back( ((i+1) * mesh_detail + mesh_detail) % ml);
+		indices.push_back( ((i+1) * mesh_detail + 0 ) % ml);
 	}
+	mesh.add(Triangle_Mesh{vertecies, indices});
 }
 
 #endif	/* PARAMETRIC_SURFACE_HPP */

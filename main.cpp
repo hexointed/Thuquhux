@@ -137,6 +137,8 @@ void initgl(){
 	glLoadIdentity();
 	gluPerspective(50,1,0.1,1000);
 	glMatrixMode(GL_MODELVIEW);
+	
+	glDisable(GL_CULL_FACE);
 }
 
 Geometry::Vector<2, double> easy_mouse(GLFWwindow* w){
@@ -225,8 +227,8 @@ void csg_key_handler(GLFWwindow*, int a, int, int c, int){
 
 void loop_init_csg(GLFWwindow* w){
 	glfwSetKeyCallback(w, csg_key_handler);
-	surf_list.emplace_back(Geometry::Vector<3, double>{0,0,4});
-	surf_list.emplace_back(Geometry::Vector<3, double>{-1,0,4});
+	surf_list.emplace_back(Geometry::def_param_axis_func, Geometry::Vector<3, double>{0,0,4});
+	surf_list.emplace_back(Geometry::def_param_axis_func, Geometry::Vector<3, double>{-1,0,4});
 }
 
 void loop_op_csg(double time){

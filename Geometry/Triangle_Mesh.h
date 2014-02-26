@@ -17,24 +17,6 @@
 #include "Geometry.h"
 
 namespace Geometry{
-	class Triangle_Mesh;
-	
-	/*
-	 * Element represents nodes in a graph. It can implicitly convert
-	 * to a Triangle. Connecting nodes are stored in terms of their 
-	 * positions in the parent Triangle_Mesh's _vertecies vector.
-	 */
-	
-	class Element{
-	public:
-		Element(Geometry::Triangle t, Triangle_Mesh& universe);
-	private:
-		size_t vertecies[3];
-		size_t connected[3];
-		Triangle_Mesh& super;
-	public:
-		operator Geometry::Triangle () const;
-	};
 	
 	/*
 	 * Triangle_Mesh provides ways to iterate through both it's Triangles
@@ -43,37 +25,65 @@ namespace Geometry{
 	 */
 	
 	class Triangle_Mesh{
-		friend class Element;
+	public:
+		class Element;
 		class Iterator;
+		
 	public:
 		Triangle_Mesh() = default;
-		Triangle_Mesh(const Triangle_Mesh& orig);
-		Triangle_Mesh(std::vector<Geometry::Triangle> t);
-		Triangle_Mesh& operator=(const Triangle_Mesh& orig);
+		Triangle_Mesh(const Triangle_Mesh& orig) = default;
+		Triangle_Mesh(Triangle_Mesh&& orig) = default;
+		
+		Triangle_Mesh(std::vector<PointVector<>> p);
+		Triangle_Mesh(std::vector<PointVector<>> p, std::vector<int> i);
+		
+		Triangle_Mesh& operator=(const Triangle_Mesh& orig) = default;
+		Triangle_Mesh& operator=(Triangle_Mesh&& orig) = default;
 		
 	private:
-		std::vector<PointVector<>> _vertecies;
-		std::vector<Element> elements;
+		std::vector<PointVector<>> vertex;
+		std::vector<int> index;
 		
 	public:
-		size_t size();
-		void add(Geometry::Triangle t);
-		std::vector<PointVector<>>& vertecies() {return _vertecies;}
+		size_t size() const;
 		
-		std::vector<Triangle> all_triangles() const;
+		void add(std::vector<PointVector<>> p);
+		void add(const Triangle_Mesh& t);
+		
+		std::vector<PointVector<>>& vertecies() {return vertex;}
+		std::vector<Triangle> all_triangles();
 		std::vector<Triangle> intersecting_triangles(Triangle t);
 		
-		decltype(elements)::iterator begin(){return elements.begin();}
-		decltype(elements)::iterator end(){return elements.end();}
-		decltype(elements)::const_iterator begin() const {return elements.begin();}
-		decltype(elements)::const_iterator end() const {return elements.end();}
+		Iterator begin();
+		Iterator end();
 	};
+	
+	/*
+	 * Triangle_Mesh::Element provides access to the vertecies of a Triangle_Mesh, 
+	 * grouping them together as Triangles. The same vertex may occur in several Elements.
+	 */
+	
+	class Triangle_Mesh::Element{
+	public:
+		Element(Triangle_Mesh& t, int a, int b, int c);
+	private:
+		int vertecies[3];
+		Triangle_Mesh& super;
+	public:
+		operator Geometry::Triangle () const;
+		PointVector<>& operator[](int i);
+	};
+	
+	/*
+	 * Triangle_Mesh::Iterator is a simple random access relative iterator. An Iterator
+	 * remains valid as long as vertecies are not deleted from its Triangle_Mesh.
+	 */
 	
 	class Triangle_Mesh::Iterator{
 	public:
 		Iterator(Triangle_Mesh& s, int p);
 		Iterator(const Iterator&) = default;
-		Iterator(const Iterator&&) = default;
+		Iterator(Iterator&&) = default;
 		
 	private:
 		Triangle_Mesh& super;
@@ -102,6 +112,8 @@ namespace Geometry{
 		Element operator[](int);
 		const Element operator[](int) const;
 	};
+	
+	
 }
 
 #endif	/* TRIANGLE_MESH_H */
