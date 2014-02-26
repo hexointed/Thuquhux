@@ -122,9 +122,6 @@ Geometry::Vector<> NPC::updatePosition(double deltaT){
 					
 
 				}
-				else{
-					p=p;
-}
 			}
 			
 			
@@ -160,10 +157,6 @@ Geometry::Vector<> NPC::updatePosition(double deltaT){
 					
 
 				}
-				else{
-					q=q;
-}
-	
 			}			
 		
 		
@@ -201,10 +194,6 @@ Geometry::Vector<> NPC::updatePosition(double deltaT){
 					
 
 				}
-				else{
-					r=r;
-}
-	
 			}
 
 

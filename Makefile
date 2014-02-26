@@ -4,7 +4,7 @@
 PROJ = thuquhux
 
 #Compiler
-CC = g++-4.8
+CC = clang++
 
 #Flags
 ERRFLAGS = -pedantic -Wall -Wextra -Wpointer-arith -Wcast-qual -fstrict-overflow -Wstrict-overflow=3
