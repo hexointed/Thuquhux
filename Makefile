@@ -29,8 +29,8 @@ NPC/NPC \
 Physics/PhysObject \
 Physics/Material \
 Physics/PhysHandler \
-TerrainGenerator \
-Simplexnoise \
+Terrain/TerrainGenerator \
+Terrain/Simplexnoise \
 
 #Classes with template methods
 CLT = \
