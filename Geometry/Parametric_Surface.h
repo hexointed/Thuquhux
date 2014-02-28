@@ -19,11 +19,16 @@
 #include <vector>
 #include <functional>
 
+namespace Graphics{
+	class DrawHandler;
+}
+
 namespace Geometry{
 
 	PointVector<> def_param_axis_func(PointVector<2> params);
 
 	class Parametric_Surface {
+		friend class ::Graphics::DrawHandler;
 	public:
 		Parametric_Surface() = default;
 		Parametric_Surface(const Parametric_Surface&);

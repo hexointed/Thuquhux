@@ -17,11 +17,9 @@
 
 #include "Physics/PhysObject.h"
 #include "NPC/NPC.h"
-#include "Graphics/Shaders.h"
+#include "Graphics/DrawHandler.h"
 
 void demo_loop(GLFWwindow* widow);
-GLFWwindow* loadglfw();
-void initgl();
 
 void (*mouse_fn)(GLFWwindow*,int,int,int);
 void (*loop_init)(GLFWwindow*);
@@ -39,13 +37,17 @@ void loop_op_phys(double time);
 void loop_op_npc(double time);
 void loop_op_csg(double time);
 
+Graphics::DrawHandler canvas;
+
 int main (){
 	decltype(mouse_fn) fn[3] = {mouse_fn_phys, mouse_fn_npc, mouse_fn_csg};
 	decltype(loop_init) in[3] = {loop_init_phys, loop_init_npc, loop_init_csg};
 	decltype(loop_op) op[3] = {loop_op_phys, loop_op_npc, loop_op_csg};
 	
 	int mode = 0;
-	std::cout<<"Please enter a number: 0 1 or 2\n";
+	unsigned short a = 0;
+	a -= 1;
+	std::cout<<"Please enter a number: 0 1 or 2\n"<<a;
 	std::cin >> mode;
 	
 	switch(mode){
@@ -73,25 +75,9 @@ int main (){
 	loop_init = in[mode];
 	loop_op = op[mode];
 	
-	auto window = loadglfw();
-	glewInit();
-	initgl();
+	demo_loop(canvas.window);
 	
-	demo_loop(window);
-	
-	glfwDestroyWindow(window);
 	glfwTerminate();
-}
-
-void fix_gl_stuff(GLFWwindow* window){
-	glfwSwapBuffers(window);
-	glfwPollEvents();
-	
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	gluLookAt(0,0,-2, 0,0,1, 0,1,0);
 }
 
 double get_time(){
@@ -105,40 +91,10 @@ void demo_loop(GLFWwindow* window){
 	loop_init(window);
 	while(!glfwWindowShouldClose(window)){
 		double delta_time = get_time();
-		fix_gl_stuff(window);
+		canvas.redisplay_window();
 		
 		loop_op(delta_time);
 	};
-}
-
-GLFWwindow* loadglfw(){
-	if(!glfwInit()){
-		std::cerr<<"OpenGL initialization failed\n";
-		std::exit(1);
-	}
-	GLFWwindow* window = glfwCreateWindow(640, 480, "Thuquhux demo", 0, 0);
-	if(! window){
-		glfwTerminate();
-		std::cerr<<"Window creation failed\n";
-		std::exit(1);
-	}
-	glfwMakeContextCurrent(window);
-	glfwSetMouseButtonCallback(window, mouse_fn);
-	return window;
-}
-
-void initgl(){
-	glEnable(GL_DEPTH_TEST);
-	glClearColor(0,0,0,0);
-	
-	InitGLSLShader();
-	
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(50,1,0.1,1000);
-	glMatrixMode(GL_MODELVIEW);
-	
-	glDisable(GL_CULL_FACE);
 }
 
 Geometry::Vector<2, double> easy_mouse(GLFWwindow* w){

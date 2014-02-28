@@ -22,14 +22,15 @@ Graphics/Shaders
 
 #Classes
 CLS = \
-TerrainGenerator \
-Simplexnoise \
+Geometry/Triangle \
+Geometry/Triangle_Mesh \
+Graphics/DrawHandler \
+NPC/NPC \
 Physics/PhysObject \
 Physics/Material \
-Geometry/Triangle \
-NPC/NPC \
 Physics/PhysHandler \
-Geometry/Triangle_Mesh 
+TerrainGenerator \
+Simplexnoise \
 
 #Classes with template methods
 CLT = \

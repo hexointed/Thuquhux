@@ -51,6 +51,8 @@ namespace Geometry{
 		void add(const Triangle_Mesh& t);
 		
 		std::vector<PointVector<>>& vertecies() {return vertex;}
+		std::vector<int>& indices() {return index;}
+		
 		std::vector<Triangle> all_triangles();
 		std::vector<Triangle> intersecting_triangles(Triangle t);
 		
