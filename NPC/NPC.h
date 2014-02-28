@@ -1,7 +1,7 @@
 #ifndef NPC_H
 #define NPC_H
 
-#include "../Geometry/PointVector.h"
+#include "../Geometry/Geometry.h"
 #include <time.h>
 #include <vector>
 #include <iostream>
@@ -11,8 +11,8 @@ class NPC{
 public:
 
 	NPC();
-	PointVector<> updatePosition(double deltaT);
-	PointVector<> position;
+	Geometry::Vector<> updatePosition(double deltaT);
+	Geometry::Vector<> position;
 
 private:
 
@@ -39,7 +39,7 @@ private:
 	int r;
 
 	double getPosition(); 
-	PointVector<> makePosition();
+	Geometry::Vector<> makePosition();
 
 	void make_physObject();
 };

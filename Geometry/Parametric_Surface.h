@@ -12,8 +12,7 @@
 #ifndef PARAMETRIC_SURFACE_H
 #define	PARAMETRIC_SURFACE_H
 
-#include "PointVector.h"
-#include "Triangle.h"
+#include "Geometry.h"
 #include "Triangle_Mesh.h"
 
 #include <vector>
@@ -25,16 +24,16 @@ namespace Graphics{
 
 namespace Geometry{
 
-	PointVector<> def_param_axis_func(PointVector<2> params);
+	Geometry::Vector<> def_param_axis_func(Geometry::Vector<2> params);
 
 	class Parametric_Surface {
 		friend class ::Graphics::DrawHandler;
 	public:
 		Parametric_Surface() = default;
 		Parametric_Surface(const Parametric_Surface&);
-		Parametric_Surface(PointVector<> pos);
+		Parametric_Surface(Geometry::Vector<> pos);
 		template<typename Functor>
-		Parametric_Surface(Functor f, PointVector<> pos);
+		Parametric_Surface(Functor f, Geometry::Vector<> pos);
 		virtual ~Parametric_Surface();
 		
 		static Parametric_Surface unite(Parametric_Surface a, Parametric_Surface b);
@@ -53,16 +52,16 @@ namespace Geometry{
 		bool is_superset_of(const Parametric_Surface& v);
 		bool isIntersecting(Parametric_Surface& v);
 		
-		std::pair<PointVector<>,PointVector<>> collision_data(Parametric_Surface& v);
+		std::pair<Geometry::Vector<>,Geometry::Vector<>> collision_data(Parametric_Surface& v);
 		
 		double distance_between(const Parametric_Surface& v);
-		bool pointIsWithin(PointVector<> p);
-		bool lineIsWithin(PointVector<> p);
+		bool pointIsWithin(Geometry::Vector<> p);
+		bool lineIsWithin(Geometry::Vector<> p);
 		
 		double getVolume();
 		double getSurfaceArea();
 		
-		void rotate(PointVector<> axis, double angle);
+		void rotate(Geometry::Vector<> axis, double angle);
 		void drawMesh();
 		template<typename Functor>
 		void calculate_mesh(Functor pfunc);
@@ -77,8 +76,8 @@ namespace Geometry{
 		double volume;
 		
 	public:
-		PointVector<> bound_box[2];
-		PointVector<> position;
+		Geometry::Vector<> bound_box[2];
+		Geometry::Vector<> position;
 	
 	private:
 		void slice_and_erase(Parametric_Surface a, 

@@ -17,16 +17,16 @@ namespace Geometry{
 	public:
 		using Polygon<3>::Polygon;
 		
-		Triangle& move(const PointVector<> diff);
-		Triangle operator +(const PointVector<> a);
+		Triangle& move(const Geometry::Vector<> diff);
+		Triangle operator +(const Geometry::Vector<> a);
 		
 		bool shares_side(const Triangle& with);
-		bool passesThrough(PointVector<>& max, PointVector<>& min);
-		std::pair<bool, PointVector<>> intersectionWith(Polygon<2> a) const;
-		std::pair<bool, std::vector<PointVector<>>> intersectionWith(Triangle a) const;
-		std::vector<Triangle> split(PointVector<> pos, PointVector<> normal) const;
+		bool passesThrough(Geometry::Vector<>& max, Geometry::Vector<>& min);
+		std::pair<bool, Geometry::Vector<>> intersectionWith(Polygon<2> a) const;
+		std::pair<bool, std::vector<Geometry::Vector<>>> intersectionWith(Triangle a) const;
+		std::vector<Triangle> split(Geometry::Vector<> pos, Geometry::Vector<> normal) const;
 		
-		PointVector<> normal() const;
+		Geometry::Vector<> normal() const;
 		void draw();
 	};
 }

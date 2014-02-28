@@ -4,9 +4,9 @@
  * 
  * Created on April 24, 2013, 4:42 PM
  */
-#include "PointVector.h"
+ 
+#include "Geometry.h"
 #include "Parametric_Surface.h"
-#include "Triangle.h"
 #include <math.h>
 
 #include "GL/freeglut.h"
@@ -17,6 +17,7 @@
 
 using Geometry::Parametric_Surface;
 using Geometry::Triangle;
+using Geometry::Vector;
 
 double PI = 3.14159265358979;
 
@@ -30,7 +31,7 @@ Parametric_Surface::Parametric_Surface(const Parametric_Surface& orig):
 	position{orig.position}
 {}
 
-Parametric_Surface::Parametric_Surface(PointVector<> pos):
+Parametric_Surface::Parametric_Surface(Vector<> pos):
 	mesh_detail{10},
 	mesh_length{mesh_detail*mesh_detail*2},
 	bound_box{{0,0,0},{0,0,0}},
@@ -44,8 +45,8 @@ namespace{
 	std::vector<Triangle> continuous_split(Triangle t, std::vector<Triangle> splits){
 		std::vector<Triangle> tris{t};
 		while(splits.size()){
-			PointVector<> normal = splits.back().normal();
-			PointVector<> pos = splits.back()[0];
+			Vector<> normal = splits.back().normal();
+			Vector<> pos = splits.back()[0];
 			splits.pop_back();
 			std::vector<Triangle> tmp_tris;
 			for(Triangle tri : tris){
@@ -78,16 +79,16 @@ namespace{
 }
 
 Parametric_Surface Parametric_Surface::unite(Parametric_Surface a, Parametric_Surface b){
-	for(PointVector<>& v : b.mesh.vertecies()){
+	for(Vector<>& v : b.mesh.vertecies()){
 		v += b.position - a.position;
 	}
-	Parametric_Surface ret(a.position + PointVector<>{5,0,0});
+	Parametric_Surface ret(a.position + Vector<>{5,0,0});
 	auto a_test = [&](Triangle t){
-	              		PointVector<> avg = (t[0] + t[1] + t[2])/3.0;
+	              		Vector<> avg = (t[0] + t[1] + t[2])/3.0;
 	              		return !b.pointIsWithin(avg);
 	                };
 	auto b_test = [&](Triangle t){
-	              		PointVector<> avg = (t[0] + t[1] + t[2])/3.0;
+	              		Vector<> avg = (t[0] + t[1] + t[2])/3.0;
 	              		return !a.pointIsWithin(avg);
 	              	};
 	std::vector<Triangle> t_a = a.mesh.all_triangles();
@@ -110,16 +111,16 @@ Parametric_Surface Parametric_Surface::unite(Parametric_Surface a, Parametric_Su
 }
 
 Parametric_Surface Parametric_Surface::intersect(Parametric_Surface a, Parametric_Surface b){
-	for(PointVector<>& v : b.mesh.vertecies()){
+	for(Vector<>& v : b.mesh.vertecies()){
 		v += b.position - a.position;
 	}
-	Parametric_Surface ret(a.position + PointVector<>{5,0,0});
+	Parametric_Surface ret(a.position + Vector<>{5,0,0});
 	auto a_test = [&](Triangle t){
-	              		PointVector<> avg = (t[0] + t[1] + t[2])/3.0;
+	              		Vector<> avg = (t[0] + t[1] + t[2])/3.0;
 	              		return a.pointIsWithin(avg);
 	                };
 	auto b_test = [&](Triangle t){
-	              		PointVector<> avg = (t[0] + t[1] + t[2])/3.0;
+	              		Vector<> avg = (t[0] + t[1] + t[2])/3.0;
 	              		return b.pointIsWithin(avg);
 	              	};
 	std::vector<Triangle> t_a = a.mesh.all_triangles();
@@ -143,7 +144,7 @@ Parametric_Surface Parametric_Surface::intersect(Parametric_Surface a, Parametri
 
 void Parametric_Surface::Unite(Parametric_Surface a){
 	/* Deprecated */
-	PointVector<> rel_pos = a.position - position;
+	Vector<> rel_pos = a.position - position;
 	bound_box[0].set_min_comp(a.bound_box[0] + rel_pos);
 	bound_box[1].set_max_comp(a.bound_box[1] + rel_pos);
 	for(PointVector<>& v : a.mesh.vertecies()){
@@ -153,10 +154,10 @@ void Parametric_Surface::Unite(Parametric_Surface a){
 }
 
 bool Parametric_Surface::is_subset_of(const Parametric_Surface& v){
-	PointVector<> p = bound_box[1];
-	PointVector<> q = v.bound_box[1];
-	PointVector<> r = bound_box[0];
-	PointVector<> s = v.bound_box[0];
+	Vector<> p = bound_box[1];
+	Vector<> q = v.bound_box[1];
+	Vector<> r = bound_box[0];
+	Vector<> s = v.bound_box[0];
 	
 	return	p.add(position).is_min_comp(q.add(v.position)) && 
 	        r.add(position).is_max_comp(s.add(v.position));
@@ -183,8 +184,8 @@ bool Parametric_Surface::isIntersecting(Parametric_Surface& v){
 	return false;
 }
 
-std::pair<PointVector<>, PointVector<>> Parametric_Surface::collision_data(Parametric_Surface& v){
-	std::pair<PointVector<>, PointVector<>> result; //position, normal
+std::pair<Vector<>, Vector<>> Parametric_Surface::collision_data(Parametric_Surface& v){
+	std::pair<Vector<>, Vector<>> result; //position, normal
 	std::vector<Triangle> intersections;
 	std::vector<Triangle> intersections_v;
 	for(Triangle t : mesh){
@@ -208,24 +209,24 @@ std::pair<PointVector<>, PointVector<>> Parametric_Surface::collision_data(Param
 	return result;
 }
 
-bool Parametric_Surface::pointIsWithin(PointVector<> p){
+bool Parametric_Surface::pointIsWithin(Vector<> p){
 	if(p.is_min_comp(bound_box[0]) || p.is_max_comp(bound_box[1]))
 		return false;
-	PointVector<> min {p.getdx(), p.getdy(), bound_box[0].getdz()};
-	PointVector<> max {p.getdx(), p.getdy(), bound_box[1].getdz()};
+	Vector<> min {p.getdx(), p.getdy(), bound_box[0].getdz()};
+	Vector<> max {p.getdx(), p.getdy(), bound_box[1].getdz()};
 	Polygon<2> clip_line;
 	clip_line[0] = min;
 	clip_line[1] = max;
-	std::vector<PointVector<>> clips;
+	std::vector<Vector<>> clips;
 	for(Triangle tri: mesh){
 		auto tmp = tri.intersectionWith(clip_line);
 		if(tmp.first)
 			clips.push_back(tmp.second);
 	}
 	std::sort(clips.begin(), clips.end(), 
-	          [](PointVector<> a, PointVector<> b){return a.getdz()<b.getdz();});
+	          [](Vector<> a, Vector<> b){return a.getdz()<b.getdz();});
 	bool state = false;
-	for(PointVector<> pos: clips){
+	for(Vector<> pos: clips){
 		state = !state;
 		if(pos.getdz() > p.getdz())
 			return !state;
@@ -233,36 +234,36 @@ bool Parametric_Surface::pointIsWithin(PointVector<> p){
 	return false;
 }
 
-PointVector<> Geometry::def_param_axis_func(PointVector<2> params){
+Vector<> Geometry::def_param_axis_func(Vector<2> params){
 	params.mul(2*PI);
 	double arr[3] = {cos(params.getdx())*(1 + 0.25*cos(params.getdy())),
 	                 sin(params.getdx())*(1 + 0.25*cos(params.getdy())),
 	                 0.25*sin(params.getdy())};
-	return PointVector<>(arr);
+	return Vector<>(arr);
 }
 
 namespace{
-	void rotate_point(PointVector<>& point, PointVector<> axis, double angle){
+	void rotate_point(Vector<>& point, Vector<> axis, double angle){
 		axis.make_unit();
-		const PointVector<> r1{cos(angle) + axis.getdx()*axis.getdx()*(1 - cos(angle)),
+		const Vector<> r1{cos(angle) + axis.getdx()*axis.getdx()*(1 - cos(angle)),
 		          axis.getdx()*axis.getdy()*(1 - cos(angle)) - axis.getdz()*sin(angle),
 		          axis.getdx()*axis.getdz()*(1 - cos(angle)) + axis.getdy()*sin(angle)};
-		const PointVector<> r2{axis.getdy()*axis.getdx()*(1 - cos(angle)) + axis.getdz()*sin(angle),
+		const Vector<> r2{axis.getdy()*axis.getdx()*(1 - cos(angle)) + axis.getdz()*sin(angle),
 		          cos(angle) + axis.getdy()*axis.getdy()*(1 - cos(angle)),
 		          axis.getdy()*axis.getdz()*(1 - cos(angle)) - axis.getdx()*sin(angle)};
-		const PointVector<> r3{axis.getdz()*axis.getdx()*(1 - cos(angle)) - axis.getdy()*sin(angle),
+		const Vector<> r3{axis.getdz()*axis.getdx()*(1 - cos(angle)) - axis.getdy()*sin(angle),
 		                 axis.getdz()*axis.getdy()*(1 - cos(angle)) + axis.getdx()*sin(angle),
 		                 cos(angle) + axis.getdz()*axis.getdz()*(1 - cos(angle))};
-		const PointVector<> tmp = point;
-		point = {PointVector<>::mul_comp(r1, tmp).sum_comp(),
-		         PointVector<>::mul_comp(r2, tmp).sum_comp(),
-		         PointVector<>::mul_comp(r3, tmp).sum_comp()};
+		const Vector<> tmp = point;
+		point = {Vector<>::mul_comp(r1, tmp).sum_comp(),
+		         Vector<>::mul_comp(r2, tmp).sum_comp(),
+		         Vector<>::mul_comp(r3, tmp).sum_comp()};
 	}
 }
 
-void Parametric_Surface::rotate(PointVector<> axis, double angle){
+void Parametric_Surface::rotate(Vector<> axis, double angle){
 	bound_box[0] = bound_box[1] = position;
-	for(PointVector<>& p: mesh.vertecies()){
+	for(Vector<>& p: mesh.vertecies()){
 		rotate_point(p, axis, angle);
 		bound_box[0].set_min_comp(p);
 		bound_box[1].set_max_comp(p);

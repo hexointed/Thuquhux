@@ -12,11 +12,11 @@ PhysHandler::PhysHandler(){
 
 
 }
-PointVector<> collide_at(Parametric_Surface a, Parametric_Surface b){
+Geometry::Vector<> collide_at(Parametric_Surface a, Parametric_Surface b){
 	return a.position + (b.position - a.position)/2.0;
 }
 
-PointVector<> collision_normal(Parametric_Surface a, Parametric_Surface b){
+Geometry::Vector<> collision_normal(Parametric_Surface a, Parametric_Surface b){
 	return 2.0*a.position - b.position;
 }
 
@@ -36,7 +36,7 @@ void PhysHandler::handle(double time){
 
 		//Removing impulses that have finished
 		for(unsigned int j = 0; j < to_delete.size() ; j++){
-			std::pair<PointVector<>, double> temp = i.impulses()[i.impulses().size()-1];
+			std::pair<Geometry::Vector<>, double> temp = i.impulses()[i.impulses().size()-1];
 			i.impulses().back() = i.impulses()[to_delete[to_delete.size()-j-1]];
 			i.impulses()[to_delete[to_delete.size()-j-1]] = temp;			
 			i.impulses().pop_back();
@@ -44,7 +44,7 @@ void PhysHandler::handle(double time){
 		i.previous_position() = i.position();
 		i.position() = i.position() + i.velocity() * time + i.acceleration()*time*time / 2.0;
 		i.velocity() = i.velocity() + i.acceleration() * time;
-		i.acceleration() = PointVector<>{0,0,0};
+		i.acceleration() = Geometry::Vector<>{0,0,0};
 		
 		i.surface().rotate(i.rotation().first, i.rotation().second*time);
 	}
@@ -52,8 +52,8 @@ void PhysHandler::handle(double time){
 	for(unsigned int i = 0; i < physObjects.size() ; i++){
 		for(unsigned int j = i+1 ; j < physObjects.size() ; j++){
 			if(physObjects[i].surface().isIntersecting(physObjects[j].surface())){
-				std::pair<PointVector<>,double> prev_rot1 = physObjects[i].rotation();
-				std::pair<PointVector<>,double> prev_rot2 = physObjects[j].rotation();
+				std::pair<Geometry::Vector<>,double> prev_rot1 = physObjects[i].rotation();
+				std::pair<Geometry::Vector<>,double> prev_rot2 = physObjects[j].rotation();
 				physObjects[i].surface().rotate(-prev_rot1.first,prev_rot1.second*time);
 				physObjects[j].surface().rotate(-prev_rot2.first,prev_rot2.second*time);
 				//auto data = physObjects[i].surface().collision_data(physObjects[j].surface());

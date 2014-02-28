@@ -61,12 +61,11 @@ void InitARBShader(){
 
 void InitGLSLShader(){
 	std::string str = loadFile("Graphics/vertex.glsl");
-	char * prgrm = new char[str.size()];
-	strcpy(prgrm, str.c_str());
+	auto code = str.c_str();
 	int lengths = str.size();
 	
 	int handle = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(handle, 1, (const char**)&prgrm, &lengths);
+	glShaderSource(handle, 1, &code, &lengths);
 	glCompileShader(handle);
 	
 	char result[4096];

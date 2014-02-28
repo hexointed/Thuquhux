@@ -10,7 +10,7 @@
 using Geometry::Triangle;
 using Geometry::Triangle_Mesh;
 
-Triangle_Mesh::Triangle_Mesh(std::vector<PointVector<>> p):
+Triangle_Mesh::Triangle_Mesh(std::vector<Geometry::Vector<>> p):
 	vertex{p}
 {
 	index.reserve(vertex.size());
@@ -19,7 +19,7 @@ Triangle_Mesh::Triangle_Mesh(std::vector<PointVector<>> p):
 	}
 }
 
-Triangle_Mesh::Triangle_Mesh(std::vector<PointVector<>> p, std::vector<int> i):
+Triangle_Mesh::Triangle_Mesh(std::vector<Geometry::Vector<>> p, std::vector<int> i):
 	vertex{p},
 	index{i}
 {}
@@ -28,7 +28,7 @@ size_t Triangle_Mesh::size() const{
 	return index.size() - 2;
 }
 
-void Triangle_Mesh::add(std::vector<PointVector<>> p){
+void Triangle_Mesh::add(std::vector<Geometry::Vector<>> p){
 	Triangle_Mesh a(p);
 	add(a);
 }
@@ -84,7 +84,7 @@ Triangle_Mesh::Element::operator Geometry::Triangle () const{
 	                          super.vertex[super.index[vertecies[2]]]};
 }
 
-PointVector<>& Triangle_Mesh::Element::operator[](int i){
+Geometry::Vector<>& Triangle_Mesh::Element::operator[](int i){
 	return super.vertex[super.index[vertecies[i]]];
 }
 

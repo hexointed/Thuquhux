@@ -26,13 +26,16 @@ template<int Dim = 3, typename Numeric = double>
 class PointVector{
 public:
     using Numeric_type = Numeric;
+
+    template<int D2, typename N>
+    friend class PointVector;
     
 public:
 	PointVector();
-	PointVector(Numeric composants[Dim]);
+	explicit PointVector(Numeric composants[Dim]);
 	
 	template<int D2>
-	PointVector(PointVector<D2> orig);
+	explicit PointVector(PointVector<D2> orig);
 	
 	PointVector(std::initializer_list<Numeric> list);
     
@@ -50,7 +53,9 @@ public:
 	Numeric getdy() const;
 	Numeric getdz() const;
 	
-	Numeric& operator[](int i) const;
+	Numeric& operator[](int i);
+	const Numeric& operator[](int i) const;
+	
 	Numeric getMagnitude() const;
 	Numeric sum_comp() const;
 	
