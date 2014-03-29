@@ -8,10 +8,17 @@
 #ifndef SCATTERTREE_H
 #define SCATTERTREE_H
 
+#include <memory>
 #include "../Geometry/Geometry.h"
 
 namespace Terrain{
+	
+	/*
+	 *
+	 */
+	
 	class ScatterProp {
+	public:
 		virtual Gometry::Vector<> segment(double height, double tree_length, int node) = 0; 
 		virtual double segment_weight(double height, double tree_length, int node) = 0;
 		
@@ -19,8 +26,55 @@ namespace Terrain{
 		virtual bool split_node(double, double, int) = 0;
 	};
 	
+	/*
+	 * ScatterTree is a binary tree type, which holds a weight and position for each node.
+	 * It can be constructed using a ScatterProp object, or by constructing an empty
+	 * ScatterTree, and manually adding nodes to it.
+	 */
+	
 	class ScatterTree{
+	private:
+		class Node;
 		
-	}
+	public:
+		class Iterator;
+		class Const_Iterator;
+		
+	public:
+		ScatterTree();
+		ScatterTree(ScatterProp p);
+		
+		~ScatterTree() = default;
+		
+	private:
+		std::unique_ptr<Node*> top_node;
+		ScatterProp& prop;
+		
+	public:
+		int size();
+		
+		Iterator begin();
+		Iterator end();
+	
+	private:
+		void generate(Node& n);
+		void populate(Node& n);
+	};
+	
+	/*
+	 *
+	 */
+	
+	class ScatterTree::Node{
+	public:
+		Node();
+		Node(Geometry::Vector<> p, double w);
+		
+	public:
+		Geometry::Vector<> position;
+		double weight;
+		
+		std::unique_ptr<Node*> left, right;
+	};
 }
 #endif /* SCATTERTREE_H */
