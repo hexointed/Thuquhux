@@ -11,23 +11,9 @@ using namespace Terrain;
 using ScatterTree::Node;
 
 ScatterTree::ScatterTree(ScatterProp p):
-	top_node(new Node()),
+	top_node(*new Node(p)),
 	prop(p)
-{
-	generate(*top_node);
-	populate(*top_node);
-}
-
-void ScatterTree::generate(Node& n){
-	n.position = prop.segment()
-}
-
-void ScatterTree::populate(Node& n){
-	n.left = new Node();
-	generate(*n.left);
-	n.right = new Node();
-	generate(n.right);
-}
+{}
 
 /*
  * ScatterTree::Node files below.
@@ -46,3 +32,14 @@ Node::Node(Geometry::Vector<> p, double w):
 	left(nullptr),
 	right(nullptr)
 {}
+
+Node::Node(ScatterProp p){
+	position = p.segment_pos();
+	weight = p.segment_weight();
+	if(p.continue_node()){
+		right = new Node(p);
+		if(p.split_node()){
+			left = new Node(p);
+		}
+	}
+}

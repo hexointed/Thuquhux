@@ -19,7 +19,7 @@ namespace Terrain{
 	
 	class ScatterProp {
 	public:
-		virtual Gometry::Vector<> segment(double height, double tree_length, int node) = 0; 
+		virtual Gometry::Vector<> segment_pos(double height, double tree_length, int node) = 0; 
 		virtual double segment_weight(double height, double tree_length, int node) = 0;
 		
 		virtual bool continue_node(double, double, int) = 0;
@@ -47,7 +47,7 @@ namespace Terrain{
 		~ScatterTree() = default;
 		
 	private:
-		std::unique_ptr<Node*> top_node;
+		Node& top_node;
 		ScatterProp& prop;
 		
 	public:
@@ -55,10 +55,6 @@ namespace Terrain{
 		
 		Iterator begin();
 		Iterator end();
-	
-	private:
-		void generate(Node& n);
-		void populate(Node& n);
 	};
 	
 	/*
@@ -69,12 +65,17 @@ namespace Terrain{
 	public:
 		Node();
 		Node(Geometry::Vector<> p, double w);
+		Node(Geometry::Vector<> p, double w, ScatterProp p);
 		
 	public:
 		Geometry::Vector<> position;
 		double weight;
 		
 		std::unique_ptr<Node*> left, right;
+	
+	public:
+		void regenerate(Node& n);
+		void populate(Node& n);
 	};
 }
 #endif /* SCATTERTREE_H */
