@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   ScatterTree.h
  * Author: Elias Forsberg
  *
@@ -14,16 +14,20 @@
 namespace Terrain{
 	
 	/*
-	 *
+	 * A ScatterProp contains no data and has only virtual member functions. It is intended
+	 * to be inherited from by classes describing different types of ScatterTrees. A
+	 * ScatterTree is constructed using only a ScatterProp.
 	 */
 	
 	class ScatterProp {
 	public:
-		virtual Gometry::Vector<> segment_pos(double height, double tree_length, int node) = 0; 
-		virtual double segment_weight(double height, double tree_length, int node) = 0;
+		virtual Gometry::Vector<> position() = 0;
+		virtual double weight() = 0;
 		
-		virtual bool continue_node(double, double, int) = 0;
-		virtual bool split_node(double, double, int) = 0;
+		virtual bool is_end() = 0;
+		virtual bool split() = 0;
+		
+		virtual void set_depth(int depth) = 0;
 	};
 	
 	/*
@@ -42,12 +46,12 @@ namespace Terrain{
 		
 	public:
 		ScatterTree();
-		ScatterTree(ScatterProp p);
+		ScatterTree(ScatterProp& p);
 		
 		~ScatterTree() = default;
 		
 	private:
-		Node& top_node;
+		Node& top_noade;
 		ScatterProp& prop;
 		
 	public:
@@ -58,24 +62,72 @@ namespace Terrain{
 	};
 	
 	/*
-	 *
+	 * A ScatterTree is made up of connected Nodes. Each node has a position and a weight.
 	 */
 	
 	class ScatterTree::Node{
 	public:
-		Node();
-		Node(Geometry::Vector<> p, double w);
-		Node(Geometry::Vector<> p, double w, ScatterProp p);
-		
+		Node(ScatterProp& p, int depth = 0, Node* parent = nullptr);
+		~Node();
 	public:
 		Geometry::Vector<> position;
 		double weight;
-		
-		std::unique_ptr<Node*> left, right;
-	
+	private:
+		Node* left, right, up;
 	public:
-		void regenerate(Node& n);
-		void populate(Node& n);
+		bool splits();	//both right and left valid
+		bool is_end();	//neither valid
+		bool is_top()	//up valid
+
+		int children();
+
+		/* These throw nullptr and nullptr if left or right does not exist, respectivly */
+		Node& left();
+		Node& right();
+		Node& up();
+	};
+	
+	/*
+	 * ScatterTree::Iterator and ScatterTree::Const_Iterator provide an easy way to iterate
+	 * through, deapth first, the Nodes of a ScatterTree;
+	 */
+	
+	class SatterTree::Iterator{
+	public:
+		Iterator(Node& n, bool is_end = false);
+		Iterator(Node* n, bool is_end);
+	private:
+		Node* node;
+		bool is_end;
+	public:
+		Iterator operator++();
+		Iterator operator++(int);
+		Iterator operator--();
+		Iterator operator--(int);
+		
+		Node& operator*();
+
+		bool operator==(Iterator i);
+		bool operator!=(Iterator i);
+	};
+	
+	class ScatterTree::Const_Iterator{
+	public:
+		Const_Iterator(const Node& n, bool is_end = false);
+		Const_Iterator(const Node*, bool is_end);
+	private:
+		const Node* node;
+		bool is_end;
+	public:
+		Const_Iterator operator++();
+		Const_Iterator operator++(int);
+		Const_Iterator operator--();
+		Const_iterator operator--(int);
+		
+		Node operator*();
+
+		bool operator==(Iterator i);
+		bool operator!=(Iterator i);
 	};
 }
 #endif /* SCATTERTREE_H */
