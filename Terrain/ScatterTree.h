@@ -8,27 +8,11 @@
 #ifndef SCATTERTREE_H
 #define SCATTERTREE_H
 
-#include <memory>
+#include <vector>
 #include "../Geometry/Geometry.h"
+#include "ScatterProp"
 
 namespace Terrain{
-	
-	/*
-	 * A ScatterProp contains no data and has only virtual member functions. It is intended
-	 * to be inherited from by classes describing different types of ScatterTrees. A
-	 * ScatterTree is constructed using only a ScatterProp.
-	 */
-	
-	class ScatterProp {
-	public:
-		virtual Gometry::Vector<> position() = 0;
-		virtual double weight() = 0;
-		
-		virtual bool is_end() = 0;
-		virtual bool split() = 0;
-		
-		virtual void set_depth(int depth) = 0;
-	};
 	
 	/*
 	 * ScatterTree is a binary tree type, which holds a weight and position for each node.
@@ -37,10 +21,8 @@ namespace Terrain{
 	 */
 	
 	class ScatterTree{
-	private:
-		class Node;
-		
 	public:
+		class Node;.
 		class Iterator;
 		class Const_Iterator;
 		
@@ -51,7 +33,7 @@ namespace Terrain{
 		~ScatterTree() = default;
 		
 	private:
-		Node& top_noade;
+		Node& top_node;
 		ScatterProp& prop;
 		
 	public:
@@ -66,21 +48,33 @@ namespace Terrain{
 	 */
 	
 	class ScatterTree::Node{
-	public:
+		friend class ScatterTree;
+	private:
 		Node(ScatterProp& p, int depth = 0, Node* parent = nullptr);
+		
+	public:
+		Node(const Node&) = delete;
+		Node(Node&&) = default;
+		
 		~Node();
+		
 	public:
 		Geometry::Vector<> position;
 		double weight;
+		
 	private:
 		Node* left, right, up;
+		
 	public:
+		Node& operator=(const Node&) = delete;
+		Node& operator=(Node&&) = default;
+		
 		bool splits();	//both right and left valid
 		bool is_end();	//neither valid
 		bool is_top()	//up valid
-
+		
 		int children();
-
+		
 		/* These throw nullptr and nullptr if left or right does not exist, respectivly */
 		Node& left();
 		Node& right();
@@ -94,11 +88,16 @@ namespace Terrain{
 	
 	class SatterTree::Iterator{
 	public:
-		Iterator(Node& n, bool is_end = false);
-		Iterator(Node* n, bool is_end);
+		Iterator(Node& n);
+		Iterator(Node* n);
+		
 	private:
-		Node* node;
-		bool is_end;
+		void generate(Node* n);
+		
+	private:
+		std::vector<Node*> nodes;
+		int pos;
+		
 	public:
 		Iterator operator++();
 		Iterator operator++(int);
@@ -113,11 +112,16 @@ namespace Terrain{
 	
 	class ScatterTree::Const_Iterator{
 	public:
-		Const_Iterator(const Node& n, bool is_end = false);
-		Const_Iterator(const Node*, bool is_end);
+		Const_Iterator(const Node& n);
+		Const_Iterator(const Node* n);
+		
 	private:
-		const Node* node;
-		bool is_end;
+		void generate(const Node* n);
+		
+	private:
+		std::vector<const Node*> nodes;
+		int pos;
+		
 	public:
 		Const_Iterator operator++();
 		Const_Iterator operator++(int);

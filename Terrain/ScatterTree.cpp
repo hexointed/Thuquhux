@@ -17,12 +17,16 @@ ScatterTree::ScatterTree(ScatterProp& p):
 	prop(p)
 {}
 
+int ScatterTree::size(){
+	return top_node.children();
+}
+
 Iterator ScatterTree::begin(){
 	return Iterator(top_node);
 }
 
 Iterator ScatterTree::end(){
-	return Iterator(nullptr, true)
+	return Iterator(nullptr);
 }
 
 /*
@@ -39,9 +43,11 @@ Node::Node(ScatterProp& p, int depth, Node* parent):
 	if(!p.is_end()){
 		bool split = p.split();
 		p.set_depth(depth+1);
+		p.set_parent(*this);
 		if(split){
 			right = new Node(p, depth+1, this);
 		}
+		p.set_parent(*this);
 		left = new Node(p, depth+1, this);
 		p.set_depth(depth);
 	}
@@ -89,29 +95,54 @@ Node& Node::up(){
  * ScatterTree::Iterator methods below.
  */
 
-Iterator::Iterator(Node& n, bool end):
-	node(&n),
-	is_end(end)
-{}
+Iterator::Iterator(Node& n):
+	pos(0)
+{
+	generate(&n);
+}
 
-Iterator::Iterator(Node* n, bool end):
-	node(n),
-	is_end(end)
-{}
+Iterator::Iterator(Node* n):
+	pos(0)
+{
+	generate(n);
+	if
+}
 
-//NOT DONE
+void Iterator::generate(Node* n){
+	if(!n){
+		return;
+	}
+	nodes.push_back(n);
+	generate(n->left);
+	generate(n->right);
+}
+
 Iterator Iterator::operator++(){
-	if(node->is_end){
-		node = &node->up();
-	}else if(n)
+	pos++;
+	return *this;
+}
+
+Iterator Iterator::operator++(int){
+	pos++;
+	return *this;
+}
+
+Iterator Iterator::operator--(){
+	pos--;
+	return *this;
+}
+
+Iterator Iterator::operator--(int){
+	pos--;
+	return *this;
 }
 
 Node& Iterator::operator*(){
-	return *node;
+	return *(nodes[pos]);
 }
 
 bool Iterator::operator==(Iterator i){
-	return node == i.node || (is_end && i.is_end);
+	return pos == i.pos && (nodes.sixe() ? nodes[0] == i.nodes[0] : true);
 }
 
 bool Iterator::operator!=(iterator i){
@@ -122,27 +153,53 @@ bool Iterator::operator!=(iterator i){
  * ScatterTree::Const_Iterator metods below.
  */
 
-Const_Iterator::Const_Iterator(const Node&, bool end):
-	node(&n),
-	is_end(end)
-{}
+Const_Iterator::Const_Iterator(const Node&):
+	pos(0)
+{
+	generate(&n);
+}
 
-Const_Iterator::Const_Iterator(const Node*, bool end):
-	node(n),
-	is_end(end)
-{}
+Const_Iterator::Const_Iterator(const Node*):
+	pos(0)
+{
+	generate(n);
+}
 
-//NOT DONE
+void Const_Iterator::generate(const Node* n){
+	if(!n){
+		return;
+	}
+	nodes.push_back(n);
+	generate(n->left);
+	generate(n->right);
+}
+
 Const_Iterator Const_Iterator::operator++(){
+	pos++;
+	return *this;
+}
 
+Const_Iterator Const_Iterator::operator++(int){
+	pos++;
+	return *this;
+}
+
+Const_Iterator Const_Iterator::operator--(){
+	pos--;
+	return *this;
+}
+
+Const_Iterator Const_Iterator::operator--(int){
+	pos--;
+	return *this;
 }
 
 Node Const_Iterator::operator*(){
-	return *node;
+	return *(nodes[pos]);
 }
 
 bool Const_Iterator::operator==(Iterator i){
-	return node == i.node || (is_end && i.is_end);
+	return pos == i.pos && (nodes.size() ? nodes[0] == i.nodes[0] : true);
 }
 
 bool Const_Iterator::operator!=(Iterator i){

@@ -31,6 +31,7 @@ Physics/Material \
 Physics/PhysHandler \
 Terrain/TerrainGenerator \
 Terrain/Simplexnoise \
+Terrain/ScatterTree \
 
 #Classes with template methods
 CLT = \
