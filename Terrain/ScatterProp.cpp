@@ -15,26 +15,42 @@ void ScatterProp::set_depth(int d){
 }
 
 void ScatterProp::set_parent(Node& n){
+	if(parent == nullptr){
+		base = &n;
+	}
 	parent = &n;
 }
 
-Oak::Oak():
-	depth(0),
-	parent(nullptr)
+/*
+ * Derived classes below.
+ */
+
+Acacia::Acacia():
+	ScatterProp(),
+	distrib(0,0.5)
 {}
 
-Geometry::Vector<> Oak::position(){
-	return parent.position + Geometry::Vector<>{0,1,0};
+Geometry::Vector<> Acacia::position(){
+	auto pos = parent.position + Geometry::Vector<>{distrib()*0.1,
+	                                                0.4 + distrib()*0.2,
+	                                                distrib()*0.1};
+	/* All branches must spring away from eachother, to prevent self-intersections */
+	auto self_avoid = [&pos](Geometry::Vector<>& position, double& weight) -> void {
+		double dist = (pos - position).magnitude();
+		pos = pos + (pos - position) / (dist * dist);
+	};
+	base->forall(self_avoid);
+	return pos;
 }
 
-double Oak::weight(){
-	return 1;
+double Acacia::weight(){
+	return 1 / sqrt(depth);
 }
 
-bool Oak::is_end(){
-	return depth > 5;
+bool Acacia::is_end(){
+	return depth > 15;
 }
 
-bool Oak::split(){
-	return true;
+bool Acacia::split(){
+	return !depth%3;
 }

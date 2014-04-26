@@ -10,6 +10,7 @@
 #define SCATTERPROP_H
 
 #include "../Geometry/Vector.h"
+#include <random>
 
 namespace Terrain {
 	
@@ -26,6 +27,7 @@ namespace Terrain {
 	private:
 		int depth;
 		Node* parent;
+		Node* base;
 		
 	public:
 		virtual Geometry::Vector<> positiion() = 0;
@@ -46,9 +48,12 @@ namespace Terrain {
 	
 		namespace Trees{
 		
-			class Oak : public ScatterProp {
+			class Acacia : public ScatterProp {
 			public:
-				Oak();
+				Acacia();
+				
+			private:
+				std::normal_distribution<double> distrib;
 				
 			public:
 				virtual Geometry::Vector<> position();

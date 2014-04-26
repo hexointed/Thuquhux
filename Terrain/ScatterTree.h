@@ -41,6 +41,19 @@ namespace Terrain{
 		
 		Iterator begin();
 		Iterator end();
+		
+		Const_Iterator begin() const;
+		Const_Iterator end() const;
+		
+		/*
+		 * Perform f on all nodes in this tree. The Functor should take a 
+		 * Geometry::Vector<>& and a double as arguments.
+		 */
+		
+		template<typename Functor>
+		foreach(Functor f){
+			top_node.foreach(f);
+		}
 	};
 	
 	/*
@@ -79,6 +92,17 @@ namespace Terrain{
 		Node& left();
 		Node& right();
 		Node& up();
+		
+		template<typename Functor>
+		forall(Functor f){
+			f(weight, position);
+			if(left){
+				left->forall(f);
+			}
+			if(right){
+				right->forall(f);
+			}
+		}
 	};
 	
 	/*
