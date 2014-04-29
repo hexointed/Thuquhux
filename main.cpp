@@ -206,5 +206,5 @@ void mouse_fn_terrain(GLFWwindow* w, int a, int b, int c){}
 void loop_init_terrain(GLFWwindow* w){}
 
 void loop_op_terrain(double time){
-	canvas.redisplay_window();
+	canvas.draw(tree);
 }

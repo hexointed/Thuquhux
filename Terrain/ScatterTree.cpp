@@ -27,6 +27,10 @@ ScatterTree::Iterator ScatterTree::end(){
 	return Iterator(nullptr);
 }
 
+ScatterTree::Node& ScatterTree::top(){
+	return top_node;
+}
+
 /*
  * ScatterTree::Node files below.
  */

@@ -43,6 +43,8 @@ namespace Terrain{
 		Iterator begin();
 		Iterator end();
 		
+		Node& top();
+		
 		Const_Iterator begin() const;
 		Const_Iterator end() const;
 		

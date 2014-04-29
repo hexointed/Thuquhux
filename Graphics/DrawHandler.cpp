@@ -44,8 +44,27 @@ DrawHandler::~DrawHandler(){
 	glfwDestroyWindow(window);
 }
 
-void draw(Geometry::Parametric_Surface& p){
+void DrawHandler::draw(Geometry::Parametric_Surface& /*p*/){
 
+}
+
+void DrawHandler::draw(Terrain::ScatterTree& t){
+	glScalef(0.1, 0.1, 0.1);
+	glTranslatef(0, 0, -3.0);
+
+	auto draw_n = [](Geometry::Vector<>& pos, double&){
+		glVertex3d(pos[0], pos[1], pos[2]);
+	};
+
+	glBegin(GL_POINTS);
+		t.foreach(draw_n);
+	glEnd();
+	
+	glBegin(GL_TRIANGLES);
+		glVertex3f(0,1,1);
+		glVertex3f(1,1,0);
+		glVertex3f(1,0,1);
+	glEnd();
 }
 
 void DrawHandler::redisplay_window(){

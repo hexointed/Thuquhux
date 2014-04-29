@@ -10,6 +10,7 @@
 
 template<typename Functor>
 void Terrain::ScatterTree::Node::foreach(Functor f){
+	f(position, weight);
 	if(l){
 		l->foreach(f);
 	}
