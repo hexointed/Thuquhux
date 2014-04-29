@@ -31,11 +31,12 @@ Physics/Material \
 Physics/PhysHandler \
 Terrain/TerrainGenerator \
 Terrain/Simplexnoise \
-Terrain/ScatterTree \
+Terrain/ScatterProp \
 
 #Classes with template methods
 CLT = \
-Geometry/Parametric_Surface
+Geometry/Parametric_Surface \
+Terrain/ScatterTree \
 
 #Template Classes
 TCL = \

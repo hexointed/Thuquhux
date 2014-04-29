@@ -57,6 +57,7 @@ public:
 	const Numeric& operator[](int i) const;
 	
 	Numeric getMagnitude() const;
+	Numeric magnitude() const;
 	Numeric sum_comp() const;
 	
 	void set(int i, Numeric d);

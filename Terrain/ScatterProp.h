@@ -9,13 +9,11 @@
 #ifndef SCATTERPROP_H
 #define SCATTERPROP_H
 
-#include "../Geometry/Vector.h"
+#include "../Geometry/Geometry.h"
+#include "ScatterTree.h"
 #include <random>
 
 namespace Terrain {
-	
-	class ScatterTree::Node;
-	using ScatterTree::Node;
 	
 	/*
 	 * A ScatterProp contains no data and has only virtual member functions. It is intended
@@ -24,20 +22,20 @@ namespace Terrain {
 	 */
 	
 	class ScatterProp {
-	private:
+	protected:
 		int depth;
-		Node* parent;
-		Node* base;
+		ScatterTree::Node* parent;
+		ScatterTree::Node* base;
 		
 	public:
-		virtual Geometry::Vector<> positiion() = 0;
+		virtual Geometry::Vector<> position() = 0;
 		virtual double weight() = 0;
 		
 		virtual bool is_end() = 0;
 		virtual bool split() = 0;
 		
 		virtual void set_depth(int depth);
-		virtual void set_parent(Node& p);
+		virtual void set_parent(ScatterTree::Node& p);
 	};
 	
 	/*

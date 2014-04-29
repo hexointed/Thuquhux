@@ -75,6 +75,15 @@ Numeric PointVector<Dim, Numeric>::getMagnitude() const{
 }
 
 template<int Dim, typename Numeric>
+Numeric PointVector<Dim, Numeric>::magnitude() const{
+	Numeric mag = 0;
+	for(int i = 0; i < Dim; i++){
+		mag += comp[i] * comp[i];
+	}
+	return sqrt(mag);
+}
+
+template<int Dim, typename Numeric>
 Numeric PointVector<Dim, Numeric>::sum_comp() const{
 	Numeric sum = 0;
 	for(auto x : comp){

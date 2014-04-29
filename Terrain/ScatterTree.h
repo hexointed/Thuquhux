@@ -10,7 +10,6 @@
 
 #include <vector>
 #include "../Geometry/Geometry.h"
-#include "ScatterProp"
 
 namespace Terrain{
 	
@@ -20,9 +19,11 @@ namespace Terrain{
 	 * ScatterTree, and manually adding nodes to it.
 	 */
 	
+	class ScatterProp;
+	
 	class ScatterTree{
 	public:
-		class Node;.
+		class Node;
 		class Iterator;
 		class Const_Iterator;
 		
@@ -51,9 +52,7 @@ namespace Terrain{
 		 */
 		
 		template<typename Functor>
-		foreach(Functor f){
-			top_node.foreach(f);
-		}
+		void foreach(Functor f);
 	};
 	
 	/*
@@ -66,7 +65,7 @@ namespace Terrain{
 		Node(ScatterProp& p, int depth = 0, Node* parent = nullptr);
 		
 	public:
-		Node(const Node&) = delete;
+		Node(const Node&) = default;
 		Node(Node&&) = default;
 		
 		~Node();
@@ -76,7 +75,7 @@ namespace Terrain{
 		double weight;
 		
 	private:
-		Node* left, right, up;
+		Node *l, *r, *u;
 		
 	public:
 		Node& operator=(const Node&) = delete;
@@ -84,7 +83,7 @@ namespace Terrain{
 		
 		bool splits();	//both right and left valid
 		bool is_end();	//neither valid
-		bool is_top()	//up valid
+		bool is_top();	//up valid
 		
 		int children();
 		
@@ -94,15 +93,7 @@ namespace Terrain{
 		Node& up();
 		
 		template<typename Functor>
-		forall(Functor f){
-			f(weight, position);
-			if(left){
-				left->forall(f);
-			}
-			if(right){
-				right->forall(f);
-			}
-		}
+		void foreach(Functor f);
 	};
 	
 	/*
@@ -110,7 +101,7 @@ namespace Terrain{
 	 * through, deapth first, the Nodes of a ScatterTree;
 	 */
 	
-	class SatterTree::Iterator{
+	class ScatterTree::Iterator{
 	public:
 		Iterator(Node& n);
 		Iterator(Node* n);
@@ -150,12 +141,15 @@ namespace Terrain{
 		Const_Iterator operator++();
 		Const_Iterator operator++(int);
 		Const_Iterator operator--();
-		Const_iterator operator--(int);
+		Const_Iterator operator--(int);
 		
 		Node operator*();
 
-		bool operator==(Iterator i);
-		bool operator!=(Iterator i);
+		bool operator==(Const_Iterator i);
+		bool operator!=(Const_Iterator i);
 	};
 }
+
+#include "ScatterTree.hpp"
+
 #endif /* SCATTERTREE_H */

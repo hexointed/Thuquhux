@@ -6,11 +6,9 @@
  */
 
 #include "ScatterTree.h"
+#include "ScatterProp.h"
 
 using namespace Terrain;
-using ScatterTree::Node;
-using ScatterTree::Iterator;
-using ScatterTree::Const_Iterator;
 
 ScatterTree::ScatterTree(ScatterProp& p):
 	top_node(*new Node(p)),
@@ -21,11 +19,11 @@ int ScatterTree::size(){
 	return top_node.children();
 }
 
-Iterator ScatterTree::begin(){
+ScatterTree::Iterator ScatterTree::begin(){
 	return Iterator(top_node);
 }
 
-Iterator ScatterTree::end(){
+ScatterTree::Iterator ScatterTree::end(){
 	return Iterator(nullptr);
 }
 
@@ -33,119 +31,117 @@ Iterator ScatterTree::end(){
  * ScatterTree::Node files below.
  */
 
-Node::Node(ScatterProp& p, int depth, Node* parent):
+ScatterTree::Node::Node(ScatterProp& p, int depth, Node* parent):
 	position(p.position()),
 	weight(p.weight()),
-	left(nullptr),
-	right(nullptr),
-	up(parent)
+	l(nullptr),
+	r(nullptr),
+	u(parent)
 {
 	if(!p.is_end()){
 		bool split = p.split();
 		p.set_depth(depth+1);
 		p.set_parent(*this);
 		if(split){
-			right = new Node(p, depth+1, this);
+			r = new Node(p, depth+1, this);
 		}
 		p.set_parent(*this);
-		left = new Node(p, depth+1, this);
+		l = new Node(p, depth+1, this);
 		p.set_depth(depth);
 	}
 }
 
-Node::~Node(){
-	delete left;
-	delete right;
+ScatterTree::Node::~Node(){
+	delete l;
+	delete r;
 }
 
-bool Node::splits(){
-	return right != nullptr && left != nullptr;
+bool ScatterTree::Node::splits(){
+	return r != nullptr && l != nullptr;
 }
 
-bool Node::is_end(){
-	return left == nullptr;
+bool ScatterTree::Node::is_end(){
+	return l == nullptr;
 }
 
-int children(){
-	return 1 + (left) ? left->children : 0 + (right) ? right->children : 0;
+int ScatterTree::Node::children(){
+	return 1 + (l) ? l->children() : 0 + (r) ? r->children() : 0;
 }
 
-Node& Node::left(){
-	if(left == nullptr){
-		throw left;
+ScatterTree::Node& ScatterTree::Node::left(){
+	if(l == nullptr){
+		throw l;
 	}
-	return *left;
+	return *l;
 }
 
-Node& Node::right(){
-	if(right == nullptr){
-		throw right;
+ScatterTree::Node& ScatterTree::Node::right(){
+	if(r == nullptr){
+		throw r;
 	}
-	return right;
+	return *r;
 }
 
-Node& Node::up(){
-	if(up == nullptr){
-		throw up;
+ScatterTree::Node& ScatterTree::Node::up(){
+	if(u == nullptr){
+		throw u;
 	}
-	return up;
+	return *u;
 }
 
 /*
  * ScatterTree::Iterator methods below.
  */
 
-Iterator::Iterator(Node& n):
+ScatterTree::Iterator::Iterator(Node& n):
 	pos(0)
 {
 	generate(&n);
 }
 
-Iterator::Iterator(Node* n):
+ScatterTree::Iterator::Iterator(Node* n):
 	pos(0)
 {
 	generate(n);
-	if
 }
 
-void Iterator::generate(Node* n){
+void ScatterTree::Iterator::generate(Node* n){
 	if(!n){
 		return;
 	}
 	nodes.push_back(n);
-	generate(n->left);
-	generate(n->right);
+	generate(n->l);
+	generate(n->r);
 }
 
-Iterator Iterator::operator++(){
+ScatterTree::Iterator ScatterTree::Iterator::operator++(){
 	pos++;
 	return *this;
 }
 
-Iterator Iterator::operator++(int){
+ScatterTree::Iterator ScatterTree::Iterator::operator++(int){
 	pos++;
 	return *this;
 }
-
-Iterator Iterator::operator--(){
+ScatterTree::Iterator ScatterTree::Iterator::operator--(){
 	pos--;
 	return *this;
 }
 
-Iterator Iterator::operator--(int){
+ScatterTree::Iterator ScatterTree::Iterator::operator--(int){
 	pos--;
 	return *this;
 }
 
-Node& Iterator::operator*(){
+ScatterTree::Node& ScatterTree::Iterator::operator*(){
 	return *(nodes[pos]);
 }
 
-bool Iterator::operator==(Iterator i){
-	return pos == i.pos && (nodes.sixe() ? nodes[0] == i.nodes[0] : true);
+bool ScatterTree::Iterator::operator==(Iterator i){
+	return pos == i.pos && (nodes.size() ? nodes[0] == i.nodes[0] : true);
 }
 
-bool Iterator::operator!=(iterator i){
+bool ScatterTree::Iterator::operator!=(Iterator i){
 	return !(*this == i);
 }
 
@@ -153,55 +149,55 @@ bool Iterator::operator!=(iterator i){
  * ScatterTree::Const_Iterator metods below.
  */
 
-Const_Iterator::Const_Iterator(const Node&):
+ScatterTree::Const_Iterator::Const_Iterator(const Node& n):
 	pos(0)
 {
 	generate(&n);
 }
 
-Const_Iterator::Const_Iterator(const Node*):
+ScatterTree::Const_Iterator::Const_Iterator(const Node* n):
 	pos(0)
 {
 	generate(n);
 }
 
-void Const_Iterator::generate(const Node* n){
+void ScatterTree::Const_Iterator::generate(const Node* n){
 	if(!n){
 		return;
 	}
 	nodes.push_back(n);
-	generate(n->left);
-	generate(n->right);
+	generate(n->l);
+	generate(n->r);
 }
 
-Const_Iterator Const_Iterator::operator++(){
+ScatterTree::Const_Iterator ScatterTree::Const_Iterator::operator++(){
 	pos++;
 	return *this;
 }
 
-Const_Iterator Const_Iterator::operator++(int){
+ScatterTree::Const_Iterator ScatterTree::Const_Iterator::operator++(int){
 	pos++;
 	return *this;
 }
 
-Const_Iterator Const_Iterator::operator--(){
+ScatterTree::Const_Iterator ScatterTree::Const_Iterator::operator--(){
 	pos--;
 	return *this;
 }
 
-Const_Iterator Const_Iterator::operator--(int){
+ScatterTree::Const_Iterator ScatterTree::Const_Iterator::operator--(int){
 	pos--;
 	return *this;
 }
 
-Node Const_Iterator::operator*(){
+ScatterTree::Node ScatterTree::Const_Iterator::operator*(){
 	return *(nodes[pos]);
 }
 
-bool Const_Iterator::operator==(Iterator i){
+bool ScatterTree::Const_Iterator::operator==(Const_Iterator i){
 	return pos == i.pos && (nodes.size() ? nodes[0] == i.nodes[0] : true);
 }
 
-bool Const_Iterator::operator!=(Iterator i){
+bool ScatterTree::Const_Iterator::operator!=(Const_Iterator i){
 	return !(*this == i);
 }

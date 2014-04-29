@@ -8,13 +8,13 @@
 #include "ScatterProp.h"
 
 using namespace Terrain;
-using Scatters::Trees::Oak;
+using Scatters::Trees::Acacia;
 
 void ScatterProp::set_depth(int d){
 	depth = d;
 }
 
-void ScatterProp::set_parent(Node& n){
+void ScatterProp::set_parent(ScatterTree::Node& n){
 	if(parent == nullptr){
 		base = &n;
 	}
@@ -27,19 +27,28 @@ void ScatterProp::set_parent(Node& n){
 
 Acacia::Acacia():
 	ScatterProp(),
-	distrib(0,0.5)
+	distrib(0, 0.5)
 {}
 
+namespace{
+	double ran(){
+		return (rand()%2000 - 1000)/double(1000);
+	}
+}
+
 Geometry::Vector<> Acacia::position(){
-	auto pos = parent.position + Geometry::Vector<>{distrib()*0.1,
-	                                                0.4 + distrib()*0.2,
-	                                                distrib()*0.1};
+	if(!parent){
+		return Geometry::Vector<>{0, 0, 0};
+	}
+	auto pos = parent->position + Geometry::Vector<>{ran()*0.1,
+	                                                0.4 + ran()*0.2,
+	                                                ran()*0.1};
 	/* All branches must spring away from eachother, to prevent self-intersections */
 	auto self_avoid = [&pos](Geometry::Vector<>& position, double& weight) -> void {
 		double dist = (pos - position).magnitude();
 		pos = pos + (pos - position) / (dist * dist);
 	};
-	base->forall(self_avoid);
+	base->foreach(self_avoid);
 	return pos;
 }
 

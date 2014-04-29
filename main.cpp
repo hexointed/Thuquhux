@@ -18,6 +18,8 @@
 #include "Physics/PhysObject.h"
 #include "NPC/NPC.h"
 #include "Graphics/DrawHandler.h"
+#include "Terrain/ScatterTree.h"
+#include "Terrain/ScatterProp.h"
 
 void demo_loop(GLFWwindow* widow);
 
@@ -28,26 +30,27 @@ void (*loop_op)(double time);
 void mouse_fn_phys(GLFWwindow* w, int a, int b, int c);
 void mouse_fn_npc(GLFWwindow* w, int a, int b, int c);
 void mouse_fn_csg(GLFWwindow* w, int a, int b, int c);
+void mouse_fn_terrain(GLFWwindow* w, int a, int b, int c);
 
 void loop_init_phys(GLFWwindow*);
 void loop_init_npc(GLFWwindow*);
 void loop_init_csg(GLFWwindow*);
+void loop_init_terrain(GLFWwindow*);
 
 void loop_op_phys(double time);
 void loop_op_npc(double time);
 void loop_op_csg(double time);
+void loop_op_terrain(double time);
 
 Graphics::DrawHandler canvas;
 
 int main (){
-	decltype(mouse_fn) fn[3] = {mouse_fn_phys, mouse_fn_npc, mouse_fn_csg};
-	decltype(loop_init) in[3] = {loop_init_phys, loop_init_npc, loop_init_csg};
-	decltype(loop_op) op[3] = {loop_op_phys, loop_op_npc, loop_op_csg};
+	decltype(mouse_fn) fn[4] = {mouse_fn_phys, mouse_fn_npc, mouse_fn_csg, mouse_fn_terrain};
+	decltype(loop_init) in[4] = {loop_init_phys, loop_init_npc, loop_init_csg, loop_init_terrain};
+	decltype(loop_op) op[4] = {loop_op_phys, loop_op_npc, loop_op_csg, loop_op_terrain};
 	
 	int mode = 0;
-	unsigned short a = 0;
-	a -= 1;
-	std::cout<<"Please enter a number: 0 1 or 2\n"<<a;
+	std::cout<<"Please enter a number: 0 1 or 2\n";
 	std::cin >> mode;
 	
 	switch(mode){
@@ -193,4 +196,15 @@ void loop_op_csg(double time){
 	for(auto& s: surf_list){
 		s.drawMesh();
 	}
+}
+
+Terrain::Scatters::Trees::Acacia a;
+Terrain::ScatterTree tree{a};
+
+void mouse_fn_terrain(GLFWwindow* w, int a, int b, int c){}
+
+void loop_init_terrain(GLFWwindow* w){}
+
+void loop_op_terrain(double time){
+	canvas.redisplay_window();
 }
