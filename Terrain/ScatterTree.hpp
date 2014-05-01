@@ -8,6 +8,8 @@
 #ifndef SCATTERTREE_HPP
 #define SCATTERTREE_HPP
 
+#include <iostream>
+
 template<typename Functor>
 void Terrain::ScatterTree::Node::foreach(Functor f){
 	f(position, weight);

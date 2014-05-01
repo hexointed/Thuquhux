@@ -201,10 +201,10 @@ void loop_op_csg(double time){
 Terrain::Scatters::Trees::Acacia a;
 Terrain::ScatterTree tree{a};
 
-void mouse_fn_terrain(GLFWwindow* w, int a, int b, int c){}
+void mouse_fn_terrain(GLFWwindow* , int , int , int ){}
 
-void loop_init_terrain(GLFWwindow* w){}
+void loop_init_terrain(GLFWwindow*){}
 
-void loop_op_terrain(double time){
+void loop_op_terrain(double /*time*/){
 	canvas.draw(tree);
 }

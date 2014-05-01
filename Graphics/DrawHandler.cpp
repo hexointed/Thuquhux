@@ -49,7 +49,7 @@ void DrawHandler::draw(Geometry::Parametric_Surface& /*p*/){
 }
 
 void DrawHandler::draw(Terrain::ScatterTree& t){
-	glScalef(0.1, 0.1, 0.1);
+	glScalef(0.3, 0.05, 0.3);
 	glTranslatef(0, 0, -3.0);
 
 	auto draw_n = [](Geometry::Vector<>& pos, double&){
@@ -58,12 +58,6 @@ void DrawHandler::draw(Terrain::ScatterTree& t){
 
 	glBegin(GL_POINTS);
 		t.foreach(draw_n);
-	glEnd();
-	
-	glBegin(GL_TRIANGLES);
-		glVertex3f(0,1,1);
-		glVertex3f(1,1,0);
-		glVertex3f(1,0,1);
 	glEnd();
 }
 

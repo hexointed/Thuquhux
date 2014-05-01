@@ -37,16 +37,18 @@ namespace{
 }
 
 Geometry::Vector<> Acacia::position(){
+	Geometry::Vector<> up{0,1,0};
 	if(!parent){
 		return Geometry::Vector<>{0, 0, 0};
 	}
 	auto pos = parent->position + Geometry::Vector<>{ran()*0.1,
 	                                                0.4 + ran()*0.2,
 	                                                ran()*0.1};
+	pos -= 0.1 * up / weight();
 	/* All branches must spring away from eachother, to prevent self-intersections */
-	auto self_avoid = [&pos](Geometry::Vector<>& position, double& weight) -> void {
+	auto self_avoid = [&pos](Geometry::Vector<>& position, double& /*weight*/) -> void {
 		double dist = (pos - position).magnitude();
-		pos = pos + (pos - position) / (dist * dist);
+		pos = (pos + (pos - position) / (dist * dist)).make_unit() * pos.magnitude();
 	};
 	base->foreach(self_avoid);
 	return pos;
@@ -61,5 +63,5 @@ bool Acacia::is_end(){
 }
 
 bool Acacia::split(){
-	return !depth%3;
+	return !(depth%3);
 }
