@@ -9,7 +9,6 @@
 #include "Triangle.h"
 #include <math.h>
 
-#include "GL/freeglut.h"
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -267,13 +266,4 @@ void Parametric_Surface::rotate(PointVector<> axis, double angle){
 		bound_box[0].set_min_comp(p);
 		bound_box[1].set_max_comp(p);
 	}
-}
-
-void Parametric_Surface::drawMesh(){
-	glPushMatrix();
-	glTranslatef(position.getdx(), position.getdy(), position.getdz());
-	for(Triangle tri: mesh){
-		tri.draw();
-	}
-	glPopMatrix();
 }

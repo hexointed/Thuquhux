@@ -50,7 +50,9 @@ public:
 	Numeric getdy() const;
 	Numeric getdz() const;
 	
-	Numeric& operator[](int i) const;
+	Numeric& operator[](int i);
+	Numeric operator[](int i) const;
+	
 	Numeric getMagnitude() const;
 	Numeric sum_comp() const;
 	

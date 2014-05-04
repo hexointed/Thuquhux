@@ -134,7 +134,7 @@ void loop_init_phys(GLFWwindow*){
 void loop_op_phys(double time){
 	PhysObject::default_handler.handle(time);
 	for(auto& s : PhysObject::default_handler.physObjects){
-		s.surface().drawMesh();
+		canvas.draw(s.surface());
 	}
 }
 
@@ -158,7 +158,7 @@ void loop_init_npc(GLFWwindow*){
 void loop_op_npc(double time){
 	test_npc.updatePosition(time);
 	npc_surface.position = test_npc.position;
-	npc_surface.drawMesh();
+	canvas.draw(npc_surface);
 }
 
 std::vector<Geometry::Parametric_Surface> surf_list;
@@ -191,6 +191,6 @@ void loop_op_csg(double time){
 	if(rotate)
 		surf_list[0].rotate(PointVector<>{0,1,0}, 0.5*time);
 	for(auto& s: surf_list){
-		s.drawMesh();
+		canvas.draw(s);
 	}
 }

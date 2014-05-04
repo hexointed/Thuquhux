@@ -84,7 +84,12 @@ Numeric PointVector<Dim, Numeric>::sum_comp() const{
 }
 
 template<int Dim, typename Numeric>
-Numeric& PointVector<Dim, Numeric>::operator[](int i) const{
+Numeric& PointVector<Dim, Numeric>::operator[](int i){
+	return comp[i];
+}
+
+template<int Dim, typename Numeric>
+Numeric PointVector<Dim, Numeric>::operator[](int i) const{
 	return comp[i];
 }
 

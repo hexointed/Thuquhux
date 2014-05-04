@@ -63,13 +63,13 @@ namespace Geometry{
 		double getSurfaceArea();
 		
 		void rotate(PointVector<> axis, double angle);
-		void drawMesh();
 		template<typename Functor>
 		void calculate_mesh(Functor pfunc);
 		
-	private:
+	public: //This should change.
 		Geometry::Triangle_Mesh mesh;
 		
+	private:
 		int mesh_detail;
 		int mesh_length;
 		
