@@ -29,22 +29,13 @@ PhysObject& PhysObject::create_return(bool addToList, Parametric_Surface surface
 }
 
 PhysObject::PhysObject(Parametric_Surface surface, PointVector<> velocity):
+	Parametric_Surface(surface),
 	_material{},
 	_volume{1},
 	_velocity{velocity},
-	_surface(surface),
 	_rotation{{1,0,0},0}
 {
 
-}
-
-PhysObject::PhysObject(const PhysObject& orig):
-	_surface(orig._surface),
-	_rotation(orig._rotation)
-{
-}
-
-PhysObject::~PhysObject() {
 }
 
 double& PhysObject::density(){
@@ -53,10 +44,6 @@ double& PhysObject::density(){
 
 Material& PhysObject::material(){
 	return _material;
-}
-
-PointVector<>& PhysObject::position(){
-	return _surface.position;
 }
 
 PointVector<>& PhysObject::velocity(){
@@ -83,10 +70,6 @@ void PhysObject::addImpulse(PointVector<> a, double time){
 	_impulses.push_back(std::make_pair(a,time));
 }
 
-Parametric_Surface& PhysObject::surface(){
-	return _surface;
-}
-
 void PhysObject::calcVolume(){
 	
 }
@@ -103,8 +86,8 @@ void PhysObject::collision(PhysObject& obj1,PhysObject& obj2, PointVector<> coll
 	double mass2 = 10;
 
 	
-	PointVector<> cun1 = PointVector<>::mul_cross(collide_at - obj1.position(), normal);
-	PointVector<> cun2 = PointVector<>::mul_cross(collide_at - obj2.position(), normal);
+	PointVector<> cun1 = PointVector<>::mul_cross(collide_at - obj1.position, normal);
+	PointVector<> cun2 = PointVector<>::mul_cross(collide_at - obj2.position, normal);
 
 	double lambda = 2.0 * (PointVector<>::mul_dot(obj1._velocity - obj2._velocity, normal) + PointVector<>::mul_dot(obj1._rotation.first*obj1._rotation.second, cun1) - PointVector<>::mul_dot(obj2._rotation.first*obj2._rotation.second, cun2)) / ((1.0/mass1) + (1.0/mass2) + PointVector<>::mul_dot(cun1,cun1) + PointVector<>::mul_dot(cun2,cun2)); 
 
@@ -119,16 +102,15 @@ void PhysObject::collision(PhysObject& obj1,PhysObject& obj2, PointVector<> coll
 	}else{
 		obj1._rotation.first = finalRotation1.make_unit();
 	}
-	obj1._rotation.second = finalRotation1.getMagnitude() * (obj1.position() - collide_at).getMagnitude()/sqrt(mass1);
+	obj1._rotation.second = finalRotation1.getMagnitude() * (obj1.position - collide_at).getMagnitude()/sqrt(mass1);
 	if(finalRotation2.getMagnitude() == 0){
 		obj2._rotation.first = {1,0,0};
 	}else{
 		obj2._rotation.first = finalRotation1.make_unit();
 	}
-	obj2._rotation.second = finalRotation2.getMagnitude() * (obj2.position() - collide_at).getMagnitude()/sqrt(mass2);
+	obj2._rotation.second = finalRotation2.getMagnitude() * (obj2.position - collide_at).getMagnitude()/sqrt(mass2);
 
-	obj1._velocity = finalVel1 * (obj1.position() - collide_at).getMagnitude()/sqrt(mass1);
-	obj2._velocity = finalVel2 * (obj1.position() - collide_at).getMagnitude()/sqrt(mass1);
+	obj1._velocity = finalVel1 * (obj1.position - collide_at).getMagnitude()/sqrt(mass1);
+	obj2._velocity = finalVel2 * (obj1.position - collide_at).getMagnitude()/sqrt(mass1);
 	
 }
-

@@ -41,36 +41,36 @@ void PhysHandler::handle(double time){
 			i.impulses()[to_delete[to_delete.size()-j-1]] = temp;			
 			i.impulses().pop_back();
 		}
-		i.previous_position() = i.position();
-		i.position() = i.position() + i.velocity() * time + i.acceleration()*time*time / 2.0;
+		i.previous_position() = i.position;
+		i.position = i.position + i.velocity() * time + i.acceleration()*time*time / 2.0;
 		i.velocity() = i.velocity() + i.acceleration() * time;
 		i.acceleration() = PointVector<>{0,0,0};
 		
-		i.surface().rotate(i.rotation().first, i.rotation().second*time);
+		i.rotate(i.rotation().first, i.rotation().second*time);
 	}
 
 	for(unsigned int i = 0; i < physObjects.size() ; i++){
 		for(unsigned int j = i+1 ; j < physObjects.size() ; j++){
-			if(physObjects[i].surface().isIntersecting(physObjects[j].surface())){
+			if(physObjects[i].isIntersecting(physObjects[j])){
 				std::pair<PointVector<>,double> prev_rot1 = physObjects[i].rotation();
 				std::pair<PointVector<>,double> prev_rot2 = physObjects[j].rotation();
-				physObjects[i].surface().rotate(-prev_rot1.first,prev_rot1.second*time);
-				physObjects[j].surface().rotate(-prev_rot2.first,prev_rot2.second*time);
+				physObjects[i].rotate(-prev_rot1.first,prev_rot1.second*time);
+				physObjects[j].rotate(-prev_rot2.first,prev_rot2.second*time);
 				//auto data = physObjects[i].surface().collision_data(physObjects[j].surface());
 				//PhysObject::collision(physObjects[i], physObjects[j], data.first, data.second);
-				PhysObject::collision(physObjects[i], physObjects[j], collide_at(physObjects[i].surface(), physObjects[j].surface()), collision_normal(physObjects[i].surface(), physObjects[j].surface()));
+				PhysObject::collision(physObjects[i], physObjects[j], collide_at(physObjects[i], physObjects[j]), collision_normal(physObjects[i], physObjects[j]));
 				
-				physObjects[i].position() = physObjects[i].previous_position();
-				physObjects[j].position() = physObjects[j].previous_position();
+				physObjects[i].position = physObjects[i].previous_position();
+				physObjects[j].position = physObjects[j].previous_position();
 				//physObjects[i].position() = {100,0,0};
 			}
 		}
 	}
 	
 	for(std::pair<NPC, PhysObject>& i : NPCs){
-		i.first.position = i.second.position();
+		i.first.position = i.second.position;
 		i.first.updatePosition(time);
-		i.second.position() = i.first.position;
+		i.second.position = i.first.position;
 	}
 
 }
