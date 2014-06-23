@@ -11,17 +11,19 @@
 #include "../NPC/NPC.h"
 #include <vector>
 
-class PhysObject;
+namespace Physics {
+	class Object;
+}
 
 class PhysHandler{
 public:
 	PhysHandler();
 	void handle(double time);
 	
-	void addPhysObject(PhysObject a);
+	void addPhysObject(Physics::Object a);
 	
-	std::vector<PhysObject> physObjects;
-	std::vector<std::pair<NPC , PhysObject>> NPCs;
+	std::vector<Physics::Object> physObjects;
+	std::vector<std::pair<NPC , Physics::Object>> NPCs;
 private:
 	
 };

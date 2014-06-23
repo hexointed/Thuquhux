@@ -1,5 +1,5 @@
 #include "NPC.h"
-#include "../Physics/PhysObject.h"
+#include "../Physics/Object.h"
 
 std::vector<PointVector<>> PLACEHOLDER_LINE_OF_TRAVEL{};
 //PointVector<> GRAVITY_CENTER{0, 0, 0};
@@ -63,7 +63,7 @@ int NPC::randomInt(){
 }
 
 /*void NPC::make_physObject(){
-	PhysObject::default_handler.NPCs.push_back(std::make_pair(*this,PhysObject::create_return(0)));
+	Physics::Object::default_handler.NPCs.push_back(std::make_pair(*this,Physics::Object::create_return(0)));
 
 }*/
 

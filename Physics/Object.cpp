@@ -1,34 +1,34 @@
 /* 
- * File:   PhysObject.cpp
+ * File:   Physics/Object.cpp
  * Author: Charles Gilljam
  * 
  * Created on April 28, 2013, 6:59 PM
  */
 
-#include "PhysObject.h"
+#include "Object.h"
 #include "Material.h"
 #include "PhysHandler.h"
 #include <iostream>
 
-PhysHandler PhysObject::default_handler{};
+PhysHandler Physics::Object::default_handler{};
 
-void PhysObject::create(bool addToList, Parametric_Surface surface, PhysHandler& handler, PointVector<> velocity){
-	PhysObject erland(surface, velocity);
+void Physics::Object::create(bool addToList, Parametric_Surface surface, PhysHandler& handler, PointVector<> velocity){
+	Physics::Object erland(surface, velocity);
 	if(addToList){
 		handler.physObjects.push_back(erland);
 	}
 
 }
 
-PhysObject& PhysObject::create_return(bool addToList, Parametric_Surface surface, PhysHandler& handler, PointVector<> velocity){
-	PhysObject erland(surface, velocity);
+Physics::Object& Physics::Object::create_return(bool addToList, Parametric_Surface surface, PhysHandler& handler, PointVector<> velocity){
+	Physics::Object erland(surface, velocity);
 	if(addToList){
 		handler.physObjects.push_back(erland);
 	}
 	return handler.physObjects.back();
 }
 
-PhysObject::PhysObject(Parametric_Surface surface, PointVector<> velocity):
+Physics::Object::Object(Parametric_Surface surface, PointVector<> velocity):
 	Parametric_Surface(surface),
 	_material{},
 	_volume{1},
@@ -38,48 +38,48 @@ PhysObject::PhysObject(Parametric_Surface surface, PointVector<> velocity):
 
 }
 
-double& PhysObject::density(){
+double& Physics::Object::density(){
 	return _material.density();
 }
 
-Material& PhysObject::material(){
+Material& Physics::Object::material(){
 	return _material;
 }
 
-PointVector<>& PhysObject::velocity(){
+PointVector<>& Physics::Object::velocity(){
 	return _velocity;
 }
 
-PointVector<>& PhysObject::previous_position(){
+PointVector<>& Physics::Object::previous_position(){
 	return _previous_position;
 }
 
-PointVector<>& PhysObject::acceleration(){
+PointVector<>& Physics::Object::acceleration(){
 	return _acceleration;
 }
 
-std::pair<PointVector<>, double>& PhysObject::rotation(){
+std::pair<PointVector<>, double>& Physics::Object::rotation(){
 	return _rotation;
 }
 
-std::vector<std::pair<PointVector<> , double>>& PhysObject::impulses(){
+std::vector<std::pair<PointVector<> , double>>& Physics::Object::impulses(){
 	return _impulses;
 }
 
-void PhysObject::addImpulse(PointVector<> a, double time){
+void Physics::Object::addImpulse(PointVector<> a, double time){
 	_impulses.push_back(std::make_pair(a,time));
 }
 
-void PhysObject::calcVolume(){
+void Physics::Object::calcVolume(){
 	
 }
 
-void PhysObject::accelerate(PointVector<> a){
+void Physics::Object::accelerate(PointVector<> a){
 	_acceleration = _acceleration + a;
 }
 
 
-void PhysObject::collision(PhysObject& obj1,PhysObject& obj2, PointVector<> collide_at, PointVector<> normal){
+void Physics::Object::collision(Physics::Object& obj1,Physics::Object& obj2, PointVector<> collide_at, PointVector<> normal){
 	//double mass1 = obj1._volume*obj1.density();
 	//double mass2 = obj2._volume*obj2.density();
 	double mass1 = 5;

@@ -9,7 +9,7 @@
 #define	TERRAINGENERATOR_H
 
 #include <vector>
-#include "Physics/PhysObject.h"
+#include "Physics/Object.h"
 
 #define TERRAIN_TREES 0
 #define TERRAIN_RIVERS 1
@@ -25,7 +25,7 @@ public:
     int getGroundVertexSize();
 	void get_distrib_points(int points, double result[][3], double solid_angle = 2 * 3.141592653589793);
     
-    std::vector<PhysObject> operator()(double alpha, double beta);
+    std::vector<Physics::Object> operator()(double alpha, double beta);
     const TerrainGenerator& operator= (const TerrainGenerator& v) const;
     
     void enable (int TERRAIN_TYPE);

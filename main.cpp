@@ -15,7 +15,7 @@
 #include <iostream>
 #include <vector>
 
-#include "Physics/PhysObject.h"
+#include "Physics/Object.h"
 #include "NPC/NPC.h"
 #include "Graphics/DrawHandler.h"
 
@@ -115,23 +115,23 @@ void mouse_fn_phys(GLFWwindow* w, int , int b, int ){
 		return;
 	auto pos = easy_mouse(w);
 	
-	PhysObject::create();
-	PhysObject::default_handler.physObjects.back().position = {pos.getdx(), pos.getdy(), 0};
-	PhysObject::default_handler.physObjects.back().velocity() = {0,0,1.3};
+	Physics::Object::create();
+	Physics::Object::default_handler.physObjects.back().position = {pos.getdx(), pos.getdy(), 0};
+	Physics::Object::default_handler.physObjects.back().velocity() = {0,0,1.3};
 }
 
 void loop_init_phys(GLFWwindow*){
-	PhysObject::create();
-	PhysObject::default_handler.physObjects[0].position = {-0.2,0.5,3};
-	PhysObject::create();
-	PhysObject::default_handler.physObjects[1].position = {0.4,0.5,3};
-	PhysObject::default_handler.physObjects[1].rotate({1,0,0},3.14/2);
-	PhysObject::default_handler.physObjects[1].rotation() = std::make_pair(PointVector<>{0,1,1},0.5);
+	Physics::Object::create();
+	Physics::Object::default_handler.physObjects[0].position = {-0.2,0.5,3};
+	Physics::Object::create();
+	Physics::Object::default_handler.physObjects[1].position = {0.4,0.5,3};
+	Physics::Object::default_handler.physObjects[1].rotate({1,0,0},3.14/2);
+	Physics::Object::default_handler.physObjects[1].rotation() = std::make_pair(PointVector<>{0,1,1},0.5);
 }
 
 void loop_op_phys(double time){
-	PhysObject::default_handler.handle(time);
-	for(auto& s : PhysObject::default_handler.physObjects){
+	Physics::Object::default_handler.handle(time);
+	for(auto& s : Physics::Object::default_handler.physObjects){
 		canvas.draw(s);
 	}
 }

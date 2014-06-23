@@ -26,7 +26,7 @@ Geometry/Triangle \
 Geometry/Triangle_Mesh \
 Graphics/DrawHandler \
 NPC/NPC \
-Physics/PhysObject \
+Physics/Object \
 Physics/Material \
 Physics/PhysHandler \
 TerrainGenerator \

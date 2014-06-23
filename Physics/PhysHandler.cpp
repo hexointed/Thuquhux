@@ -5,7 +5,7 @@
  * Created on November 19, 2013, 12:21 PM
  */
 #include "PhysHandler.h"
-#include "PhysObject.h"
+#include "Object.h"
 #include "../NPC/NPC.h"
 
 PhysHandler::PhysHandler(){
@@ -22,7 +22,7 @@ PointVector<> collision_normal(Parametric_Surface a, Parametric_Surface b){
 
 void PhysHandler::handle(double time){
 	
-	for(PhysObject& i : physObjects){
+	for(Physics::Object& i : physObjects){
 		std::vector<int> to_delete;
 		for(unsigned int j = 0; j < i.impulses().size() ; j++){
 			if(i.impulses()[j].second <= time){
@@ -57,8 +57,8 @@ void PhysHandler::handle(double time){
 				physObjects[i].rotate(-prev_rot1.first,prev_rot1.second*time);
 				physObjects[j].rotate(-prev_rot2.first,prev_rot2.second*time);
 				//auto data = physObjects[i].surface().collision_data(physObjects[j].surface());
-				//PhysObject::collision(physObjects[i], physObjects[j], data.first, data.second);
-				PhysObject::collision(physObjects[i], physObjects[j], collide_at(physObjects[i], physObjects[j]), collision_normal(physObjects[i], physObjects[j]));
+				//Physics::Object::collision(physObjects[i], physObjects[j], data.first, data.second);
+				Physics::Object::collision(physObjects[i], physObjects[j], collide_at(physObjects[i], physObjects[j]), collision_normal(physObjects[i], physObjects[j]));
 				
 				physObjects[i].position = physObjects[i].previous_position();
 				physObjects[j].position = physObjects[j].previous_position();
@@ -67,7 +67,7 @@ void PhysHandler::handle(double time){
 		}
 	}
 	
-	for(std::pair<NPC, PhysObject>& i : NPCs){
+	for(std::pair<NPC, Physics::Object>& i : NPCs){
 		i.first.position = i.second.position;
 		i.first.updatePosition(time);
 		i.second.position = i.first.position;
@@ -75,6 +75,6 @@ void PhysHandler::handle(double time){
 
 }
 
-void PhysHandler::addPhysObject(PhysObject a){
+void PhysHandler::addPhysObject(Physics::Object a){
 	physObjects.push_back(a);
 }
