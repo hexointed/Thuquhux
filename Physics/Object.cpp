@@ -12,7 +12,7 @@
 
 PhysHandler Physics::Object::default_handler{};
 
-void Physics::Object::create(bool addToList, Parametric_Surface surface, PhysHandler& handler, Geometry::Vector<> velocity){
+void Physics::Object::create(bool addToList, Geometry::Surface surface, PhysHandler& handler, Geometry::Vector<> velocity){
 	Physics::Object erland(surface, velocity);
 	if(addToList){
 		handler.physObjects.push_back(erland);
@@ -20,7 +20,7 @@ void Physics::Object::create(bool addToList, Parametric_Surface surface, PhysHan
 
 }
 
-Physics::Object& Physics::Object::create_return(bool addToList, Parametric_Surface surface, PhysHandler& handler, Geometry::Vector<> velocity){
+Physics::Object& Physics::Object::create_return(bool addToList, Geometry::Surface surface, PhysHandler& handler, Geometry::Vector<> velocity){
 	Physics::Object erland(surface, velocity);
 	if(addToList){
 		handler.physObjects.push_back(erland);
@@ -28,8 +28,8 @@ Physics::Object& Physics::Object::create_return(bool addToList, Parametric_Surfa
 	return handler.physObjects.back();
 }
 
-Physics::Object::Object(Parametric_Surface surface, Geometry::Vector<> velocity):
-	Parametric_Surface(surface),
+Physics::Object::Object(Geometry::Surface surface, Geometry::Vector<> velocity):
+	Geometry::Surface(surface),
 	_material{},
 	_volume{1},
 	_velocity{velocity},

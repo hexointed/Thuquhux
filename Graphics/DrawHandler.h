@@ -12,7 +12,7 @@
 #include <map>
 
 #include "../Geometry/Geometry.h"
-#include "../Geometry/Parametric_Surface.h"
+#include "../Geometry/Surface.h"
 #include "../Terrain/ScatterTree.h"
 
 namespace Graphics{
@@ -24,10 +24,10 @@ namespace Graphics{
 	
 	public:
 		GLFWwindow* window;
-		//std::map<Geometry::Paramteric_Surface*, std::pair<GLuint, GLuint>> buffers;
+		//std::map<Geometry::Surface*, std::pair<GLuint, GLuint>> buffers;
 	
 	public:
-		void draw(Geometry::Parametric_Surface& p);
+		void draw(Geometry::Surface& p);
 		void draw(Terrain::ScatterTree& t);
 		
 		void redisplay_window();

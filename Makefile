@@ -35,7 +35,7 @@ Terrain/ScatterProp \
 
 #Classes with template methods
 CLT = \
-Geometry/Parametric_Surface \
+Geometry/Surface \
 Terrain/ScatterTree \
 
 #Template Classes

@@ -1,5 +1,5 @@
 /* 
- * File:   Parametric_Surface.hpp
+ * File:   Surface.hpp
  * Author: Elias Forsberg
  *
  * Created on  June 1, 2013, 10:26 AM
@@ -9,13 +9,13 @@
 #define	PARAMETRIC_SURFACE_HPP
 
 #include <iostream>
-#include "Parametric_Surface.h"
+#include "Surface.h"
 #include "Geometry.h"
 #include "GL/freeglut.h"
 #include <vector>
 
 template<typename Functor>
-Geometry::Parametric_Surface::Parametric_Surface(Functor f, Geometry::Vector<> pos):
+Geometry::Surface::Surface(Functor f, Geometry::Vector<> pos):
 	mesh_detail{8},
 	mesh_length{mesh_detail*mesh_detail*2},
 	bound_box{{0,0,0},{0,0,0}},
@@ -27,7 +27,7 @@ Geometry::Parametric_Surface::Parametric_Surface(Functor f, Geometry::Vector<> p
 	
 /*This method calculates all vertecies using a parametric function pfunc*/
 template<typename Functor>
-void Geometry::Parametric_Surface::calculate_mesh(Functor pfunc){
+void Geometry::Surface::calculate_mesh(Functor pfunc){
 	std::vector<Geometry::Vector<>> vertecies;
 	vertecies.reserve(mesh_detail*mesh_detail);
 	for(double t = 0; t < 1; t += 1.0/mesh_detail){

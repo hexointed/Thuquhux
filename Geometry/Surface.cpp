@@ -6,7 +6,7 @@
  */
  
 #include "Geometry.h"
-#include "Parametric_Surface.h"
+#include "Surface.h"
 #include <math.h>
 
 #include <iostream>
@@ -14,13 +14,13 @@
 #include <algorithm>
 #include <utility>
 
-using Geometry::Parametric_Surface;
+using Geometry::Surface;
 using Geometry::Triangle;
 using Geometry::Vector;
 
 double PI = 3.14159265358979;
 
-Parametric_Surface::Parametric_Surface(const Parametric_Surface& orig):
+Surface::Surface(const Surface& orig):
 	mesh{orig.mesh},
 	mesh_detail{orig.mesh_detail},
 	mesh_length{orig.mesh_length},
@@ -30,14 +30,14 @@ Parametric_Surface::Parametric_Surface(const Parametric_Surface& orig):
 	position{orig.position}
 {}
 
-Parametric_Surface::Parametric_Surface(Vector<> pos):
+Surface::Surface(Vector<> pos):
 	mesh_detail{10},
 	mesh_length{mesh_detail*mesh_detail*2},
 	bound_box{{0,0,0},{0,0,0}},
 	position{pos}
 {}
 
-Parametric_Surface::~Parametric_Surface() {
+Surface::~Surface() {
 }
 
 namespace{
@@ -77,11 +77,11 @@ namespace{
 	}
 }
 
-Parametric_Surface Parametric_Surface::unite(Parametric_Surface a, Parametric_Surface b){
+Surface Surface::unite(Surface a, Surface b){
 	for(Vector<>& v : b.mesh.vertecies()){
 		v += b.position - a.position;
 	}
-	Parametric_Surface ret(a.position + Vector<>{5,0,0});
+	Surface ret(a.position + Vector<>{5,0,0});
 	auto a_test = [&](Triangle t){
 	              		Vector<> avg = (t[0] + t[1] + t[2])/3.0;
 	              		return !b.pointIsWithin(avg);
@@ -109,11 +109,11 @@ Parametric_Surface Parametric_Surface::unite(Parametric_Surface a, Parametric_Su
 	return ret;
 }
 
-Parametric_Surface Parametric_Surface::intersect(Parametric_Surface a, Parametric_Surface b){
+Surface Surface::intersect(Surface a, Surface b){
 	for(Vector<>& v : b.mesh.vertecies()){
 		v += b.position - a.position;
 	}
-	Parametric_Surface ret(a.position + Vector<>{5,0,0});
+	Surface ret(a.position + Vector<>{5,0,0});
 	auto a_test = [&](Triangle t){
 	              		Vector<> avg = (t[0] + t[1] + t[2])/3.0;
 	              		return a.pointIsWithin(avg);
@@ -141,7 +141,7 @@ Parametric_Surface Parametric_Surface::intersect(Parametric_Surface a, Parametri
 	return ret;
 }
 
-void Parametric_Surface::Unite(Parametric_Surface a){
+void Surface::Unite(Surface a){
 	/* Deprecated */
 	Vector<> rel_pos = a.position - position;
 	bound_box[0].set_min_comp(a.bound_box[0] + rel_pos);
@@ -152,7 +152,7 @@ void Parametric_Surface::Unite(Parametric_Surface a){
 	mesh.add(a.mesh);
 }
 
-bool Parametric_Surface::is_subset_of(const Parametric_Surface& v){
+bool Surface::is_subset_of(const Surface& v){
 	Vector<> p = bound_box[1];
 	Vector<> q = v.bound_box[1];
 	Vector<> r = bound_box[0];
@@ -162,7 +162,7 @@ bool Parametric_Surface::is_subset_of(const Parametric_Surface& v){
 	        r.add(position).is_max_comp(s.add(v.position));
 }
 
-bool Parametric_Surface::is_superset_of(const Parametric_Surface& v){
+bool Surface::is_superset_of(const Surface& v){
 	auto p = bound_box[1];
 	auto q = v.bound_box[1];
 	auto r = bound_box[0];
@@ -171,7 +171,7 @@ bool Parametric_Surface::is_superset_of(const Parametric_Surface& v){
 	       r.add(position).is_min_comp(s.add(v.position));
 }
 
-bool Parametric_Surface::isIntersecting(Parametric_Surface& v){
+bool Surface::isIntersecting(Surface& v){
 	for(Triangle tri : mesh){
 		for(Triangle vtri : v.mesh){
 			vtri.move(position - v.position);
@@ -183,7 +183,7 @@ bool Parametric_Surface::isIntersecting(Parametric_Surface& v){
 	return false;
 }
 
-std::pair<Vector<>, Vector<>> Parametric_Surface::collision_data(Parametric_Surface& v){
+std::pair<Vector<>, Vector<>> Surface::collision_data(Surface& v){
 	std::pair<Vector<>, Vector<>> result; //position, normal
 	std::vector<Triangle> intersections;
 	std::vector<Triangle> intersections_v;
@@ -208,7 +208,7 @@ std::pair<Vector<>, Vector<>> Parametric_Surface::collision_data(Parametric_Surf
 	return result;
 }
 
-bool Parametric_Surface::pointIsWithin(Vector<> p){
+bool Surface::pointIsWithin(Vector<> p){
 	if(p.is_min_comp(bound_box[0]) || p.is_max_comp(bound_box[1]))
 		return false;
 	Vector<> min {p.getdx(), p.getdy(), bound_box[0].getdz()};
@@ -260,7 +260,7 @@ namespace{
 	}
 }
 
-void Parametric_Surface::rotate(Vector<> axis, double angle){
+void Surface::rotate(Vector<> axis, double angle){
 	bound_box[0] = bound_box[1] = position;
 	for(Vector<>& p: mesh.vertecies()){
 		rotate_point(p, axis, angle);

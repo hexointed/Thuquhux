@@ -10,20 +10,18 @@
 
 #include "../Geometry/PointVector.h"
 #include "Material.h"
-#include "../Geometry/Parametric_Surface.h"
+#include "../Geometry/Surface.h"
 #include "PhysHandler.h"
-
-using Geometry::Parametric_Surface;
 
 namespace Physics {
 
-	class Object : public Parametric_Surface {
+	class Object : public Geometry::Surface {
 	public:
 	
 		static PhysHandler default_handler;
 
-		static void create(bool addToList = 1, Parametric_Surface surface = Parametric_Surface(Geometry::def_param_axis_func, {0,0,0}), PhysHandler& handler = default_handler, PointVector<> velocity = {0,0,0});
-		static Object& create_return(bool addToList = 1, Parametric_Surface surface = Parametric_Surface(Geometry::def_param_axis_func, {0,0,0}), PhysHandler& handler = default_handler, PointVector<> velocity = {0,0,0});	
+		static void create(bool addToList = 1, Geometry::Surface surface = Geometry::Surface(Geometry::def_param_axis_func, {0,0,0}), PhysHandler& handler = default_handler, PointVector<> velocity = {0,0,0});
+		static Object& create_return(bool addToList = 1, Geometry::Surface surface = Geometry::Surface(Geometry::def_param_axis_func, {0,0,0}), PhysHandler& handler = default_handler, PointVector<> velocity = {0,0,0});	
 
 		Object(const Object& orig) = default;
 		virtual ~Object() = default;
@@ -54,7 +52,7 @@ namespace Physics {
 		static void collision(Object& obj1,Object& obj2, PointVector<> collide_at, PointVector<> normal);
 	    
 	private:
-		Object(Parametric_Surface surface = Parametric_Surface(Geometry::def_param_axis_func, {0,0,0}), PointVector<> velocity = {0,0,0});
+		Object(Geometry::Surface surface = Geometry::Surface(Geometry::def_param_axis_func, {0,0,0}), PointVector<> velocity = {0,0,0});
 
 		PointVector<> _previous_position;
 		Material _material;

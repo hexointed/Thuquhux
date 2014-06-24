@@ -12,11 +12,11 @@ PhysHandler::PhysHandler(){
 
 
 }
-Geometry::Vector<> collide_at(Parametric_Surface a, Parametric_Surface b){
+Geometry::Vector<> collide_at(Geometry::Surface a, Geometry::Surface b){
 	return a.position + (b.position - a.position)/2.0;
 }
 
-Geometry::Vector<> collision_normal(Parametric_Surface a, Parametric_Surface b){
+Geometry::Vector<> collision_normal(Geometry::Surface a, Geometry::Surface b){
 	return 2.0*a.position - b.position;
 }
 

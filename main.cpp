@@ -144,7 +144,7 @@ void loop_op_phys(double time){
 extern std::vector<PointVector<>> PLACEHOLDER_LINE_OF_TRAVEL;
 auto& npc_lt = PLACEHOLDER_LINE_OF_TRAVEL;
 NPC test_npc;
-Geometry::Parametric_Surface npc_surface({0,0,0});
+Geometry::Surface npc_surface({0,0,0});
 
 void mouse_fn_npc(GLFWwindow* w, int, int b, int){
 	if(b == GLFW_RELEASE)
@@ -164,7 +164,7 @@ void loop_op_npc(double time){
 	canvas.draw(npc_surface);
 }
 
-std::vector<Geometry::Parametric_Surface> surf_list;
+std::vector<Geometry::Surface> surf_list;
 bool rotate = true;
 
 void mouse_fn_csg(GLFWwindow*, int, int, int){}

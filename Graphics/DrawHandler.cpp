@@ -9,7 +9,7 @@
 #define GLFW_INCLUDE_GLU
 #include "DrawHandler.h"
 #include "Shaders.h"
-#include "../Geometry/Parametric_Surface.h"
+#include "../Geometry/Surface.h"
 
 using Graphics::DrawHandler;
 
@@ -45,7 +45,7 @@ DrawHandler::~DrawHandler(){
 	glfwDestroyWindow(window);
 }
 
-void DrawHandler::draw(Geometry::Parametric_Surface& p){
+void DrawHandler::draw(Geometry::Surface& p){
 	glPushMatrix();
 	glTranslated(p.position[0], p.position[1], p.position[2]);
 	glBegin(GL_TRIANGLES);
