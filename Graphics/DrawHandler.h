@@ -13,6 +13,7 @@
 
 #include "../Geometry/Geometry.h"
 #include "../Geometry/Parametric_Surface.h"
+#include "../Terrain/ScatterTree.h"
 
 namespace Graphics{
 
@@ -27,6 +28,7 @@ namespace Graphics{
 	
 	public:
 		void draw(Geometry::Parametric_Surface& p);
+		void draw(Terrain::ScatterTree& t);
 		
 		void redisplay_window();
 	};

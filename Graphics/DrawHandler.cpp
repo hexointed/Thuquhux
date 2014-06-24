@@ -58,6 +58,19 @@ void DrawHandler::draw(Geometry::Parametric_Surface& p){
 	glPopMatrix();
 }
 
+void DrawHandler::draw(Terrain::ScatterTree& t){
+	glScalef(0.3, 0.05, 0.3);
+	glTranslatef(0, 0, -3.0);
+
+	auto draw_n = [](Geometry::Vector<>& pos, double&){
+		glVertex3d(pos[0], pos[1], pos[2]);
+	};
+
+	glBegin(GL_POINTS);
+		t.foreach(draw_n);
+	glEnd();
+}
+
 void DrawHandler::redisplay_window(){
 	glfwSwapBuffers(window);
 	glfwPollEvents();

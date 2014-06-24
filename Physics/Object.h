@@ -40,11 +40,11 @@ namespace Physics {
 		double& volume();
 		PointVector<>& previous_position();
 		PointVector<>& velocity();
-		std::pair<PointVector<>, double>& rotation();
+		std::pair<Geometry::Vector<>, double>& rotation();
 
 		PointVector<>& acceleration();
 
-		std::vector<std::pair<PointVector<> , double>>& impulses();
+		std::vector<std::pair<Geometry::Vector<> , double>>& impulses();
 	
 		void calcVolume();
 		void accelerate(PointVector<> a);
@@ -61,8 +61,8 @@ namespace Physics {
 		double _volume;
 		PointVector<> _velocity;
 		PointVector<> _acceleration;
-		std::vector<std::pair<PointVector<> , double>> _impulses;
-		std::pair<PointVector<>, double> _rotation;
+		std::vector<std::pair<Geometry::Vector<> , double>> _impulses;
+		std::pair<Geometry::Vector<>, double> _rotation;
 
 	public:
 	

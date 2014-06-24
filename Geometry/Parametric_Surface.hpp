@@ -10,13 +10,12 @@
 
 #include <iostream>
 #include "Parametric_Surface.h"
-#include "PointVector.h"
-#include "Triangle.h"
+#include "Geometry.h"
 #include "GL/freeglut.h"
 #include <vector>
 
 template<typename Functor>
-Geometry::Parametric_Surface::Parametric_Surface(Functor f, PointVector<> pos):
+Geometry::Parametric_Surface::Parametric_Surface(Functor f, Geometry::Vector<> pos):
 	mesh_detail{8},
 	mesh_length{mesh_detail*mesh_detail*2},
 	bound_box{{0,0,0},{0,0,0}},
@@ -29,12 +28,12 @@ Geometry::Parametric_Surface::Parametric_Surface(Functor f, PointVector<> pos):
 /*This method calculates all vertecies using a parametric function pfunc*/
 template<typename Functor>
 void Geometry::Parametric_Surface::calculate_mesh(Functor pfunc){
-	std::vector<PointVector<>> vertecies;
+	std::vector<Geometry::Vector<>> vertecies;
 	vertecies.reserve(mesh_detail*mesh_detail);
 	for(double t = 0; t < 1; t += 1.0/mesh_detail){
 		for(double u = 0; u < 1; u += 1.0/mesh_detail){		
 			//iterate through all points we need from pfunc
-			PointVector<2> params({t,u});
+			Geometry::Vector<2> params({t,u});
 			vertecies.push_back(pfunc(params));
 			bound_box[0].set_min_comp(vertecies.back());
 			bound_box[1].set_max_comp(vertecies.back());

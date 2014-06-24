@@ -9,7 +9,7 @@
 #define	TERRAINGENERATOR_H
 
 #include <vector>
-#include "Physics/Object.h"
+#include "../Physics/Object.h"
 
 #define TERRAIN_TREES 0
 #define TERRAIN_RIVERS 1

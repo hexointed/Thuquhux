@@ -11,7 +11,7 @@
 #include "PointVector.h"
 
 namespace Geometry{
-	template<int Dimension, typename Numeric = double>
+	template<int Dimension = 3, typename Numeric = double>
 	using Vector = PointVector<Dimension, Numeric>;
 	
 	template<typename Numeric = double>
