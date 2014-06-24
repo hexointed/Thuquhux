@@ -50,7 +50,7 @@ int main (){
 	decltype(loop_op) op[4] = {loop_op_phys, loop_op_npc, loop_op_csg, loop_op_terrain};
 	
 	int mode = 0;
-	std::cout<<"Please enter a number: 0 1 or 2\n";
+	std::cout<<"Please enter a number: 0, 1, 2 or 3\n";
 	std::cin >> mode;
 	
 	switch(mode){
@@ -68,9 +68,12 @@ int main (){
 		"tap U to unite the right box with the left, the new object can be rotated "<<
 		"with W,A,S,D and SPACEBAR.\n";
 		break;
-	
+	case 3 :
+		std::cout<<"Terrain generation, written by Elias";
+		break;
 	default :
 		std::cout<<"Faulty input. Program will now terminate.\n";
+		std::exit(0);
 		break;
 	}
 	
