@@ -69,7 +69,7 @@ int main (){
 		"with W,A,S,D and SPACEBAR.\n";
 		break;
 	case 3 :
-		std::cout<<"Terrain generation, written by Elias";
+		std::cout<<"Terrain generation, written by Elias\n";
 		break;
 	default :
 		std::cout<<"Faulty input. Program will now terminate.\n";

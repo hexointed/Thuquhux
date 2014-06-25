@@ -10,9 +10,12 @@
 
 using namespace Terrain;
 
+ScatterTree::ScatterTree():
+	top_node(*new Node())
+{}
+
 ScatterTree::ScatterTree(ScatterProp& p):
-	top_node(*new Node(p)),
-	prop(p)
+	top_node(*new Node(p))
 {}
 
 int ScatterTree::size(){
@@ -35,6 +38,16 @@ ScatterTree::Node& ScatterTree::top(){
  * ScatterTree::Node files below.
  */
 
+ScatterTree::Node::Node():
+	position({0,0,0}),
+	weight(0)
+{}
+
+ScatterTree::Node::Node(Geometry::Vector<> p, double w):
+	position(p),
+	weight(w)
+{}
+
 ScatterTree::Node::Node(ScatterProp& p, int depth, Node* parent):
 	position(p.position()),
 	weight(p.weight()),
@@ -52,6 +65,18 @@ ScatterTree::Node::Node(ScatterProp& p, int depth, Node* parent):
 		p.set_parent(*this);
 		l = new Node(p, depth+1, this);
 		p.set_depth(depth);
+	}
+}
+
+ScatterTree::Node::Node(const Node& n):
+	position(n.position),
+	weight(n.weight)
+{
+	if(n.l){
+		l = new Node(*n.l);
+	}
+	if(n.r){
+		r = new Node(*n.r);
 	}
 }
 
@@ -91,6 +116,28 @@ ScatterTree::Node& ScatterTree::Node::up(){
 		throw u;
 	}
 	return *u;
+}
+
+void ScatterTree::Node::push_left(Node n){
+	if(l){
+		throw l;
+	}
+	l = new Node(n);
+}
+
+void ScatterTree::Node::push_right(Node n){
+	if(r){
+		throw r;
+	}
+	r = new Node(n);
+}
+
+void ScatterTree::Node::erase_left(){
+	delete l;
+}
+
+void ScatterTree::Node::erase_right(){
+	delete r;
 }
 
 /*

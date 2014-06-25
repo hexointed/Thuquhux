@@ -35,7 +35,6 @@ namespace Terrain{
 		
 	private:
 		Node& top_node;
-		ScatterProp& prop;
 		
 	public:
 		int size();
@@ -64,10 +63,12 @@ namespace Terrain{
 	class ScatterTree::Node{
 		friend class ScatterTree;
 	private:
+		Node();
+		Node(Geometry::Vector<> p, double w);
 		Node(ScatterProp& p, int depth = 0, Node* parent = nullptr);
 		
 	public:
-		Node(const Node&) = default;
+		Node(const Node&);
 		Node(Node&&) = default;
 		
 		~Node();
@@ -80,7 +81,7 @@ namespace Terrain{
 		Node *l, *r, *u;
 		
 	public:
-		Node& operator=(const Node&) = delete;
+		Node& operator=(const Node&);
 		Node& operator=(Node&&) = default;
 		
 		bool splits();	//both right and left valid
@@ -89,10 +90,15 @@ namespace Terrain{
 		
 		int children();
 		
-		/* These throw nullptr and nullptr if left or right does not exist, respectivly */
+		/* These throw nullptr if left, right or up do not exist. */
 		Node& left();
 		Node& right();
 		Node& up();
+		
+		void push_left(Node);
+		void push_right(Node);
+		void erase_left();
+		void erase_right();
 		
 		template<typename Functor>
 		void foreach(Functor f);
