@@ -11,8 +11,6 @@
 #ifndef POLYTOPE_CPP
 #define POLYTOPE_CPP
 
-#include "PointVector.h"
-
 template<int N_vertecies, typename Vertex_type = PointVector<3, double>>
 class Polytope{
 protected:

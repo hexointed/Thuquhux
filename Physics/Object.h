@@ -8,7 +8,7 @@
 #ifndef PHYSICS_OBJECT_H
 #define	PHYSICS_OBJECT_H
 
-#include "../Geometry/PointVector.h"
+#include "../Geometry/Geometry.h"
 #include "Material.h"
 #include "../Geometry/Surface.h"
 #include "PhysHandler.h"
