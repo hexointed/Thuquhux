@@ -1,11 +1,11 @@
-/* 
+/*
  * File:   Geometry/Surface.h
  * Author: Elias Forsberg
  *
  * Created on April 24, 2013, 4:42 PM
  *
  * Surface is used to represent complex 3-dimensional shapes using a
- * Triangle_Mesh. It also supports a few higher level operations as volume 
+ * Triangle_Mesh. It also supports a few higher level operations as volume
  * calculation and constructive solid geometry.
  */
 
@@ -63,8 +63,18 @@ namespace Geometry{
 		
 		void rotate(Geometry::Vector<> axis, double angle);
 		void drawMesh();
+		
+	private:
 		template<typename Functor>
-		void calculate_mesh(Functor pfunc);
+		class Finder;
+		
+		template<typename Functor>
+		void calculate_mesh(Functor f);
+		
+		template<typename Functor>
+		void calculate_2d(Functor f);
+		template<typename Functor>
+		void calculate_3d(Functor f);
 		
 	public: //This should change.
 		Geometry::Triangle_Mesh mesh;
