@@ -27,6 +27,7 @@ namespace Geometry{
 		std::vector<Triangle> split(Geometry::Vector<> pos, Geometry::Vector<> normal) const;
 		
 		Geometry::Vector<> normal() const;
+		double area() const;
 		void draw();
 	};
 }

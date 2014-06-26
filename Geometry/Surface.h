@@ -30,10 +30,10 @@ namespace Geometry{
 		friend class ::Graphics::DrawHandler;
 	public:
 		Surface() = default;
-		Surface(const Surface&);
+		Surface(const Surface&) = default;
 		Surface(Geometry::Vector<> pos);
 		template<typename Functor>
-		Surface(Functor f, Geometry::Vector<> pos);
+		Surface(Functor f, Geometry::Vector<> pos, int detail = 10);
 		virtual ~Surface();
 		
 		static Surface unite(Surface a, Surface b);
@@ -41,25 +41,20 @@ namespace Geometry{
 		static Surface differatiate(Surface a, Surface b);
 		
 		void Unite(Surface a);
-		void Intersect(Surface a);
-		void Complement(Surface a);
-		void Differatiate(Surface a);
 		
 		Surface& operator=(const Surface& orig) = default;
 		
-		bool is_equal_to(const Surface& v);
 		bool is_subset_of(const Surface& v);
 		bool is_superset_of(const Surface& v);
 		bool isIntersecting(Surface& v);
 		
 		std::pair<Geometry::Vector<>,Geometry::Vector<>> collision_data(Surface& v);
 		
-		double distance_between(const Surface& v);
+		double distance_from(const Surface& v);
 		bool pointIsWithin(Geometry::Vector<> p);
-		bool lineIsWithin(Geometry::Vector<> p);
 		
-		double getVolume();
-		double getSurfaceArea();
+		double volume();
+		double area();
 		
 		void rotate(Geometry::Vector<> axis, double angle);
 		void drawMesh();
@@ -76,16 +71,13 @@ namespace Geometry{
 		template<typename Functor>
 		void calculate_3d(Functor f);
 		
-	public: //This should change.
 		Geometry::Triangle_Mesh mesh;
+		int detail;
 		
-	private:
-		int mesh_detail;
-		int mesh_length;
-		
-		bool prop_updated;
-		double volume;
-		
+		mutable bool prop_upd_volume;
+		mutable double prop_volume;
+		mutable bool prop_upd_area;
+		mutable double prop_area;
 	public:
 		Geometry::Vector<> bound_box[2];
 		Geometry::Vector<> position;

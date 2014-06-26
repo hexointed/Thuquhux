@@ -143,6 +143,10 @@ Vector<> Triangle::normal() const {
 	return Vector<>::mul_cross(vertecies[1] - vertecies[0], vertecies[2] - vertecies[0]);
 }
 
+double Triangle::area() const {
+	return 1;
+}
+
 void Triangle::draw(){
 	glBegin(GL_TRIANGLES);
 		glVertex3dv((double*)&vertecies[0]);

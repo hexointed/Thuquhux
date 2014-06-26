@@ -1,10 +1,10 @@
-/* 
- * File:   Paramertic_Surface.cpp
+/*
+ * File:   Geometry/Surface.cpp
  * Author: Elias Forsberg
- * 
+ *
  * Created on April 24, 2013, 4:42 PM
  */
- 
+
 #include "Geometry.h"
 #include "Surface.h"
 #include <math.h>
@@ -20,19 +20,12 @@ using Geometry::Vector;
 
 double PI = 3.14159265358979;
 
-Surface::Surface(const Surface& orig):
-	mesh{orig.mesh},
-	mesh_detail{orig.mesh_detail},
-	mesh_length{orig.mesh_length},
-	prop_updated{orig.prop_updated},
-	volume{orig.volume},
-	bound_box{orig.bound_box[0], orig.bound_box[1]},
-	position{orig.position}
-{}
-
 Surface::Surface(Vector<> pos):
-	mesh_detail{10},
-	mesh_length{mesh_detail*mesh_detail*2},
+	detail{10},
+	prop_upd_volume{false},
+	prop_volume{0},
+	prop_upd_area{false},
+	prop_area{0},
 	bound_box{{0,0,0},{0,0,0}},
 	position{pos}
 {}
@@ -208,6 +201,10 @@ std::pair<Vector<>, Vector<>> Surface::collision_data(Surface& v){
 	return result;
 }
 
+double Surface::distance_from(const Surface& v){
+	return (position - v.position).magnitude();
+}
+
 bool Surface::pointIsWithin(Vector<> p){
 	if(p.is_min_comp(bound_box[0]) || p.is_max_comp(bound_box[1]))
 		return false;
@@ -231,6 +228,39 @@ bool Surface::pointIsWithin(Vector<> p){
 			return !state;
 	}
 	return false;
+}
+
+double Surface::volume(){
+	if(prop_upd_volume){
+		return prop_volume;
+	}
+	prop_volume = 0.0;
+	Geometry::Vector<>test_pos = bound_box[0];
+	Geometry::Vector<>step = (bound_box[1] - bound_box[0])/double(detail);
+	double unit_volume = step[0] * step[1] * step[2];
+	for(; test_pos[0] < bound_box[1][0]; test_pos[0] += step[0]){
+		for(; test_pos[1] < bound_box[1][1]; test_pos[1] += step[1]){
+			for(; test_pos[2] < bound_box[1][2]; test_pos[2] += step[2]){
+				if(pointIsWithin(test_pos)){
+					prop_volume += unit_volume;
+				}
+			}
+		}
+	}
+	prop_upd_volume = true;
+	return prop_volume;
+};
+
+double Surface::area(){
+	if(prop_upd_area){
+		return prop_area;
+	}
+	prop_area = 0.0;
+	for(Triangle t : mesh){
+		prop_area += t.area();
+	}
+	prop_upd_area = true;
+	return prop_area;
 }
 
 Vector<> Geometry::def_param_axis_func(Vector<2> params){
