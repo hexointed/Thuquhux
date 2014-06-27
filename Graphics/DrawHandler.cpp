@@ -58,17 +58,34 @@ void DrawHandler::draw(Geometry::Surface& p){
 	glPopMatrix();
 }
 
+namespace {
+	void draw_node(Terrain::ScatterTree::Node& n){
+		try{
+			auto& pos = n.left().position;
+			glVertex3d(n.position[0], n.position[1], n.position[2]);
+			glVertex3d(pos[0], pos[1], pos[2]);
+			draw_node(n.left());
+		}catch(...){}
+		try{
+			auto& pos = n.right().position;
+			glVertex3d(n.position[0], n.position[1], n.position[2]);
+			glVertex3d(pos[0], pos[1], pos[2]);
+			draw_node(n.right());
+		}catch(...){}
+	}
+}
+
 void DrawHandler::draw(Terrain::ScatterTree& t){
-	glScalef(0.3, 0.05, 0.3);
-	glTranslatef(0, 0, -3.0);
-
-	auto draw_n = [](Geometry::Vector<>& pos, double&){
-		glVertex3d(pos[0], pos[1], pos[2]);
-	};
-
-	glBegin(GL_POINTS);
-		t.foreach(draw_n);
+	glScalef(0.4, 0.1, 0.4);
+	glTranslatef(0, -1.0, -3.0);
+	
+	glPushMatrix();
+	glRotatef(glfwGetTime()*10.0, 0, 1, 0);
+	
+	glBegin(GL_LINES);
+		draw_node(t.top());
 	glEnd();
+	glPopMatrix();
 }
 
 void DrawHandler::redisplay_window(){
