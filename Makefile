@@ -30,13 +30,14 @@ Physics/Object \
 Physics/Material \
 Physics/PhysHandler \
 Terrain/TerrainGenerator \
-Terrain/Simplexnoise \
 Terrain/ScatterProp \
+Utility/Simplexnoise \
 
 #Classes with template methods
 CLT = \
 Geometry/Surface \
 Terrain/ScatterTree \
+Utility/Random \
 
 #Template Classes
 TCL = \
