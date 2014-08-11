@@ -5,7 +5,7 @@
  * Created on April 7, 2013, 7:48 PM
  */
 
-#include "Simplexnoise.h"
+#include "../Utility/Simplexnoise.h"
 #include "TerrainGenerator.h"
 #include <math.h>
 #include <iostream>
