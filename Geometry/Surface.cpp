@@ -241,7 +241,7 @@ Vector<> Geometry::def_param_axis_func(Vector<2> params){
 	return Vector<>(arr);
 }
 
-namespace{
+namespace {
 	void rotate_point(Vector<>& point, Vector<> axis, double angle){
 		axis.make_unit();
 		const Vector<> r1{cos(angle) + axis.getdx()*axis.getdx()*(1 - cos(angle)),
@@ -254,9 +254,9 @@ namespace{
 		                 axis.getdz()*axis.getdy()*(1 - cos(angle)) + axis.getdx()*sin(angle),
 		                 cos(angle) + axis.getdz()*axis.getdz()*(1 - cos(angle))};
 		const Vector<> tmp = point;
-		point = {Vector<>::mul_comp(r1, tmp).sum_comp(),
-		         Vector<>::mul_comp(r2, tmp).sum_comp(),
-		         Vector<>::mul_comp(r3, tmp).sum_comp()};
+		point = {Vector<>::mul_dot(r1, tmp),
+		         Vector<>::mul_dot(r2, tmp),
+		         Vector<>::mul_dot(r3, tmp)};
 	}
 }
 
