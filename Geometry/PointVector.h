@@ -145,6 +145,15 @@ public:
 	static Numeric taxicab_distance(PointVector p, PointVector q);
 	
 	/*
+	 * rotate rotates the vector around the line which has a direction of axis and 
+	 * passes through origo angle angles (radians). This is only implemented for 3D
+	 * vectors.
+	 */
+	
+	PointVector& rotate(Numeric angle, PointVector axis);
+	static PointVector rotate(PointVector p, Numeric angle, PointVector axis);
+	
+	/*
 	 * Gerneral composant-wise unary and binary operator for user-defined operations.
 	 */
 	

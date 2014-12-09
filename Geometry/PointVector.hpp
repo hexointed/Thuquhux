@@ -415,6 +415,25 @@ Numeric PointVector<Dim, Numeric>::taxicab_distance(PointVector p, PointVector q
 }
 
 template<int Dim, typename Numeric>
+PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::rotate(Numeric angle, PointVector<Dim, Numeric> axis) {
+	static_assert(Dim == 3, "rotate only implemented for 3D vectors.");
+	axis.make_unit();
+	const PointVector<3, Numeric> r1{cos(angle) + axis.getdx()*axis.getdx()*(1 - cos(angle)),
+	                  axis.getdx()*axis.getdy()*(1 - cos(angle)) - axis.getdz()*sin(angle),
+	                  axis.getdx()*axis.getdz()*(1 - cos(angle)) + axis.getdy()*sin(angle)};
+	const PointVector<3, Numeric> r2{axis.getdy()*axis.getdx()*(1 - cos(angle)) + axis.getdz()*sin(angle),
+	                  cos(angle) + axis.getdy()*axis.getdy()*(1 - cos(angle)),
+	                  axis.getdy()*axis.getdz()*(1 - cos(angle)) - axis.getdx()*sin(angle)};
+	const PointVector<3, Numeric> r3{axis.getdz()*axis.getdx()*(1 - cos(angle)) - axis.getdy()*sin(angle),
+	                  axis.getdz()*axis.getdy()*(1 - cos(angle)) + axis.getdx()*sin(angle),
+	                  cos(angle) + axis.getdz()*axis.getdz()*(1 - cos(angle))};
+	*this = {PointVector<3, Numeric>::mul_dot(r1, *this),
+	         PointVector<3, Numeric>::mul_dot(r2, *this),
+	         PointVector<3, Numeric>::mul_dot(r3, *this)};
+	return *this;
+}
+
+template<int Dim, typename Numeric>
 PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::op_comp(std::function<Numeric(Numeric)> op){
 	for(Numeric& n : comp){
 		n = op(n);
