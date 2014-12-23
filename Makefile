@@ -8,7 +8,7 @@ CC = clang++
 
 #Flags
 ERRFLAGS = -pedantic -Wall -Wextra -Wpointer-arith -Wcast-qual -fstrict-overflow -Wstrict-overflow=3
-CFLAGS = -c -std=c++0x -g $(ERRFLAGS)
+CFLAGS = -c -x c++ -std=c++11 -g $(ERRFLAGS)
 
 #Linked libraries
 LIBS = -lGL -lGLU -lGLEW -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi -lm
@@ -91,4 +91,4 @@ $(foreach class,$(TCL),$(eval $(call PROGRAM_TCL,$(class))))
 	
 clean:
 	@echo cleaning up
-	@- rm $(addsuffix .o,$(SRC) $(CLS) $(CLT)) $(addsuffix .h.gch,$(TCL)) 2> /dev/null
+	@- rm -f $(addsuffix .o,$(SRC) $(CLS) $(CLT)) $(addsuffix .h.gch,$(TCL))
