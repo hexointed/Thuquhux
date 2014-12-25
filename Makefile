@@ -17,8 +17,14 @@ LIBS = -lGL -lGLU -lGLEW -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi -lm
 EXECUTABLE = ./$(PROJ).elf
 
 #Scource code
-SRC = main \
-Graphics/Shaders
+SRC = \
+main \
+Graphics/Shaders \
+
+#Header files
+HDR = \
+Geometry/Geometry \
+Geometry/Vertex \
 
 #Classes
 CLS = \
@@ -45,7 +51,7 @@ Geometry/PointVector
 
 all: $(EXECUTABLE)
 
-$(EXECUTABLE): $(addsuffix .h.gch,$(TCL)) $(addsuffix .o,$(CLS) $(SRC) $(CLT))
+$(EXECUTABLE): $(addsuffix .h.gch,$(HDR)) $(addsuffix .h.gch,$(TCL)) $(addsuffix .o,$(CLS) $(SRC) $(CLT))
 	@echo linking with $(LIBS)
 	@$(CC) $(addsuffix .o,$(CLS) $(SRC) $(CLT)) $(LIBS) -o $(EXECUTABLE)
 	
@@ -88,7 +94,17 @@ $(1).h.gch: $(1).hpp $(1).h
 endef
 
 $(foreach class,$(TCL),$(eval $(call PROGRAM_TCL,$(class))))
+
+define PROGRAM_HDR
+
+$(1).h.gch: $(1).h
+	@echo precompling header $(1)
+	@$(CC) $(CFLAGS) $(1).h
+
+endef
+
+$(foreach class,$(HDR),$(eval $(call PROGRAM_HDR,$(class))))
 	
 clean:
 	@echo cleaning up
-	@- rm $(addsuffix .o,$(SRC) $(CLS) $(CLT)) $(addsuffix .h.gch,$(TCL)) 2> /dev/null
+	@- rm $(addsuffix .o,$(SRC) $(CLS) $(CLT)) $(addsuffix .h.gch,$(TCL) $(HDR)) 2> /dev/null

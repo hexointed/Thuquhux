@@ -28,5 +28,6 @@ namespace Geometry{
 }
 
 #include "Triangle.h"
+#include "Vertex.h"
 
 #endif /* GEOMETRY_H */

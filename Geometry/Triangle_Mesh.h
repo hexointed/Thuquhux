@@ -24,7 +24,7 @@ namespace Geometry{
 	 * etc.)
 	 */
 	
-	class Triangle_Mesh{
+	class Triangle_Mesh {
 	public:
 		class Element;
 		class Iterator;
@@ -34,23 +34,23 @@ namespace Geometry{
 		Triangle_Mesh(const Triangle_Mesh& orig) = default;
 		Triangle_Mesh(Triangle_Mesh&& orig) = default;
 		
-		Triangle_Mesh(std::vector<Geometry::Vector<>> p);
-		Triangle_Mesh(std::vector<Geometry::Vector<>> p, std::vector<int> i);
+		Triangle_Mesh(std::vector<Geometry::Vertex> p);
+		Triangle_Mesh(std::vector<Geometry::Vertex> p, std::vector<int> i);
 		
 		Triangle_Mesh& operator=(const Triangle_Mesh& orig) = default;
 		Triangle_Mesh& operator=(Triangle_Mesh&& orig) = default;
 		
 	private:
-		std::vector<Geometry::Vector<>> vertex;
+		std::vector<Geometry::Vertex> vertex;
 		std::vector<int> index;
 		
 	public:
 		size_t size() const;
 		
-		void add(std::vector<Geometry::Vector<>> p);
+		void add(std::vector<Geometry::Vertex> p);
 		void add(const Triangle_Mesh& t);
 		
-		std::vector<Geometry::Vector<>>& vertecies() {return vertex;}
+		std::vector<Geometry::Vertex>& vertecies() {return vertex;}
 		std::vector<int>& indices() {return index;}
 		
 		std::vector<Triangle> all_triangles();
@@ -73,7 +73,7 @@ namespace Geometry{
 		Triangle_Mesh& super;
 	public:
 		operator Geometry::Triangle () const;
-		Geometry::Vector<>& operator[](int i);
+		Geometry::Vertex& operator[](int i);
 	};
 	
 	/*

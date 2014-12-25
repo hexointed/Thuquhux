@@ -71,8 +71,8 @@ namespace{
 }
 
 Surface Surface::unite(Surface a, Surface b){
-	for(Vector<>& v : b.mesh.vertecies()){
-		v += b.position - a.position;
+	for(auto& v : b.mesh.vertecies()){
+		v.position += b.position - a.position;
 	}
 	Surface ret(a.position + Vector<>{5,0,0});
 	auto a_test = [&](Triangle t){
@@ -103,8 +103,8 @@ Surface Surface::unite(Surface a, Surface b){
 }
 
 Surface Surface::intersect(Surface a, Surface b){
-	for(Vector<>& v : b.mesh.vertecies()){
-		v += b.position - a.position;
+	for(auto& v : b.mesh.vertecies()){
+		v.position += b.position - a.position;
 	}
 	Surface ret(a.position + Vector<>{5,0,0});
 	auto a_test = [&](Triangle t){
@@ -139,8 +139,8 @@ void Surface::Unite(Surface a){
 	Vector<> rel_pos = a.position - position;
 	bound_box[0].set_min_comp(a.bound_box[0] + rel_pos);
 	bound_box[1].set_max_comp(a.bound_box[1] + rel_pos);
-	for(PointVector<>& v : a.mesh.vertecies()){
-		v += rel_pos;
+	for(auto& v : a.mesh.vertecies()){
+		v.position += rel_pos;
 	}
 	mesh.add(a.mesh);
 }
@@ -292,9 +292,9 @@ namespace{
 
 void Surface::rotate(Vector<> axis, double angle){
 	bound_box[0] = bound_box[1] = position;
-	for(Vector<>& p: mesh.vertecies()){
-		rotate_point(p, axis, angle);
-		bound_box[0].set_min_comp(p);
-		bound_box[1].set_max_comp(p);
+	for(auto& p: mesh.vertecies()){
+		rotate_point(p.position, axis, angle);
+		bound_box[0].set_min_comp(p.position);
+		bound_box[1].set_max_comp(p.position);
 	}
 }

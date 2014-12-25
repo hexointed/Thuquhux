@@ -72,7 +72,7 @@ void Geometry::Surface::calculate_mesh(Functor f){
 /*This method calculates all vertecies using a parametric function pfunc*/
 template<typename Functor>
 void Geometry::Surface::calculate_2d(Functor pfunc){
-	std::vector<Geometry::Vector<>> vertecies;
+	std::vector<Geometry::Vertex> vertecies;
 	vertecies.reserve(detail * detail);
 	for(double t = 0; t < 1; t += 1.0 / detail){
 		for(double u = 0; u < 1; u += 1.0 / detail){
