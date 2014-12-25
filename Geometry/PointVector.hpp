@@ -238,11 +238,7 @@ PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::mul(Numeric d){
 
 template<int Dim, typename Numeric>
 Numeric PointVector<Dim, Numeric>::mul_dot(PointVector<Dim, Numeric> p, PointVector<Dim, Numeric> q){
-	Numeric result = 0;
-	for(int i = 0; i < Dim; i++){
-		result += p.comp[i] * q.comp[i];
-	}
-	return result;
+	return p.mul_comp(q).sum_comp();
 }
 
 template<int Dim, typename Numeric>
