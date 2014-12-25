@@ -31,6 +31,9 @@ namespace Graphics{
 		void draw(Terrain::ScatterTree& t);
 		
 		void redisplay_window();
+	
+	private:
+		void draw_vertex(Geometry::Vector<> v);
 	};
 
 }

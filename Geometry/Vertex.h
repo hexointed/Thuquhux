@@ -17,10 +17,11 @@ namespace Geometry {
 	class Vertex {
 	public:
 		Vertex() = default;
-		Vertex(Geometry::Vector<> p) : position{p} {}
+		Vertex(Geometry::Vector<> p) : position{p}, pos_t{p} {}
 		
 	public:
 		Geometry::Vector<> position;
+		Geometry::Vector<> pos_t;
 		
 	public:
 		operator Geometry::Vector<> (){
