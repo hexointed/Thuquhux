@@ -41,7 +41,9 @@ Utility/Random \
 
 #Template Classes
 TCL = \
-Geometry/PointVector
+Geometry/PointVector \
+Geometry/Matrix \
+
 
 all: $(EXECUTABLE)
 
