@@ -45,8 +45,9 @@ DrawHandler::~DrawHandler(){
 	glfwDestroyWindow(window);
 }
 
-void DrawHandler::draw_vertex(Geometry::Vector<> v){
-	glVertex3d(v[0],v[1],v[2]);
+void DrawHandler::draw_vertex(Geometry::Vertex v){
+	glColor3d(v.pos_t[0],v.pos_t[1],v.pos_t[2]);
+	glVertex3d(v.position[0],v.position[1],v.position[2]);
 }
 
 void DrawHandler::draw(Geometry::Surface& p){
@@ -54,9 +55,9 @@ void DrawHandler::draw(Geometry::Surface& p){
 	glTranslated(p.position[0], p.position[1], p.position[2]);
 	glBegin(GL_TRIANGLES);
 	for(Geometry::Triangle_Mesh::Element t : p.mesh){
-		draw_vertex(t[0].position);
-		draw_vertex(t[1].position);
-		draw_vertex(t[2].position);
+		draw_vertex(t[0]);
+		draw_vertex(t[1]);
+		draw_vertex(t[2]);
 	}
 	glEnd();
 	glPopMatrix();
