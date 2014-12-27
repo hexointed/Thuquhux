@@ -33,7 +33,7 @@ namespace Graphics{
 		void redisplay_window();
 	
 	private:
-		void draw_vertex(Geometry::Vector<> v);
+		void draw_vertex(Geometry::Vertex v);
 	};
 
 }
