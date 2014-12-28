@@ -45,13 +45,9 @@ private:
     
 public:
 	/*
-	 * Returns composants of the PointVector<Dim>. 
-	 * x,y and z represent comp[0], comp[1] and comp[2], respectively. 
+	 * Returns composants of the PointVector<Dim>.
 	 */
 	Numeric get(int i) const;
-	Numeric getdx() const;
-	Numeric getdy() const;
-	Numeric getdz() const;
 	
 	Numeric& operator[](int i);
 	Numeric operator[](int i) const;
@@ -61,9 +57,6 @@ public:
 	Numeric sum_comp() const;
 	
 	void set(int i, Numeric d);
-	void setdx(Numeric d);
-	void setdy(Numeric d);
-	void setdz(Numeric d);
 	
 	/*
 	 * Some common arithmetic operations. There exist several versions of many

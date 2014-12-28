@@ -208,8 +208,8 @@ double Surface::distance_from(const Surface& v){
 bool Surface::pointIsWithin(Vector<> p){
 	if(p.is_min_comp(bound_box[0]) || p.is_max_comp(bound_box[1]))
 		return false;
-	Vector<> min {p.getdx(), p.getdy(), bound_box[0].getdz()};
-	Vector<> max {p.getdx(), p.getdy(), bound_box[1].getdz()};
+	Vector<> min {p[0], p[1], bound_box[0][2]};
+	Vector<> max {p[0], p[1], bound_box[1][2]};
 	Polygon<2> clip_line;
 	clip_line[0] = min;
 	clip_line[1] = max;
@@ -220,11 +220,11 @@ bool Surface::pointIsWithin(Vector<> p){
 			clips.push_back(tmp.second);
 	}
 	std::sort(clips.begin(), clips.end(), 
-	          [](Vector<> a, Vector<> b){return a.getdz()<b.getdz();});
+	          [](Vector<> a, Vector<> b){return a[2]<b[2];});
 	bool state = false;
 	for(Vector<> pos: clips){
 		state = !state;
-		if(pos.getdz() > p.getdz())
+		if(pos[2] > p[2])
 			return !state;
 	}
 	return false;
@@ -265,24 +265,24 @@ double Surface::area(){
 
 Vector<> Geometry::def_param_axis_func(Vector<2> params){
 	params.mul(2*PI);
-	double arr[3] = {cos(params.getdx())*(1 + 0.25*cos(params.getdy())),
-	                 sin(params.getdx())*(1 + 0.25*cos(params.getdy())),
-	                 0.25*sin(params.getdy())};
+	double arr[3] = {cos(params[0])*(1 + 0.25*cos(params[1])),
+	                 sin(params[0])*(1 + 0.25*cos(params[1])),
+	                 0.25*sin(params[1])};
 	return Vector<>(arr);
 }
 
 namespace{
 	void rotate_point(Vector<>& point, Vector<> axis, double angle){
 		axis.make_unit();
-		const Vector<> r1{cos(angle) + axis.getdx()*axis.getdx()*(1 - cos(angle)),
-		          axis.getdx()*axis.getdy()*(1 - cos(angle)) - axis.getdz()*sin(angle),
-		          axis.getdx()*axis.getdz()*(1 - cos(angle)) + axis.getdy()*sin(angle)};
-		const Vector<> r2{axis.getdy()*axis.getdx()*(1 - cos(angle)) + axis.getdz()*sin(angle),
-		          cos(angle) + axis.getdy()*axis.getdy()*(1 - cos(angle)),
-		          axis.getdy()*axis.getdz()*(1 - cos(angle)) - axis.getdx()*sin(angle)};
-		const Vector<> r3{axis.getdz()*axis.getdx()*(1 - cos(angle)) - axis.getdy()*sin(angle),
-		                 axis.getdz()*axis.getdy()*(1 - cos(angle)) + axis.getdx()*sin(angle),
-		                 cos(angle) + axis.getdz()*axis.getdz()*(1 - cos(angle))};
+		const Vector<> r1{cos(angle) + axis[0]*axis[0]*(1 - cos(angle)),
+		          axis[0]*axis[1]*(1 - cos(angle)) - axis[2]*sin(angle),
+		          axis[0]*axis[2]*(1 - cos(angle)) + axis[1]*sin(angle)};
+		const Vector<> r2{axis[1]*axis[0]*(1 - cos(angle)) + axis[2]*sin(angle),
+		          cos(angle) + axis[1]*axis[1]*(1 - cos(angle)),
+		          axis[1]*axis[2]*(1 - cos(angle)) - axis[0]*sin(angle)};
+		const Vector<> r3{axis[2]*axis[0]*(1 - cos(angle)) - axis[1]*sin(angle),
+		                 axis[2]*axis[1]*(1 - cos(angle)) + axis[0]*sin(angle),
+		                 cos(angle) + axis[2]*axis[2]*(1 - cos(angle))};
 		const Vector<> tmp = point;
 		point = {Vector<>::mul_comp(r1, tmp).sum_comp(),
 		         Vector<>::mul_comp(r2, tmp).sum_comp(),

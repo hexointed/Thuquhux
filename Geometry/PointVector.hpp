@@ -48,24 +48,6 @@ Numeric PointVector<Dim, Numeric>::get(int i) const{
 }
 
 template<int Dim, typename Numeric>
-Numeric PointVector<Dim, Numeric>::getdx() const{
-	static_assert(Dim >= 1, "This PointVector does not have an x-component");
-    return comp[0];
-}
-
-template<int Dim, typename Numeric>
-Numeric PointVector<Dim, Numeric>::getdy() const{
-    static_assert(Dim >= 2, "This PointVector does not have a y-component");
-    return comp[1];
-}
-
-template<int Dim, typename Numeric>
-Numeric PointVector<Dim, Numeric>::getdz() const{
-    static_assert(Dim >= 3, "This PointVector does not have a z-component");
-    return comp[2];
-}
-
-template<int Dim, typename Numeric>
 Numeric PointVector<Dim, Numeric>::getMagnitude() const{
 	Numeric mag = 0;
 	for(int i = 0; i < Dim; i++){
@@ -106,24 +88,6 @@ template<int Dim, typename Numeric>
 void PointVector<Dim, Numeric>::set(int i, Numeric d){
 	assert(i <= Dim);
 	comp[i] = d;
-}
-
-template<int Dim, typename Numeric>
-void PointVector<Dim, Numeric>::setdx(Numeric d){
-	static_assert(Dim >= 1, "This PointVector does not have an x-component");
-	comp[0] = d;
-}
-
-template<int Dim, typename Numeric>
-void PointVector<Dim, Numeric>::setdy(Numeric d){
-	static_assert(Dim >= 2, "This PointVector does not have a y-component");
-	comp[1] = d;
-}
-
-template<int Dim, typename Numeric>
-void PointVector<Dim, Numeric>::setdz(Numeric d){
-	static_assert(Dim >= 3, "This PointVector does not have a z-component");
-	comp[2] = d;
 }
 
 template<int Dim, typename Numeric>
