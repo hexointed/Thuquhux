@@ -48,6 +48,24 @@ Matrix<M, N, Numeric>& Matrix<M, N, Numeric>::transpose() {
 	return *this;
 }
 
+template<int M, int N, typename Numeric>
+Matrix<M, N, Numeric> Matrix<M, N, Numeric>::transpose(Matrix<M, N, Numeric> m){
+	return m.transpose();
+}
+
+template<int M, int N, typename Numeric>
+template<int O>
+Matrix<M,O,Numeric> Matrix<M,N,Numeric>::operator* (Matrix<N,O,Numeric> m) {
+	Matrix<M,O,Numeric> res;
+	auto t = m.transpose();
+	for(int i = 0; i < M; i++){
+		for(int j = 0; j < O; j++){
+			res.comp[i][j] = Base_t::Numeric_type::mul_dot(comp[i], m.comp[j]);
+		}
+	}
+	return res;
+}
+
 template<int P, int Q, typename T>
 std::ostream& operator << (std::ostream& out, Matrix<P,Q,T> m){
 	out << m.comp;

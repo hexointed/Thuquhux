@@ -34,7 +34,8 @@ namespace Geometry {
 		Matrix& transpose();
 		static Matrix transpose(Matrix m);
 		
-		operator Vector<M,Numeric> ();
+		template<int O>
+		Matrix<M,O,Numeric> operator * (Matrix<N,O,Numeric> r);
 		
 	};
 
