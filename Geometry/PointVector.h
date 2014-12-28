@@ -17,7 +17,7 @@
 #include <initializer_list>
 
 /*
- * Dim is the dimension of the PointVector, and Numberic is the type used to represent
+ * Dim is the dimension of the PointVector, and Numeric is the type used to represent
  * the composants. Numeric should overload all arithmetic and comparison operators, 
  * as well as = . It should also have a default constructor.
  */
@@ -42,6 +42,9 @@ public:
 private:
 	Numeric comp[Dim];
 	class Cross_product;
+
+public:
+	using Iterator = Numeric*;
     
 public:
 	/*
@@ -185,6 +188,18 @@ private:
 	private:
 		PointVector q, p;
 	};
+	
+public:
+	/*
+	 * For use with range-based for-loops.
+	 */
+	Iterator begin () {
+		return comp;
+	}
+	
+	Iterator end () {
+		return comp + Dim;
+	}
 	
 };
 
