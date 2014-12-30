@@ -45,7 +45,7 @@ Geometry/PointVector
 
 all: $(EXECUTABLE)
 
-$(EXECUTABLE): $(addsuffix .h.gch,$(TCL)) $(addsuffix .o,$(CLS) $(SRC) $(CLT))
+$(EXECUTABLE): $(addsuffix .h.gch,$(HDR)) $(addsuffix .h.gch,$(TCL)) $(addsuffix .o,$(CLS) $(SRC) $(CLT))
 	@echo linking with $(LIBS)
 	@$(CC) $(addsuffix .o,$(CLS) $(SRC) $(CLT)) $(LIBS) -o $(EXECUTABLE)
 	

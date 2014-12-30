@@ -78,6 +78,7 @@ int main (){
 	loop_init = in[mode];
 	loop_op = op[mode];
 	
+	glfwSetMouseButtonCallback(canvas.window, mouse_fn);
 	demo_loop(canvas.window);
 	
 	glfwTerminate();
@@ -119,7 +120,7 @@ void mouse_fn_phys(GLFWwindow* w, int , int b, int ){
 	if(b == GLFW_RELEASE)
 		return;
 	auto pos = easy_mouse(w);
-	
+	std::cout<<"AA";
 	Physics::Object::create();
 	Physics::Object::default_handler.physObjects.back().position = {pos.getdx(), pos.getdy(), 0};
 	Physics::Object::default_handler.physObjects.back().velocity() = {0,0,1.3};
