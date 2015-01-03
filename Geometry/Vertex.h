@@ -17,7 +17,7 @@ namespace Geometry {
 	class Vertex {
 	public:
 		Vertex() = default;
-		Vertex(Geometry::Vector<> p) : position{p} {}
+		Vertex(Geometry::Vector<> p) : position(p) {}
 		
 	public:
 		Geometry::Vector<> position;

@@ -27,7 +27,7 @@ Surface::Surface(Vector<> pos):
 	prop_upd_area{false},
 	prop_area{0},
 	bound_box{{0,0,0},{0,0,0}},
-	position{pos}
+	position(pos)
 {}
 
 Surface::~Surface() {
@@ -265,10 +265,10 @@ double Surface::area(){
 
 Vector<> Geometry::def_param_axis_func(Vector<2> params){
 	params.mul(2*PI);
-	double arr[3] = {cos(params[0])*(1 + 0.25*cos(params[1])),
-	                 sin(params[0])*(1 + 0.25*cos(params[1])),
-	                 0.25*sin(params[1])};
-	return Vector<>(arr);
+	Vector<> arr = {cos(params[0])*(1 + 0.25*cos(params[1])),
+	                sin(params[0])*(1 + 0.25*cos(params[1])),
+	                0.25*sin(params[1])};
+	return arr;
 }
 
 namespace{

@@ -7,7 +7,7 @@ PROJ = thuquhux
 CC = clang++
 
 #Flags
-ERRFLAGS = -pedantic -Wall -Wextra -Wpointer-arith -Wcast-qual -fstrict-overflow -Wstrict-overflow=3
+ERRFLAGS = -pedantic -Wall -Wextra -Wpointer-arith -Wcast-qual -fstrict-overflow -Wstrict-overflow=3 -Wno-missing-braces
 CFLAGS = -c -std=c++0x -g $(ERRFLAGS)
 
 #Linked libraries

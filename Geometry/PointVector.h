@@ -25,27 +25,16 @@
 template<int Dim = 3, typename Numeric = double>
 class PointVector{
 public:
-    using Numeric_type = Numeric;
-
-    template<int D2, typename N>
-    friend class PointVector;
-    
-public:
-	PointVector();
-	explicit PointVector(Numeric composants[Dim]);
+	PointVector() = default;
 	
-	template<int D2>
-	explicit PointVector(PointVector<D2> orig);
-	
-	PointVector(std::initializer_list<Numeric> list);
-    
-private:
 	Numeric comp[Dim];
-	class Cross_product;
-
-public:
+	
+	using Numeric_type = Numeric;
 	using Iterator = Numeric*;
-    
+
+private:
+	class Cross_product;
+		
 public:
 	/*
 	 * Returns composants of the PointVector<Dim>.

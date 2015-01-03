@@ -1,5 +1,5 @@
 /* 
- * File:   PointVector.cpp
+ * File:   PointVector.hpp
  * Author: Elias Forsberg
  *
  * Created on December 26, 2012, 4:20 PM
@@ -12,34 +12,6 @@
 #include <math.h>
 #include <cassert>
 #include <stdexcept>
-
-template<int Dim, typename Numeric>
-PointVector<Dim, Numeric>::PointVector():
-	comp {}
-{}
-
-template<int Dim, typename Numeric>
-PointVector<Dim, Numeric>::PointVector(Numeric composants[Dim]){
-	std::copy(composants, composants+Dim, comp);
-}
-
-template<int Dim, typename Numeric>
-template<int D2>
-PointVector<Dim, Numeric>::PointVector(PointVector<D2> orig):
-	comp {}
-{
-	constexpr int m = (Dim < D2) ? Dim : D2;
-	std::copy(orig.comp, orig.comp + m, comp);
-}
-
-template<int Dim, typename Numeric>
-PointVector<Dim, Numeric>::PointVector(std::initializer_list<Numeric> list){
-	int i = 0;
-	for(Numeric n : list){
-		comp[i] = n;
-		i++;
-	}
-}
 
 template<int Dim, typename Numeric>
 Numeric PointVector<Dim, Numeric>::get(int i) const{

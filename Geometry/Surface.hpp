@@ -30,7 +30,7 @@ Geometry::Surface::Surface(Functor f, Geometry::Vector<> pos, int d):
 	prop_upd_area{false},
 	prop_area{0},
 	bound_box{{0,0,0}, {0,0,0}},
-	position{pos}
+	position(pos)
 {
 	calculate_mesh(f);
 }
