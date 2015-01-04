@@ -13,27 +13,33 @@
 using Geometry::Matrix;
 using Geometry::Vector;
 
-template<int M, int N, typename Numeric>
-Matrix<M, N, Numeric>::Matrix():
-	comp{}
-{}
-
-template<int M, int N, typename Numeric>
-Matrix<M, N, Numeric>::Matrix(std::initializer_list<Vector<N, Numeric>> list) {
-	int i = 0;
-	for(auto n : list){
-		comp[i] = n;
-		i++;
-	}
+template<int M, int N, typename Num>
+typename Matrix<M,N,Num>::Row_t& Matrix<M,N,Num>::operator [] (int i) {
+	return _[i];
 }
 
-template<int M, int N, typename Numeric>
-Matrix<M, N, Numeric>::Matrix (std::initializer_list<std::initializer_list<Numeric>> list) {
-	int i = 0;
-	for(auto a : list){
-		comp[i] = Vector<N, Numeric>(a);
-		i++;
+template<int M, int N, typename Num>
+typename Matrix<M,N,Num>::Row_t Matrix<M,N,Num>::operator [] (int i) const {
+	return _[i];
+}
+
+template<int M, int N, typename Num>
+typename Matrix<M,N,Num>::Row_t& Matrix<M,N,Num>::get_row (int i) {
+	return _[i];
+}
+
+template<int M, int N, typename Num>
+typename Matrix<M,N,Num>::Row_t Matrix<M,N,Num>::get_row (int i) const {
+	return _[i];
+}
+
+template<int M, int N, typename Num>
+typename Matrix<M,N,Num>::Col_t Matrix<M,N,Num>::get_col (int i) const {
+	Col_t res;
+	for(int k = 0; k < M; k++){
+		res[k] = (*this)[k][i];
 	}
+	return res;
 }
 
 template<int M, int N, typename Numeric>
@@ -41,7 +47,7 @@ Matrix<M, N, Numeric>& Matrix<M, N, Numeric>::transpose() {
 	Matrix<M, N, Numeric> res;
 	for(int m = 0; m < M; m++){
 		for(int n = 0; n < N; n++){
-			res.comp[m][n] = comp[n][m];
+			res[m][n] = (*this)[n][m];
 		}
 	}
 	(*this) = res;
@@ -60,7 +66,7 @@ Matrix<M,O,Numeric> Matrix<M,N,Numeric>::operator* (Matrix<N,O,Numeric> m) {
 	auto t = m.transpose();
 	for(int i = 0; i < M; i++){
 		for(int j = 0; j < O; j++){
-			res.comp[i][j] = Base_t::Numeric_type::mul_dot(comp[i], m.comp[j]);
+			res[i][j] = Base_t::Numeric_type::mul_dot((*this)[i], m[j]);
 		}
 	}
 	return res;
