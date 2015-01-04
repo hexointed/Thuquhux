@@ -32,7 +32,7 @@ Physics::Object::Object(Geometry::Surface surface, Geometry::Vector<> velocity):
 	Geometry::Surface(surface),
 	_material{},
 	_volume{1},
-	_velocity{velocity},
+	_velocity(velocity),
 	_rotation{{1,0,0},0}
 {
 

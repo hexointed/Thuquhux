@@ -21,9 +21,9 @@ NPC::NPC(){
 
 Geometry::Vector<> NPC::makePosition(){
 	srand(time(0));
-	position.setdx(RADIUS + rand() % 8);
-	position.setdy(RADIUS + rand() % 8);
-	position.setdz(RADIUS + rand() % 8);
+	position[0] = RADIUS + rand() % 8;
+	position[1] = RADIUS + rand() % 8;
+	position[2] = RADIUS + rand() % 8;
 
 	return position;
 }
@@ -73,48 +73,48 @@ Geometry::Vector<> NPC::updatePosition(double deltaT){
 	double sy = deltaT*velocityy;
 	double sz = deltaT*velocityz;
 
-		/*if(GRAVITY_CENTER.getdx() > position.getdx()){
+		/*if(GRAVITY_CENTER[0] > position[0]){
 			climbingAbilityx = infinity;
 		}
 	
 	
-		if(GRAVITY_CENTER.getdy() > position.getdy()){
+		if(GRAVITY_CENTER[1] > position[1]){
 			climbingAbilityy = infinity;
 		} 
 
 
-		if(GRAVITY_CENTER.getdz() > position.getdz()){
+		if(GRAVITY_CENTER[2] > position[2]){
 			climbingAbilityz = infinity;
 		}
 */
 		
-			if(position.getdx() != PLACEHOLDER_LINE_OF_TRAVEL[p].getdx()){
+			if(position[0] != PLACEHOLDER_LINE_OF_TRAVEL[p][0]){
 
 				if(sx<climbingAbilityx){
 
-					if(((PLACEHOLDER_LINE_OF_TRAVEL[p].getdx() - (position.getdx() + sx)) > 0) && PLACEHOLDER_LINE_OF_TRAVEL[p].getdx() - position.getdx() >0){
-						position.setdx(position.getdx() + sx);
+					if(((PLACEHOLDER_LINE_OF_TRAVEL[p][0] - (position[0] + sx)) > 0) && PLACEHOLDER_LINE_OF_TRAVEL[p][0] - position[0] >0){
+						position[0] = position[0] + sx;
 					}
 					
-					else if(((PLACEHOLDER_LINE_OF_TRAVEL[p].getdx() - (position.getdx() + sx)) < 0) && PLACEHOLDER_LINE_OF_TRAVEL[p].getdx() - position.getdx() <0){
-						position.setdx(position.getdx() - sx);
+					else if(((PLACEHOLDER_LINE_OF_TRAVEL[p][0] - (position[0] + sx)) < 0) && PLACEHOLDER_LINE_OF_TRAVEL[p][0] - position[0] <0){
+						position[0] = position[0] - sx;
 					}
 					
 
 					else{
-						position.setdx(PLACEHOLDER_LINE_OF_TRAVEL[p].getdx());
+						position[0] = PLACEHOLDER_LINE_OF_TRAVEL[p][0];
 
 					}
 				}
 		
 				else{
-					position.setdx(position.getdx());	
+					position[0] = position[0];	
 				}
 			
 			}
 			
 			else{
-				position.setdx(position.getdx());
+				position[0] = position[0];
 
 				if((p)<(signed)PLACEHOLDER_LINE_OF_TRAVEL.size()){
 					
@@ -125,31 +125,31 @@ Geometry::Vector<> NPC::updatePosition(double deltaT){
 			}
 			
 			
-			if(position.getdy() != PLACEHOLDER_LINE_OF_TRAVEL[q].getdy()){
+			if(position[1] != PLACEHOLDER_LINE_OF_TRAVEL[q][1]){
 
 				if(sy<climbingAbilityy){
 
-					if(((PLACEHOLDER_LINE_OF_TRAVEL[q].getdy() - (position.getdy() + sy)) > 0) && PLACEHOLDER_LINE_OF_TRAVEL[q].getdy() - position.getdy() >0){
-						position.setdy(position.getdy() + sy);
+					if(((PLACEHOLDER_LINE_OF_TRAVEL[q][1] - (position[1] + sy)) > 0) && PLACEHOLDER_LINE_OF_TRAVEL[q][1] - position[1] >0){
+						position[1] = position[1] + sy;
 					}
 
-					else if(((PLACEHOLDER_LINE_OF_TRAVEL[q].getdy() - (position.getdy() + sy)) < 0) && PLACEHOLDER_LINE_OF_TRAVEL[q].getdy() - position.getdy() <0){
-						position.setdy(position.getdy() - sy);
+					else if(((PLACEHOLDER_LINE_OF_TRAVEL[q][1] - (position[1] + sy)) < 0) && PLACEHOLDER_LINE_OF_TRAVEL[q][1] - position[1] <0){
+						position[1] = position[1] - sy;
 					}
 
 					else{
-						position.setdy(PLACEHOLDER_LINE_OF_TRAVEL[q].getdy());
+						position[1] = PLACEHOLDER_LINE_OF_TRAVEL[q][1];
 					}
 				}
 		
 				else{
-					position.setdy(position.getdy());	
+					position[1] = position[1];	
 				}
 			
 			}
 			
 			else{
-				position.setdy(position.getdy());
+				position[1] = position[1];
 
 				if((q)<(signed)PLACEHOLDER_LINE_OF_TRAVEL.size()){
 					
@@ -160,33 +160,33 @@ Geometry::Vector<> NPC::updatePosition(double deltaT){
 			}			
 		
 		
-			if(position.getdz() != PLACEHOLDER_LINE_OF_TRAVEL[r].getdz()){
+			if(position[2] != PLACEHOLDER_LINE_OF_TRAVEL[r][2]){
 
 				if(sz<climbingAbilityz){
 
-					if(((PLACEHOLDER_LINE_OF_TRAVEL[r].getdz() - (position.getdz() + sz)) > 0) && PLACEHOLDER_LINE_OF_TRAVEL[r].getdz() - position.getdz() >0){
-						position.setdz(position.getdz() + sz);
+					if(((PLACEHOLDER_LINE_OF_TRAVEL[r][2] - (position[2] + sz)) > 0) && PLACEHOLDER_LINE_OF_TRAVEL[r][2] - position[2] >0){
+						position[2] = position[2] + sz;
 					}
 
-					else if(((PLACEHOLDER_LINE_OF_TRAVEL[r].getdz() - (position.getdz() + sz)) < 0) && PLACEHOLDER_LINE_OF_TRAVEL[r].getdz() - position.getdz() <0){
-						position.setdz(position.getdz() - sz);
+					else if(((PLACEHOLDER_LINE_OF_TRAVEL[r][2] - (position[2] + sz)) < 0) && PLACEHOLDER_LINE_OF_TRAVEL[r][2] - position[2] <0){
+						position[2] = position[2] - sz;
 					}
 
 
 					else{
-						position.setdz(PLACEHOLDER_LINE_OF_TRAVEL[r].getdz());
+						position[2] = PLACEHOLDER_LINE_OF_TRAVEL[r][2];
 						r++; 
 					}
 				}
 		
 				else{
-					position.setdz(position.getdz());	
+					position[2] = position[2];	
 				}
 			
 			}
 			
 			else{
-				position.setdz(position.getdz());
+				position[2] = position[2];
 
 				if((r)<(signed)PLACEHOLDER_LINE_OF_TRAVEL.size()){
 					

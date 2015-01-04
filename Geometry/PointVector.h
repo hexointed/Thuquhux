@@ -17,7 +17,7 @@
 #include <initializer_list>
 
 /*
- * Dim is the dimension of the PointVector, and Numberic is the type used to represent
+ * Dim is the dimension of the PointVector, and Numeric is the type used to represent
  * the composants. Numeric should overload all arithmetic and comparison operators, 
  * as well as = . It should also have a default constructor.
  */
@@ -25,33 +25,21 @@
 template<int Dim = 3, typename Numeric = double>
 class PointVector{
 public:
-    using Numeric_type = Numeric;
-
-    template<int D2, typename N>
-    friend class PointVector;
-    
-public:
-	PointVector();
-	explicit PointVector(Numeric composants[Dim]);
+	PointVector() = default;
 	
-	template<int D2>
-	explicit PointVector(PointVector<D2> orig);
-	
-	PointVector(std::initializer_list<Numeric> list);
-    
-private:
 	Numeric comp[Dim];
+	
+	using Numeric_type = Numeric;
+	using Iterator = Numeric*;
+
+private:
 	class Cross_product;
-    
+		
 public:
 	/*
-	 * Returns composants of the PointVector<Dim>. 
-	 * x,y and z represent comp[0], comp[1] and comp[2], respectively. 
+	 * Returns composants of the PointVector<Dim>.
 	 */
 	Numeric get(int i) const;
-	Numeric getdx() const;
-	Numeric getdy() const;
-	Numeric getdz() const;
 	
 	Numeric& operator[](int i);
 	Numeric operator[](int i) const;
@@ -61,9 +49,6 @@ public:
 	Numeric sum_comp() const;
 	
 	void set(int i, Numeric d);
-	void setdx(Numeric d);
-	void setdy(Numeric d);
-	void setdz(Numeric d);
 	
 	/*
 	 * Some common arithmetic operations. There exist several versions of many
@@ -192,6 +177,18 @@ private:
 	private:
 		PointVector q, p;
 	};
+	
+public:
+	/*
+	 * For use with range-based for-loops.
+	 */
+	Iterator begin () {
+		return comp;
+	}
+	
+	Iterator end () {
+		return comp + Dim;
+	}
 	
 };
 

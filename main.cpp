@@ -121,7 +121,7 @@ void mouse_fn_phys(GLFWwindow* w, int , int b, int ){
 	auto pos = easy_mouse(w);
 	
 	Physics::Object::create();
-	Physics::Object::default_handler.physObjects.back().position = {pos.getdx(), pos.getdy(), 0};
+	Physics::Object::default_handler.physObjects.back().position = {pos[0], pos[1], 0};
 	Physics::Object::default_handler.physObjects.back().velocity() = {0,0,1.3};
 }
 
@@ -150,7 +150,7 @@ void mouse_fn_npc(GLFWwindow* w, int, int b, int){
 	if(b == GLFW_RELEASE)
 		return;
 	auto pos = easy_mouse(w);
-	PointVector<3> npc_pos{pos.getdx(), pos.getdy(), 5};
+	PointVector<3> npc_pos{pos[0], pos[1], 5};
 	npc_lt.push_back(npc_pos);
 }
 
