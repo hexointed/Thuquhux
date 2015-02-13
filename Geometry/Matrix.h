@@ -49,8 +49,8 @@ namespace Geometry {
 		
 		Col_t get_col(int i) const;
 		
-		Numeric& get(int i);
-		Numeric get(int i) const;
+		Numeric& get(int r, int c);
+		Numeric get(int r, int c) const;
 		
 		/*
 		 * Some common arithmetic operations.
@@ -70,7 +70,7 @@ namespace Geometry {
 		Matrix& mul (Numeric n);
 		Matrix& mul_comp (Matrix m);
 		static Matrix mul (Matrix l, Matrix r);
-		static Matrix mul (Numeric n, Matrix m);
+		static Matrix mul (Matrix m, Numeric n);
 		static Matrix mul_comp (Matrix l, Matrix r);
 		
 		Matrix& div (Numeric n);
@@ -86,9 +86,11 @@ namespace Geometry {
 		Col_t   sum_cols () const;
 		
 		Matrix& transpose ();
+		Matrix& inverse ();
 		Numeric determinant ();
 		Numeric trace ();
 		static Matrix transpose (Matrix m);
+		static Matrix inverse (Matrix m);
 		static Numeric determinant (Matrix m);
 		static Numeric trace (Matrix m);
 		
@@ -131,7 +133,9 @@ namespace Geometry {
 		using Element_Iterator = Numeric*;
 		
 		/*
-		 * _ should probably not be used outside this class
+		 * _ should probably not be used outside this class, it is made public
+		 * to make the class POD, because this results in better compiler 
+		 * optimizations.
 		 */
 	public:
 		Base_t _;
