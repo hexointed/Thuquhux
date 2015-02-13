@@ -111,18 +111,7 @@ template<int M, int N, typename Num>
 Matrix<M,N,Num> Matrix<M,N,Num>::sub_comp(Matrix<M,N,Num> a, Num b){
 	return a.sub_comp(b);
 }
-/* This needs fix
-template<int M, int N, typename Num>
-Matrix<M,N,Num>& Matrix<M,N,Num>::mul(Matrix<N,M,Num> a){
-	Matrix<M,N,Num> res = *this;
-	for(int m = 0; m < M; m++){
-		for(int n = 0; n < N; n++){
-			res[m][n] = Geometry::Vector<N>::mul_dot((*this)[m], a.get_col(n));
-		}
-	}
-	return (*this) = res;
-}
-*/
+
 template<int M, int N, typename Num>
 Matrix<M,N,Num>& Matrix<M,N,Num>::mul(Num a){
 	for(int m = 0; m < M; m++){
@@ -142,12 +131,7 @@ Matrix<M,N,Num>& Matrix<M,N,Num>::mul_comp(Matrix<M,N,Num> a){
 	}
 	return *this;
 }
-/* Tis needeth fixing 
-template<int M, int N, typename Num>
-Matrix<M,N,Num> Matrix<M,N,Num>::mul(Matrix<M,N,Num> a, Matrix<N,M,Num> b){
-	return a.mul(b);
-}
-*/
+
 template<int M, int N, typename Num>
 Matrix<M,N,Num> Matrix<M,N,Num>::mul(Matrix<M,N,Num> a, Num b){
 	return a.mul(b);
@@ -156,6 +140,49 @@ Matrix<M,N,Num> Matrix<M,N,Num>::mul(Matrix<M,N,Num> a, Num b){
 template<int M, int N, typename Num>
 Matrix<M,N,Num> Matrix<M,N,Num>::mul_comp(Matrix<M,N,Num> a, Matrix<M,N,Num> b){
 	return a.mul_comp(b);
+}
+
+template<int M, int N, typename Num>
+Matrix<M,N,Num>& Matrix<M,N,Num>::mul(Matrix<N,M,Num> a){
+	Matrix<M,N,Num> res;
+	for(int m = 0; m < M; m++){
+		for(int n = 0; n < N; n++){
+			res[m][n] = Row_t::mul_dot((*this)[m], a.get_col(n));
+		}
+	}
+	return (*this) = res;
+}
+
+template<int M, int N, typename Num>
+template<int O>
+Matrix<M,O,Num> Matrix<M,N,Num>::mul(Matrix<M,N,Num> a, Matrix<N,O,Num> b){
+	Matrix<M,O,Num> res;
+	for(int m = 0; m < M; m++){
+		for(int o = 0; o < O; o++){
+			res[m][o] = Row_t::mul_dot(a[m], b.get_col(o));
+		}
+	}
+	return res;
+}
+
+template<int M, int N, typename Num>
+Matrix<M,N,Num>& Matrix<M,N,Num>::div(Num a) {
+	for(int m = 0; m < M; m++) {
+		for(int n = 0; n < N; n++){
+			(*this)[m][n] /= a;
+		}
+	}
+	return *this;
+}
+
+template<int M, int N, typename Num>
+Matrix<M,N,Num>& Matrix<M,N,Num>::div_comp(Matrix<M,N,Num> a){
+	for(int m = 0; m < M; m++) {
+		for(int n = 0; n < N; n++) {
+			(*this)[m][n] /= a[m][n];
+		}
+	}
+	return *this;
 }
 
 /* Work below

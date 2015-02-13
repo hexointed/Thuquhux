@@ -12,7 +12,6 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
-#include <initializer_list>
 #include "Geometry.h"
 
 namespace Geometry {
@@ -66,20 +65,25 @@ namespace Geometry {
 		static Matrix sub (Matrix l, Matrix r);
 		static Matrix sub_comp (Matrix m, Numeric n);
 		
-		Matrix& mul (Matrix m);
+		Matrix& mul (Matrix<N,M,Numeric> m);
 		Matrix& mul (Numeric n);
 		Matrix& mul_comp (Matrix m);
-		static Matrix mul (Matrix l, Matrix r);
 		static Matrix mul (Matrix m, Numeric n);
 		static Matrix mul_comp (Matrix l, Matrix r);
 		
+		template<int O>
+		static Matrix<M,O,Numeric> mul (Matrix<M,N,Numeric> a, Matrix<N,O,Numeric> b);
+
 		Matrix& div (Numeric n);
 		Matrix& div_comp (Matrix m);
 		static Matrix div (Matrix m, Numeric n);
 		static Matrix div_comp (Matrix l, Matrix r);
 		
-		Matrix& pow_comp(Numeric n);
-		static Matrix pow_comp(Matrix m, Numeric n);
+		Matrix& pow_comp (Numeric n);
+		static Matrix pow_comp (Matrix m, Numeric n);
+		
+		template<typename Functor>
+		Matrix& op_comp (Functor f);
 		
 		Numeric sum_comp () const;
 		Row_t   sum_rows () const;
