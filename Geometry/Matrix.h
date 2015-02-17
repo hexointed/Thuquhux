@@ -84,6 +84,8 @@ namespace Geometry {
 		
 		template<typename Functor>
 		Matrix& op_comp (Functor f);
+		template<typename Functor>
+		Matrix& op_comp (Matrix m, Functor f);
 		
 		Numeric sum_comp () const;
 		Row_t   sum_rows () const;
@@ -93,7 +95,7 @@ namespace Geometry {
 		Matrix& inverse ();
 		Numeric determinant ();
 		Numeric trace ();
-		static Matrix transpose (Matrix m);
+		static Matrix<N,M,Numeric> transpose (Matrix m);
 		static Matrix inverse (Matrix m);
 		static Numeric determinant (Matrix m);
 		static Numeric trace (Matrix m);
