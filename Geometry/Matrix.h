@@ -91,10 +91,16 @@ namespace Geometry {
 		Row_t   sum_rows () const;
 		Col_t   sum_cols () const;
 		
+		/*
+		 * Common, matrix-specific arithmetic operations.
+		 */
+		
+		Matrix<M-1,N-1,Numeric> minor_matrix (int x, int y) const;
 		Matrix& transpose ();
+		Matrix& cofactor ();
 		Matrix& inverse ();
-		Numeric determinant ();
-		Numeric trace ();
+		Numeric determinant () const;
+		Numeric trace () const;
 		static Matrix<N,M,Numeric> transpose (Matrix m);
 		static Matrix inverse (Matrix m);
 		static Numeric determinant (Matrix m);
@@ -132,7 +138,15 @@ namespace Geometry {
 		bool is_eq_comp (Matrix m);
 		
 		/*
-		 * Iterators, for use with range-based for-loops.
+		 * Some useful constant matricies.
+		 */
+		
+		static Matrix identity();
+		static Matrix checkerboard();
+		
+		/*
+		 * Iterators, for use with range-based for-loops. (Or other things, if
+		 * you're into that stuff).
 		 */
 		
 		using Row_Iterator = Row_t*;
@@ -145,7 +159,6 @@ namespace Geometry {
 		 */
 	public:
 		Base_t _;
-		
 	};
 
 }

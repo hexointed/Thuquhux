@@ -252,6 +252,18 @@ typename Matrix<M,N,Num>::Col_t Matrix<M,N,Num>::sum_cols() const {
 	return res;
 }
 
+template<int M, int N, typename Num>
+Matrix<M-1,N-1,Num> Matrix<M,N,Num>::minor_matrix(int x, int y) const {
+	Matrix<M-1,N-1,Num> res{};
+	for(int m = 0; m < M; m++){
+		for(int n = 0; n < N; n++){
+			if(m == x || n == y) continue;
+			res[m < x ? m : m-1][n < y ? n : n-1] = (*this)[m][n];
+		}
+	}
+	return res;
+}
+
 template<int M, int N, typename Numeric>
 Matrix<M, N, Numeric>& Matrix<M, N, Numeric>::transpose() {
 	static_assert(M==N, "Cannot assign matrix to it's transpose because matrix dimensions are not equal.");
@@ -263,6 +275,66 @@ Matrix<M, N, Numeric>& Matrix<M, N, Numeric>::transpose() {
 	}
 	(*this) = res;
 	return *this;
+}
+
+template<int M, int N, typename Num>
+Matrix<M,N,Num>& Matrix<M,N,Num>::cofactor() {
+	static_assert(M==N, "Cofactor matrix only defined for square matricies.");
+	Matrix<M,N,Num> res{};
+	for(int m = 0; m < M; m++){
+		for(int n = 0; n < N; n++){
+			res[m][n] = this->minor_matrix(m,n).determinant();
+		}
+	}
+	res.mul_comp(Matrix<M,N,Num>::checkerboard());
+	return (*this)=res;
+}
+
+#include <iostream>
+
+template<int M, int N, typename Num>
+Matrix<M,N,Num>& Matrix<M,N,Num>::inverse() {
+	static_assert(M==N, "Inverse only defined for square matricies.");
+	Matrix<M,N,Num> res = *this;
+	res.cofactor().transpose();
+	Num det = this->determinant();
+	std::cout<<det<<std::endl;
+	res.op_comp([&det] (Num a) {
+		return a/det;
+	});
+	return (*this) = res;
+}
+
+class Det {
+public:
+	template<int M, int N, typename Num>
+	static Num det(Matrix<M,N,Num> m){
+		Num res{};
+		for(int i = 0; i < M; i++){
+			res += m[i][0] * det(m.minor_matrix(i,0)) * (i%2 ? -1 : 1);
+		}
+		return res;
+	}
+	template<typename Num>
+	static Num det(Matrix<1,1,Num> m){
+		return m[0][0];
+	}
+};
+
+template<int M, int N, typename Num>
+Num Matrix<M,N,Num>::determinant() const {
+	static_assert(M==N, "Determinant only defined for square matricies.");
+	return Det::det(*this);
+}
+
+template<int M, int N, typename Num>
+Num Matrix<M,N,Num>::trace() const {
+	constexpr int D = M < N ? M : N;
+	Num res{};
+	for(int d = 0; d < D; d++){
+		res += (*this)[d][d];
+	}
+	return res;
 }
 
 /*
@@ -284,6 +356,31 @@ Matrix<N, M, Num> Matrix<M, N, Num>::transpose(Matrix<M, N, Num> a){
  * work
  */
 
+template<int M, int N, typename Num>
+Matrix<M,N,Num> Matrix<M,N,Num>::identity() {
+	static_assert(M==N, "Identity matrix only defined for square matricies");
+	Matrix<M,N,Num> res{};
+	for(int n = 0; n < N; n++){
+		res[n][n] = Num{1};
+	}
+	return res;
+}
+
+template<int M, int N, typename Num>
+Matrix<M,N,Num> Matrix<M,N,Num>::checkerboard() {
+	Matrix<M,N,Num> res{};
+	for(int m = 0; m < M; m++){
+		for(int n = 0; n < N; n++){
+			if((m+n)%2){
+				res[m][n] = Num{-1};
+			} else {
+				res[m][n] = Num{1};
+			}
+		}
+	}
+	return res;
+}
+
 template<int M, int N, typename Numeric>
 template<int O>
 Matrix<M,O,Numeric> Matrix<M,N,Numeric>::operator* (Matrix<N,O,Numeric> m) {
@@ -299,7 +396,7 @@ Matrix<M,O,Numeric> Matrix<M,N,Numeric>::operator* (Matrix<N,O,Numeric> m) {
 
 template<int P, int Q, typename T>
 std::ostream& operator << (std::ostream& out, Matrix<P,Q,T> m){
-	out << m.comp;
+	out << m._;
 	return out;
 }
 
