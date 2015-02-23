@@ -337,10 +337,6 @@ Num Matrix<M,N,Num>::trace() const {
 	return res;
 }
 
-/*
- * work
- */
-
 template<int M, int N, typename Num>
 Matrix<N, M, Num> Matrix<M, N, Num>::transpose(Matrix<M, N, Num> a){
 	Matrix<N,M,Num> res{};
@@ -352,9 +348,85 @@ Matrix<N, M, Num> Matrix<M, N, Num>::transpose(Matrix<M, N, Num> a){
 	return res;
 }
 
-/*
- * work
- */
+template<int M, int N, typename Num>
+Matrix<M,N,Num> Matrix<M,N,Num>::cofactor(Matrix<M,N,Num> a){
+	return a.cofactor();
+}
+
+template<int M, int N, typename Num>
+Matrix<M,N,Num> Matrix<M,N,Num>::inverse(Matrix<M,N,Num> a) {
+	return a.inverse();
+}
+
+template<int M, int N, typename Num>
+Num Matrix<M,N,Num>::determinant(Matrix<M,N,Num> a){
+	return a.determinant();
+}
+
+template<int M, int N, typename Num>
+Num Matrix<M,N,Num>::trace(Matrix<M,N,Num> a) {
+	return a.trace();
+}
+
+template<int M, int N, typename Num>
+Matrix<M,N,Num>& Matrix<M,N,Num>::set_min_comp(Matrix<M,N,Num> a){
+	for(int m = 0; m < M; m++){
+		for(int n = 0; n < N; n++){
+			(*this)[m][n] = (*this)[m][n] < a[m][n] ? (*this)[m][n] : a[m][n];
+		}
+	}
+	return *this;
+}
+
+template<int M, int N, typename Num>
+Matrix<M,N,Num>& Matrix<M,N,Num>::set_max_comp(Matrix<M,N,Num> a){
+	for(int m = 0; m< M; m++){
+		for(int n = 0; n< N; n++){
+			(*this)[m][n] = (*this)[m][n] > a[m][n] ? (*this)[m][n] : a[m][n];
+		}
+	}
+	return *this;
+}
+
+template<int M, int N, typename Num>
+Matrix<M,N,Num> Matrix<M,N,Num>::min_comp(Matrix<M,N,Num> a, Matrix<M,N,Num> b){
+	return a.set_min_comp(b);
+}
+
+template<int M, int N, typename Num>
+Matrix<M,N,Num> Matrix<M,N,Num>::max_comp(Matrix<M,N,Num> a, Matrix<M,N,Num> b){
+	return a.set_max_comp(b);
+}
+
+template<int M, int N, typename Num>
+bool Matrix<M,N,Num>::is_min_comp(Matrix<M,N,Num> a){
+	for(int m = 0; m < M; m++){
+		for(int n = 0; n < N; n++){
+			if((*this)[m][n] >= a[m][n]) return false;
+		}
+	}
+	return true;
+}
+
+template<int M, int N, typename Num>
+bool Matrix<M,N,Num>::is_max_comp(Matrix<M,N,Num> a){
+	for(int m = 0; m < M; m++){
+		for(int n = 0; n < N; n++){
+			if((*this)[m][n] <= a[m][n]) return false;
+		}
+	}
+	return true;
+}
+
+template<int M, int N, typename Num>
+bool Matrix<M,N,Num>::is_eq_comp(Matrix<M,N,Num> a){
+	for(int m = 0; m < M; m++){
+		for(int n = 0; n < N; n++){
+			if((*this)[m][n] == a[m][n]) return false;
+		}
+	}
+	return true;
+}
 
 template<int M, int N, typename Num>
 Matrix<M,N,Num> Matrix<M,N,Num>::identity() {

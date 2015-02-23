@@ -102,6 +102,7 @@ namespace Geometry {
 		Numeric determinant () const;
 		Numeric trace () const;
 		static Matrix<N,M,Numeric> transpose (Matrix m);
+		static Matrix cofactor (Matrix m);
 		static Matrix inverse (Matrix m);
 		static Numeric determinant (Matrix m);
 		static Numeric trace (Matrix m);
