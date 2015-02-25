@@ -110,20 +110,6 @@ namespace Geometry {
 		/*
 		 * Overloaded operators.
 		 */
-		
-		Matrix operator + (Matrix r);
-		Matrix operator - (Matrix r);
-		Matrix operator * (Numeric r);
-		Matrix operator / (Numeric r);
-		
-		Matrix& operator += (Matrix r);
-		Matrix& operator -= (Matrix r);
-		Matrix& operator *= (Numeric r);
-		Matrix& operator /= (Numeric r);
-		
-		template<int O>
-		Matrix<M,O,Numeric> operator * (Matrix<N,O,Numeric> r);
-		
 		/*
 		 * a is considered max_comp(b) if all elements in a are equal to or 
 		 * bigger than their respective element in b.

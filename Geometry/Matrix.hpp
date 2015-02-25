@@ -453,21 +453,84 @@ Matrix<M,N,Num> Matrix<M,N,Num>::checkerboard() {
 	return res;
 }
 
-template<int M, int N, typename Numeric>
-template<int O>
-Matrix<M,O,Numeric> Matrix<M,N,Numeric>::operator* (Matrix<N,O,Numeric> m) {
-	Matrix<M,O,Numeric> res{};
-	auto t = m.transpose();
-	for(int i = 0; i < M; i++){
-		for(int j = 0; j < O; j++){
-			res[i][j] = Base_t::Numeric_type::mul_dot((*this)[i], m[j]);
+/*
+ * m + m
+ * m - m
+ * m * m
+ *
+ * m * n
+ * m / n
+ * m % n !!!!
+ *
+ * n * m
+ *
+ * -m
+ *
+ * m * v
+ * v * m
+ */
+
+template<int M, int N, typename Num>
+Matrix<M,N,Num> operator+ (Matrix<M,N,Num> a, Matrix<M,N,Num> b) {
+	return Matrix<M,N,Num>::add(a,b);
+}
+
+template<int M, int N, typename Num>
+Matrix<M,N,Num> operator- (Matrix<M,N,Num> a, Matrix<M,N,Num> b) {
+	return Matrix<M,N,Num>::sub(a,b);
+}
+
+template<int M, int N, int O, typename Num>
+Matrix<M,O,Num> operator* (Matrix<M,N,Num> a, Matrix<N,O,Num> b) {
+	return Matrix<M,N,Num>::mul(a,b);
+}
+
+template<int M, int N, typename Num>
+Matrix<M,N,Num> operator* (Matrix<M,N,Num> a, Num b) {
+	return Matrix<M,N,Num>::mul(a,b);
+}
+
+template<int M, int N, typename Num>
+Matrix<M,N,Num> operator/ (Matrix<M,N,Num> a, Num b) {
+	return Matrix<M,N,Num>::div(a,b);
+}
+
+template<int M, int N, typename Num>
+Matrix<M,N,Num> operator* (Num a, Matrix<M,N,Num> b) {
+	return b*a;
+}
+
+template<int M, int N, typename Num>
+Matrix<M,N,Num> operator- (Matrix<M,N,Num> a) {
+	for(int m = 0; m < M; m++){
+		for(int n = 0; n < N; n++){
+			a[m][n] = -a[m][n];
 		}
+	}
+	return a;
+}
+
+template<int M, int N, typename Num>
+Geometry::Vector<M,Num> operator* (Matrix<M,N,Num> a, Geometry::Vector<N,Num> b) {
+	Geometry::Vector<M,Num> res{};
+	for(int m = 0; m < M; m++){
+		res[m] = b.mul_dot(a[m]);
+	}
+	return res;
+}
+
+template<int M, int N, typename Num>
+Geometry::Vector<N,Num> operator* (Geometry::Vector<M,Num> a, Matrix<M,N,Num> b) {
+	auto t = b.transpose();
+	Geometry::Vector<N,Num> res{};
+	for(int n = 0; n < N; n++){
+		res[n] = a.mul_dot(t[n]);
 	}
 	return res;
 }
 
 template<int P, int Q, typename T>
-std::ostream& operator << (std::ostream& out, Matrix<P,Q,T> m){
+std::ostream& operator << (std::ostream& out, Matrix<P,Q,T> m) {
 	out << m._;
 	return out;
 }
