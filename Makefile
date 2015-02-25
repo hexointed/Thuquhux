@@ -4,11 +4,14 @@
 PROJ = thuquhux
 
 #Compiler
-CC = clang++
+CC = g++
 
 #Flags
 ERRFLAGS = -pedantic -Wall -Wextra -Wpointer-arith -Wcast-qual -fstrict-overflow -Wstrict-overflow=3
-CFLAGS = -c -x c++ -std=c++11 -g $(ERRFLAGS)
+CFLAGS = -c -x c++ -std=c++11 -ffast-math $(ERRFLAGS)
+DEVFLAGS = -O2 -g
+INSPFLAGS = -march=native -O3 -S
+RELFLAGS = -march=native -O3
 
 #Linked libraries
 LIBS = -lGL -lGLU -lGLEW -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi -lm
@@ -43,7 +46,17 @@ Utility/Random \
 TCL = \
 Geometry/PointVector
 
-all: $(EXECUTABLE)
+devel: CFLAGS += $(DEVFLAGS)
+devel: $(EXECUTABLE)
+	
+
+inspect: CFLAGS += $(INSPFLAGS)
+inspect: $(EXECUTABLE)
+	
+
+release: CFLAGS += $(RELFLAGS)
+release: $(EXECUTABLE)
+	
 
 $(EXECUTABLE): $(addsuffix .h.gch,$(HDR)) $(addsuffix .h.gch,$(TCL)) $(addsuffix .o,$(CLS) $(SRC) $(CLT))
 	@echo linking with $(LIBS)
