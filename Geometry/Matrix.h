@@ -55,37 +55,37 @@ namespace Geometry {
 		 * Some common arithmetic operations.
 		 */
 		
-		Matrix& add (Matrix m);
-		Matrix& add_comp (Numeric n);
+		Matrix add (Matrix m) const;
+		Matrix add_comp (Numeric n) const;
 		static Matrix add (Matrix l, Matrix r);
 		static Matrix add_comp (Matrix m, Numeric n);
 		
-		Matrix& sub (Matrix m);
-		Matrix& sub_comp (Numeric n);
+		Matrix sub (Matrix m) const;
+		Matrix sub_comp (Numeric n) const;
 		static Matrix sub (Matrix l, Matrix r);
 		static Matrix sub_comp (Matrix m, Numeric n);
 		
-		Matrix& mul (Matrix<N,M,Numeric> m);
-		Matrix& mul (Numeric n);
-		Matrix& mul_comp (Matrix m);
+		template<int O>
+		Matrix<M,O,Numeric> mul (Matrix<N,O,Numeric> m) const;
+		Matrix mul (Numeric n) const;
+		Matrix mul_comp (Matrix m) const;
 		static Matrix mul (Matrix m, Numeric n);
 		static Matrix mul_comp (Matrix l, Matrix r);
-		
 		template<int O>
 		static Matrix<M,O,Numeric> mul (Matrix<M,N,Numeric> a, Matrix<N,O,Numeric> b);
 
-		Matrix& div (Numeric n);
-		Matrix& div_comp (Matrix m);
+		Matrix div (Numeric n) const;
+		Matrix div_comp (Matrix m) const;
 		static Matrix div (Matrix m, Numeric n);
 		static Matrix div_comp (Matrix l, Matrix r);
 		
-		Matrix& pow_comp (Numeric n);
+		Matrix pow_comp (Numeric n) const;
 		static Matrix pow_comp (Matrix m, Numeric n);
 		
 		template<typename Functor>
-		Matrix& op_comp (Functor f);
+		Matrix op_comp (Functor f) const;
 		template<typename Functor>
-		Matrix& op_comp (Matrix m, Functor f);
+		Matrix op_comp (Matrix m, Functor f) const;
 		
 		Numeric sum_comp () const;
 		Row_t   sum_rows () const;
@@ -96,9 +96,9 @@ namespace Geometry {
 		 */
 		
 		Matrix<M-1,N-1,Numeric> minor_matrix (int x, int y) const;
-		Matrix& transpose ();
-		Matrix& cofactor ();
-		Matrix& inverse ();
+		Matrix transpose () const;
+		Matrix cofactor () const;
+		Matrix inverse () const;
 		Numeric determinant () const;
 		Numeric trace () const;
 		static Matrix<N,M,Numeric> transpose (Matrix m);
@@ -117,6 +117,8 @@ namespace Geometry {
 		
 		Matrix& set_min_comp (Matrix m);
 		Matrix& set_max_comp (Matrix m);
+		Matrix min_comp (Matrix m);
+		Matrix max_comp (Matrix m);
 		static Matrix min_comp (Matrix l, Matrix r);
 		static Matrix max_comp (Matrix l, Matrix r);
 		

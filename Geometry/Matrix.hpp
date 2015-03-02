@@ -54,23 +54,25 @@ Num Matrix<M,N,Num>::get(int r, int c) const {
 }
 
 template<int M, int N, typename Num>
-Matrix<M,N,Num>& Matrix<M,N,Num>::add(Matrix<M,N,Num> a){
+Matrix<M,N,Num> Matrix<M,N,Num>::add(Matrix<M,N,Num> a) const {
+	Matrix<M,N,Num> res {};
 	for(int m = 0; m < M; m++){
 		for(int n = 0; n < N; n++){
-			(*this)[m][n] += a[m][n];
+			res[m][n] = (*this)[m][n] + a[m][n];
 		}
 	}
-	return *this;
+	return res;
 }
 
 template<int M, int N, typename Num>
-Matrix<M,N,Num>& Matrix<M,N,Num>::add_comp(Num a){
+Matrix<M,N,Num> Matrix<M,N,Num>::add_comp(Num a) const {
+	Matrix<M,N,Num> res {};
 	for(int m = 0; m < M; m++){
 		for(int n = 0; n < N; n++){
-			(*this)[m][n] += a;
+			res[m][n] = (*this)[m][n] + a;
 		}
 	}
-	return (*this);
+	return res;
 }
 
 template<int M, int N, typename Num>
@@ -84,23 +86,25 @@ Matrix<M,N,Num> Matrix<M,N,Num>::add_comp(Matrix<M,N,Num> a, Num b){
 }
 
 template<int M, int N, typename Num>
-Matrix<M,N,Num>& Matrix<M,N,Num>::sub(Matrix<M,N,Num> a){
+Matrix<M,N,Num> Matrix<M,N,Num>::sub(Matrix<M,N,Num> a) const {
+	Matrix<M,N,Num> res {};
 	for(int m = 0; m < M; m++){
 		for( int n = 0; n < N; n++){
-			(*this)[m][n] -= a[m][n];
+			res[m][n] = (*this)[m][n] - a[m][n];
 		}
 	}
-	return *this;
+	return res;
 }
 
 template<int M, int N, typename Num>
-Matrix<M,N,Num>& Matrix<M,N,Num>::sub_comp(Num a){
+Matrix<M,N,Num> Matrix<M,N,Num>::sub_comp(Num a) const {
+	Matrix<M,N,Num> res {};
 	for(int m = 0; m < M; m++){
 		for(int n = 0; n < N; n++){
-			(*this)[m][n] -= a;
+			res[m][n] = (*this)[m][n] - a;
 		}
 	}
-	return *this;
+	return res;
 }
 
 template<int M, int N, typename Num>
@@ -114,23 +118,25 @@ Matrix<M,N,Num> Matrix<M,N,Num>::sub_comp(Matrix<M,N,Num> a, Num b){
 }
 
 template<int M, int N, typename Num>
-Matrix<M,N,Num>& Matrix<M,N,Num>::mul(Num a){
+Matrix<M,N,Num> Matrix<M,N,Num>::mul(Num a) const {
+	Matrix<M,N,Num> res {};
 	for(int m = 0; m < M; m++){
 		for(int n = 0; n < N; n++){
-			(*this)[m][n] *= a;
+			res[m][n] = (*this)[m][n] * a;
 		}
 	}
-	return *this;
+	return res;
 }
 
 template<int M, int N, typename Num>
-Matrix<M,N,Num>& Matrix<M,N,Num>::mul_comp(Matrix<M,N,Num> a){
+Matrix<M,N,Num> Matrix<M,N,Num>::mul_comp(Matrix<M,N,Num> a) const {
+	Matrix<M,N,Num> res {};
 	for(int m = 0; m < M; m++){
 		for(int  n = 0; n < N; n++){
-			(*this)[m][n] *= a[m][n];
+			res[m][n] = (*this)[m][n] * a[m][n];
 		}
 	}
-	return *this;
+	return res;
 }
 
 template<int M, int N, typename Num>
@@ -144,14 +150,15 @@ Matrix<M,N,Num> Matrix<M,N,Num>::mul_comp(Matrix<M,N,Num> a, Matrix<M,N,Num> b){
 }
 
 template<int M, int N, typename Num>
-Matrix<M,N,Num>& Matrix<M,N,Num>::mul(Matrix<N,M,Num> a){
-	Matrix<M,N,Num> res{};
+template<int O>
+Matrix<M,O,Num> Matrix<M,N,Num>::mul(Matrix<N,O,Num> a) const {
+	Matrix<M,O,Num> res{};
 	for(int m = 0; m < M; m++){
-		for(int n = 0; n < N; n++){
-			res[m][n] = Row_t::mul_dot((*this)[m], a.get_col(n));
+		for(int o = 0; o < O; o++){
+			res[m][o] = Row_t::mul_dot((*this)[o], a.get_col(m));
 		}
 	}
-	return (*this) = res;
+	return res;
 }
 
 template<int M, int N, typename Num>
@@ -167,33 +174,36 @@ Matrix<M,O,Num> Matrix<M,N,Num>::mul(Matrix<M,N,Num> a, Matrix<N,O,Num> b){
 }
 
 template<int M, int N, typename Num>
-Matrix<M,N,Num>& Matrix<M,N,Num>::div(Num a) {
+Matrix<M,N,Num> Matrix<M,N,Num>::div(Num a) const {
+	Matrix<M,N,Num> res {};
 	for(int m = 0; m < M; m++) {
 		for(int n = 0; n < N; n++){
-			(*this)[m][n] /= a;
+			res[m][n] = (*this)[m][n] / a;
 		}
 	}
-	return *this;
+	return res;
 }
 
 template<int M, int N, typename Num>
-Matrix<M,N,Num>& Matrix<M,N,Num>::div_comp(Matrix<M,N,Num> a){
+Matrix<M,N,Num> Matrix<M,N,Num>::div_comp(Matrix<M,N,Num> a) const {
+	Matrix<M,N,Num> res {};
 	for(int m = 0; m < M; m++) {
 		for(int n = 0; n < N; n++) {
-			(*this)[m][n] /= a[m][n];
+			res[m][n] = (*this)[m][n] / a[m][n];
 		}
 	}
-	return *this;
+	return res;
 }
 
 template<int M, int N, typename Num>
-Matrix<M,N,Num>& Matrix<M,N,Num>::pow_comp(Num a){
+Matrix<M,N,Num> Matrix<M,N,Num>::pow_comp(Num a) const {
+	Matrix<M,N,Num> res {};
 	for(int m = 0; m < M; m++){
 		for(int n = 0; n < N; n++){
-			(*this)[m][n] = pow((*this)[m][n], a);
+			res[m][n] = pow((*this)[m][n], a);
 		}
 	}
-	return *this;
+	return res;
 }
 
 template<int M, int N, typename Num>
@@ -203,24 +213,26 @@ Matrix<M,N,Num> Matrix<M,N,Num>::pow_comp(Matrix<M,N,Num> a, Num b){
 
 template<int M, int N, typename Num>
 template<typename Functor>
-Matrix<M,N,Num>& Matrix<M,N,Num>::op_comp(Functor f){
+Matrix<M,N,Num> Matrix<M,N,Num>::op_comp(Functor f) const {
+	Matrix<M,N,Num> res {};
 	for(int m = 0; m < M; m++){
 		for(int n = 0; n < N; n++){
-			(*this)[m][n] = f((*this)[m][n]);
+			res[m][n] = f((*this)[m][n]);
 		}
 	}
-	return *this;
+	return res;
 }
 
 template<int M, int N, typename Num>
 template<typename Functor>
-Matrix<M,N,Num>& Matrix<M,N,Num>::op_comp(Matrix<M,N,Num> a, Functor f){
+Matrix<M,N,Num> Matrix<M,N,Num>::op_comp(Matrix<M,N,Num> a, Functor f) const {
+	Matrix<M,N,Num> res {};
 	for(int n = 0; n < N; n++){
 		for(int m = 0; m < M; m++){
-			(*this)[m][n] = f((*this)[m][n], a[m][n]);
+			res[m][n] = f((*this)[m][n], a[m][n]);
 		}
 	}
-	return *this;
+	return res;
 }
 
 template<int M, int N, typename Num>
@@ -265,7 +277,7 @@ Matrix<M-1,N-1,Num> Matrix<M,N,Num>::minor_matrix(int x, int y) const {
 }
 
 template<int M, int N, typename Numeric>
-Matrix<M, N, Numeric>& Matrix<M, N, Numeric>::transpose() {
+Matrix<M, N, Numeric> Matrix<M, N, Numeric>::transpose() const {
 	static_assert(M==N, "Cannot assign matrix to it's transpose because matrix dimensions are not equal.");
 	Matrix<M, N, Numeric> res{};
 	for(int m = 0; m < M; m++){
@@ -273,12 +285,11 @@ Matrix<M, N, Numeric>& Matrix<M, N, Numeric>::transpose() {
 			res[m][n] = (*this)[n][m];
 		}
 	}
-	(*this) = res;
-	return *this;
+	return res;
 }
 
 template<int M, int N, typename Num>
-Matrix<M,N,Num>& Matrix<M,N,Num>::cofactor() {
+Matrix<M,N,Num> Matrix<M,N,Num>::cofactor() const {
 	static_assert(M==N, "Cofactor matrix only defined for square matricies.");
 	Matrix<M,N,Num> res{};
 	for(int m = 0; m < M; m++){
@@ -286,23 +297,19 @@ Matrix<M,N,Num>& Matrix<M,N,Num>::cofactor() {
 			res[m][n] = this->minor_matrix(m,n).determinant();
 		}
 	}
-	res.mul_comp(Matrix<M,N,Num>::checkerboard());
-	return (*this)=res;
+	return res.mul_comp(Matrix<M,N,Num>::checkerboard());
 }
 
-#include <iostream>
-
 template<int M, int N, typename Num>
-Matrix<M,N,Num>& Matrix<M,N,Num>::inverse() {
+Matrix<M,N,Num> Matrix<M,N,Num>::inverse() const {
 	static_assert(M==N, "Inverse only defined for square matricies.");
 	Matrix<M,N,Num> res = *this;
-	res.cofactor().transpose();
+	res = res.cofactor().transpose();
 	Num det = this->determinant();
-	std::cout<<det<<std::endl;
-	res.op_comp([&det] (Num a) {
+	res = res.op_comp([&det] (Num a) {
 		return a/det;
 	});
-	return (*this) = res;
+	return res;
 }
 
 class Det {
@@ -370,22 +377,24 @@ Num Matrix<M,N,Num>::trace(Matrix<M,N,Num> a) {
 
 template<int M, int N, typename Num>
 Matrix<M,N,Num>& Matrix<M,N,Num>::set_min_comp(Matrix<M,N,Num> a){
+	Matrix<M,N,Num> res {};
 	for(int m = 0; m < M; m++){
 		for(int n = 0; n < N; n++){
-			(*this)[m][n] = (*this)[m][n] < a[m][n] ? (*this)[m][n] : a[m][n];
+			res[m][n] = (*this)[m][n] < a[m][n] ? (*this)[m][n] : a[m][n];
 		}
 	}
-	return *this;
+	return *this = res;
 }
 
 template<int M, int N, typename Num>
 Matrix<M,N,Num>& Matrix<M,N,Num>::set_max_comp(Matrix<M,N,Num> a){
+	Matrix<M,N,Num> res {};
 	for(int m = 0; m< M; m++){
 		for(int n = 0; n< N; n++){
-			(*this)[m][n] = (*this)[m][n] > a[m][n] ? (*this)[m][n] : a[m][n];
+			res[m][n] = (*this)[m][n] > a[m][n] ? (*this)[m][n] : a[m][n];
 		}
 	}
-	return *this;
+	return *this = res;
 }
 
 template<int M, int N, typename Num>
