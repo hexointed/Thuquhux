@@ -82,6 +82,11 @@ namespace Geometry {
 		Matrix pow_comp (Numeric n) const;
 		static Matrix pow_comp (Matrix m, Numeric n);
 		
+		Matrix mod (Numeric n) const;
+		Matrix mod_comp (Matrix m) const;
+		static Matrix mod (Matrix m, Numeric n);
+		static Matrix mod_comp (Matrix m, Matrix n);
+		
 		template<typename Functor>
 		Matrix op_comp (Functor f) const;
 		template<typename Functor>
@@ -96,13 +101,15 @@ namespace Geometry {
 		 */
 		
 		Matrix<M-1,N-1,Numeric> minor_matrix (int x, int y) const;
-		Matrix transpose () const;
+		Matrix<N,M,Numeric> transpose () const;
 		Matrix cofactor () const;
+		Matrix<N,M,Numeric> adjoint () const;
 		Matrix inverse () const;
 		Numeric determinant () const;
 		Numeric trace () const;
 		static Matrix<N,M,Numeric> transpose (Matrix m);
 		static Matrix cofactor (Matrix m);
+		static Matrix<N,M,Numeric> adjoint (Matrix m);
 		static Matrix inverse (Matrix m);
 		static Numeric determinant (Matrix m);
 		static Numeric trace (Matrix m);
