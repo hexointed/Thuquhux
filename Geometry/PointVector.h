@@ -44,7 +44,6 @@ public:
 	Numeric& operator[](int i);
 	Numeric operator[](int i) const;
 	
-	Numeric getMagnitude() const;
 	Numeric magnitude() const;
 	Numeric sum_comp() const;
 	
@@ -73,26 +72,27 @@ public:
 	template<int D, typename Num>
 	friend PointVector<D, Num> operator /(const Num l, const PointVector<D, Num> r);
 	
-	PointVector& add(PointVector p);
-	PointVector& sub(PointVector p);
+	PointVector add(PointVector p) const;
+	PointVector sub(PointVector p) const;
 	static PointVector add(PointVector p, PointVector q);
 	static PointVector sub(PointVector p, PointVector q);
 	
-	PointVector& mul_comp(PointVector p);
-	PointVector& mul_cross(PointVector p);
-	PointVector& mul(Numeric d);
+	Numeric mul_dot(PointVector p ) const;
+	PointVector mul_comp(PointVector p) const;
+	PointVector mul_cross(PointVector p) const;
+	PointVector mul(Numeric d) const;
 	static Numeric mul_dot(PointVector p, PointVector q);
 	static PointVector mul_comp(PointVector p, PointVector q);
 	static PointVector mul_cross(PointVector p, PointVector q);
 	static PointVector mul(Numeric d, PointVector p);
 	
-	PointVector& div_comp(PointVector p);
-	PointVector& div(Numeric d);
+	PointVector div_comp(PointVector p) const;
+	PointVector div(Numeric d) const;
 	static PointVector div_comp(PointVector p, PointVector q);
 	static PointVector div(Numeric d, PointVector p);
 	
-	PointVector& pow(Numeric d);
-	PointVector& pow_comp(PointVector p);
+	PointVector pow(Numeric d) const;
+	PointVector pow_comp(PointVector p) const;
 	static PointVector pow(Numeric d, PointVector p);
 	static PointVector pow_comp(PointVector p, PointVector q);
 	
@@ -115,16 +115,17 @@ public:
 	 * make_unit(p) scale down their vectors so that their magnitude is one,
 	 * but the relative sizes of the composants remain.
 	 */
-	PointVector& make_unit();
-	static PointVector make_unit(PointVector p);
+	PointVector normalize() const;
+	static PointVector normalize(PointVector p);
 	
 	/*
 	 * reflect creates a PointVector that is a reflection on the surface of which
 	 * normal is the normal vector. Projecting a PointVector p onto q creates a 
 	 * PointVector that is the component of p in the direction of q.
 	 */
-	PointVector& reflect(PointVector normal);
-	PointVector& project(PointVector p);
+	PointVector reflect(PointVector normal) const;
+	PointVector project(PointVector p) const;
+	Numeric taxicab_distance(PointVector p) const;
 	static PointVector reflect(PointVector p, PointVector normal);
 	static PointVector project(PointVector p, PointVector q);
 	static Numeric taxicab_distance(PointVector p, PointVector q);
@@ -135,15 +136,17 @@ public:
 	 * vectors.
 	 */
 	
-	PointVector& rotate(Numeric angle, PointVector axis);
+	PointVector rotate(Numeric angle, PointVector axis) const;
 	static PointVector rotate(PointVector p, Numeric angle, PointVector axis);
 	
 	/*
 	 * Gerneral composant-wise unary and binary operator for user-defined operations.
 	 */
 	
-	PointVector& op_comp(std::function<Numeric(Numeric)> op);
-	PointVector& op_comp(std::function<Numeric(Numeric, Numeric)> op, PointVector p);
+	template<typename Functor>
+	PointVector op_comp(Functor f) const;
+	template<typename Functor>
+	PointVector op_comp(PointVector p, Functor f) const;
 	
 	std::array<bool, Dim> operator==	(PointVector p) const;
 	std::array<bool, Dim> operator!=	(PointVector p) const;

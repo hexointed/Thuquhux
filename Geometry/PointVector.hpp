@@ -20,15 +20,6 @@ Numeric PointVector<Dim, Numeric>::get(int i) const{
 }
 
 template<int Dim, typename Numeric>
-Numeric PointVector<Dim, Numeric>::getMagnitude() const{
-	Numeric mag = 0;
-	for(int i = 0; i < Dim; i++){
-		mag += comp[i] * comp[i];
-	}
-	return sqrt(mag);
-}
-
-template<int Dim, typename Numeric>
 Numeric PointVector<Dim, Numeric>::magnitude() const{
 	Numeric mag = 0;
 	for(int i = 0; i < Dim; i++){
@@ -79,25 +70,25 @@ inline PointVector<Dim, Numeric> PointVector<Dim, Numeric>::operator -() const{
 
 template<int Dim, typename Numeric>
 inline PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::operator +=(const PointVector<Dim, Numeric> r){
-	this->add(r);
+	*this = *this + r;
 	return *this;
 }
 
 template<int Dim, typename Numeric>
 inline PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::operator -=(const PointVector<Dim, Numeric> r){
-	this->sub(r);
+	*this = *this - r;
 	return *this;
 }
 
 template<int Dim, typename Numeric>
 inline PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::operator *=(const Numeric r){
-	this->mul(r);
+	*this = *this * r;
 	return *this;
 }
 
 template<int Dim, typename Numeric>
 inline PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::operator /=(const Numeric r){
-	this->div(r);
+	*this = *this / r;
 	return *this;
 }
 
@@ -126,19 +117,21 @@ inline PointVector<D, Num> operator/(const Num l, const PointVector<D, Num> r){
 }
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::add(PointVector<Dim, Numeric> p){
+PointVector<Dim, Numeric> PointVector<Dim, Numeric>::add(PointVector<Dim, Numeric> p) const {
+	PointVector tmp{};
 	for(int i = 0; i < Dim; i++){
-		comp[i] += p.comp[i];
+		tmp[i] = comp[i] + p.comp[i];
 	}
-	return *this;
+	return tmp;
 }
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::sub(PointVector<Dim, Numeric> p){
+PointVector<Dim, Numeric> PointVector<Dim, Numeric>::sub(PointVector<Dim, Numeric> p) const {
+	PointVector tmp{};
 	for(int i = 0; i < Dim; i++){
-		comp[i] -= p.comp[i];
+		tmp[i] = comp[i] - p.comp[i];
 	}
-	return *this;
+	return tmp;
 }
 
 template<int Dim, typename Numeric>
@@ -152,24 +145,31 @@ PointVector<Dim, Numeric> PointVector<Dim, Numeric>::sub(PointVector<Dim, Numeri
 }
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::mul_comp(PointVector<Dim, Numeric> p){
-	for(int i = 0; i < Dim; i++){
-		comp[i] *= p.comp[i];
-	}
-	return *this;
+Numeric PointVector<Dim, Numeric>::mul_dot(PointVector<Dim, Numeric> p) const {
+	return p.mul_comp(*this).sum_comp();
 }
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::mul_cross(PointVector<Dim, Numeric> p){
+PointVector<Dim, Numeric> PointVector<Dim, Numeric>::mul_comp(PointVector<Dim, Numeric> p) const {
+	PointVector tmp{};	
+	for(int i = 0; i < Dim; i++){
+		tmp[i] = comp[i] * p.comp[i];
+	}
+	return tmp;
+}
+
+template<int Dim, typename Numeric>
+PointVector<Dim, Numeric> PointVector<Dim, Numeric>::mul_cross(PointVector<Dim, Numeric> p) const {
 	return Cross_product(*this, p);
 }
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::mul(Numeric d){
+PointVector<Dim, Numeric> PointVector<Dim, Numeric>::mul(Numeric d) const {
+	PointVector tmp{};	
 	for(int i = 0; i < Dim; i++){
-		comp[i] *= d;
+		tmp[i] = comp[i] * d;
 	}
-	return *this;
+	return tmp;
 }
 
 template<int Dim, typename Numeric>
@@ -193,19 +193,21 @@ PointVector<Dim, Numeric> PointVector<Dim, Numeric>::mul(Numeric d, PointVector<
 }
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::div_comp(PointVector<Dim, Numeric> p){
-    for(int i = 0; i < Dim; i++){
-		comp[i] /= p.comp[i];
+PointVector<Dim, Numeric> PointVector<Dim, Numeric>::div_comp(PointVector<Dim, Numeric> p) const {
+	PointVector tmp{};	
+	for(int i = 0; i < Dim; i++){
+		tmp = comp[i] / p.comp[i];
 	}
-	return *this;
+	return tmp;
 }
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::div(Numeric d){
+PointVector<Dim, Numeric> PointVector<Dim, Numeric>::div(Numeric d) const {
+	PointVector tmp{};	
 	for(int i = 0; i < Dim; i++){
-		comp[i] /= d;
+		tmp = comp[i] / d;
 	}
-	return *this;
+	return tmp;
 }
 
 template<int Dim, typename Numeric>
@@ -219,22 +221,25 @@ PointVector<Dim, Numeric> PointVector<Dim, Numeric>::div(Numeric d, PointVector 
 }
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::pow(Numeric d){
+PointVector<Dim, Numeric> PointVector<Dim, Numeric>::pow(Numeric d) const {
+	PointVector tmp{};
 	for(int i = 0; i < Dim; i++){
-		comp[i] = pow(comp[i], d);
+		tmp[i] = pow(comp[i], d);
 	}
-	return *this;
+	return tmp;
 }
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::pow_comp(PointVector p){
+PointVector<Dim, Numeric> PointVector<Dim, Numeric>::pow_comp(PointVector p) const {
+	PointVector tmp{};
 	for(int i = 0; i < Dim; i++){
-		comp[i] = pow(comp[i], p.comp[i]);
+		tmp[i] = pow(comp[i], p.comp[i]);
 	}
+	return tmp;
 }
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric> PointVector<Dim, Numeric>::pow(Numeric d, PointVector p){
+PointVector<Dim, Numeric> PointVector<Dim, Numeric>::pow(Numeric d, PointVector p) {
 	return p.pow(d);
 }
 
@@ -245,18 +250,20 @@ PointVector<Dim, Numeric> PointVector<Dim, Numeric>::pow_comp(PointVector p, Poi
 
 template<int Dim, typename Numeric>
 PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::set_min_comp(PointVector<Dim, Numeric> p){
+	PointVector tmp{};
 	for(int i = 0; i < Dim; i++){
-		*(comp+i) = *(comp+i) < *(p.comp+i) ? *(comp+i) : *(p.comp+i);
+		tmp[i] = comp[i] < p.comp[i] ? comp[i] : p.comp[i];
 	}
-	return *this;
+	return tmp;
 }
 
 template<int Dim, typename Numeric>
 PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::set_max_comp(PointVector<Dim, Numeric> p){
+	PointVector tmp{};
 	for(int i = 0; i < Dim; i++){
-		*(comp+i) = *(comp+i) > *(p.comp+i) ? *(comp+i) : *(p.comp+i);
+		tmp[i] = comp[i] < p.comp[i] ? comp[i] : p.comp[i];
 	}
-	return *this;
+	return tmp;
 }
 
 template<int Dim, typename Numeric>
@@ -270,7 +277,7 @@ PointVector<Dim, Numeric> PointVector<Dim, Numeric>::max_comp(PointVector p, Poi
 }
 
 template<int Dim, typename Numeric>
-bool PointVector<Dim, Numeric>::is_min_comp(PointVector<Dim, Numeric> p) const{
+bool PointVector<Dim, Numeric>::is_min_comp(PointVector<Dim, Numeric> p) const {
 	for(int i = 0; i < Dim; i++){
 		if(comp[i] > p.comp[i])
 			return false;
@@ -279,7 +286,7 @@ bool PointVector<Dim, Numeric>::is_min_comp(PointVector<Dim, Numeric> p) const{
 }
 
 template<int Dim, typename Numeric>
-bool PointVector<Dim, Numeric>::is_max_comp(PointVector<Dim, Numeric> p) const{
+bool PointVector<Dim, Numeric>::is_max_comp(PointVector<Dim, Numeric> p) const {
 	for(int i = 0; i < Dim; i++){
 		if(comp[i] < p.comp[i])
 			return false;
@@ -288,7 +295,7 @@ bool PointVector<Dim, Numeric>::is_max_comp(PointVector<Dim, Numeric> p) const{
 }
 
 template<int Dim, typename Numeric>
-bool PointVector<Dim, Numeric>::is_eq_comp(PointVector<Dim, Numeric> p) const{
+bool PointVector<Dim, Numeric>::is_eq_comp(PointVector<Dim, Numeric> p) const {
 	for(int i = 0; i < Dim; i++){
 		if(comp[i] != p.comp[i])
 			return false;
@@ -297,34 +304,41 @@ bool PointVector<Dim, Numeric>::is_eq_comp(PointVector<Dim, Numeric> p) const{
 }
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::make_unit(){
-	Numeric mag = getMagnitude();
-	if(mag==0)
-		throw std::length_error("Zero vector has no direction");
+PointVector<Dim, Numeric> PointVector<Dim, Numeric>::normalize() const {
+	PointVector tmp{};
 	for(int i = 0; i < Dim; i++){
-		comp[i] /= mag; 
+		tmp[i] = comp[i] / magnitude(); 
 	}
-	return *this;
+	return tmp;
 }
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric> PointVector<Dim, Numeric>::make_unit(PointVector<Dim, Numeric> p){
+PointVector<Dim, Numeric> PointVector<Dim, Numeric>::normalize(PointVector<Dim, Numeric> p){
 	return p.make_unit();
 }
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::reflect(PointVector<Dim, Numeric> normal){
+PointVector<Dim, Numeric> PointVector<Dim, Numeric>::reflect(PointVector<Dim, Numeric> normal) const {
 	PointVector<Dim, Numeric> p = *this;
 	normal.make_unit();
-	*this = 2.0 * mul_dot(p, normal) * normal - p;
-	return *this;
+	auto tmp = 2.0 * mul_dot(p, normal) * normal - p;
+	return tmp;
 }
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::project(PointVector p){
+PointVector<Dim, Numeric> PointVector<Dim, Numeric>::project(PointVector p) const {
 	PointVector<Dim, Numeric>& res = *this;
 	mul_dot(res, p)/mul_dot(p,p) * p;
 	return res;
+}
+
+template<int Dim, typename Numeric>
+Numeric PointVector<Dim, Numeric>::taxicab_distance(PointVector p) const {
+	PointVector res = *this - p;
+	res.op_comp([] (Numeric n) {
+		return n < 0 ? n : -n;
+	});
+	return res.sum_comp();
 }
 
 template<int Dim, typename Numeric>
@@ -333,21 +347,17 @@ PointVector<Dim, Numeric> PointVector<Dim, Numeric>::reflect(PointVector<Dim, Nu
 }
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric> PointVector<Dim, Numeric>::project(PointVector p, PointVector q){
+PointVector<Dim, Numeric> PointVector<Dim, Numeric>::project(PointVector p, PointVector q) {
 	return p.project(q);
 }
 
 template<int Dim, typename Numeric>
 Numeric PointVector<Dim, Numeric>::taxicab_distance(PointVector p, PointVector q){
-	Numeric res;
-	for(int i = 0; i < Dim; i++){
-		res += abs(p.comp[i] - q.comp[i]);
-	}
-	return res;
+	return p.taxicab_distance(q);
 }
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::rotate(Numeric angle, PointVector<Dim, Numeric> axis) {
+PointVector<Dim, Numeric> PointVector<Dim, Numeric>::rotate(Numeric angle, PointVector<Dim, Numeric> axis) const {
 	static_assert(Dim == 3, "rotate only implemented for 3D vectors.");
 	axis.make_unit();
 	const PointVector<3, Numeric> r1{cos(angle) + axis.getdx()*axis.getdx()*(1 - cos(angle)),
@@ -366,19 +376,23 @@ PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::rotate(Numeric angle, Poin
 }
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::op_comp(std::function<Numeric(Numeric)> op){
-	for(Numeric& n : comp){
-		n = op(n);
+template<typename Functor>
+	PointVector<Dim, Numeric> PointVector<Dim, Numeric>::op_comp(Functor f) const {
+	PointVector tmp = *this;
+	for(Numeric& n : tmp){
+		n = f(n);
 	}
-	return *this;
+	return tmp;
 }
 
 template<int Dim, typename Numeric>
-PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::op_comp(std::function<Numeric(Numeric, Numeric)> op, PointVector<Dim, Numeric> p){
+template<typename Functor>
+PointVector<Dim, Numeric> PointVector<Dim, Numeric>::op_comp(PointVector<Dim, Numeric> p, Functor f) const {
+	PointVector tmp = *this;
 	for(int i = 0; i < Dim; i++){
-		comp[i] = op(comp[i], p.comp[i]);
+		tmp[i] = f(comp[i], p.comp[i]);
 	}
-	return *this;
+	return tmp;
 }
 
 template<int Dim, typename Numeric>
@@ -476,4 +490,4 @@ std::ostream& operator<<(std::ostream& out, PointVector<Dim, Numeric> d) {
 	return out;
 }
 
-#endif /*POINTVECTOR_CPP*/
+	#endif /*POINTVECTOR_CPP*/
