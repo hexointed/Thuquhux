@@ -357,20 +357,19 @@ Numeric PointVector<Dim, Numeric>::taxicab_distance(PointVector p, PointVector q
 template<int Dim, typename Numeric>
 PointVector<Dim, Numeric> PointVector<Dim, Numeric>::rotate(Numeric angle, PointVector<Dim, Numeric> axis) const {
 	static_assert(Dim == 3, "rotate only implemented for 3D vectors.");
-	axis.make_unit();
-	const PointVector<3, Numeric> r1{cos(angle) + axis.getdx()*axis.getdx()*(1 - cos(angle)),
-	                  axis.getdx()*axis.getdy()*(1 - cos(angle)) - axis.getdz()*sin(angle),
-	                  axis.getdx()*axis.getdz()*(1 - cos(angle)) + axis.getdy()*sin(angle)};
-	const PointVector<3, Numeric> r2{axis.getdy()*axis.getdx()*(1 - cos(angle)) + axis.getdz()*sin(angle),
-	                  cos(angle) + axis.getdy()*axis.getdy()*(1 - cos(angle)),
-	                  axis.getdy()*axis.getdz()*(1 - cos(angle)) - axis.getdx()*sin(angle)};
-	const PointVector<3, Numeric> r3{axis.getdz()*axis.getdx()*(1 - cos(angle)) - axis.getdy()*sin(angle),
-	                  axis.getdz()*axis.getdy()*(1 - cos(angle)) + axis.getdx()*sin(angle),
-	                  cos(angle) + axis.getdz()*axis.getdz()*(1 - cos(angle))};
-	*this = {PointVector<3, Numeric>::mul_dot(r1, *this),
-	         PointVector<3, Numeric>::mul_dot(r2, *this),
-	         PointVector<3, Numeric>::mul_dot(r3, *this)};
-	return *this;
+	axis = axis.normalize();
+	const PointVector<3, Numeric> r1{cos(angle) + axis[0]*axis[0]*(1 - cos(angle)),
+	                  axis[0]*axis[1]*(1 - cos(angle)) - axis[2]*sin(angle),
+	                  axis[0]*axis[2]*(1 - cos(angle)) + axis[1]*sin(angle)};
+	const PointVector<3, Numeric> r2{axis[1]*axis[0]*(1 - cos(angle)) + axis[2]*sin(angle),
+	                  cos(angle) + axis[1]*axis[1]*(1 - cos(angle)),
+	                  axis[1]*axis[2]*(1 - cos(angle)) - axis[0]*sin(angle)};
+	const PointVector<3, Numeric> r3{axis[2]*axis[0]*(1 - cos(angle)) - axis[1]*sin(angle),
+	                  axis[2]*axis[1]*(1 - cos(angle)) + axis[0]*sin(angle),
+	                  cos(angle) + axis[2]*axis[2]*(1 - cos(angle))};
+	return PointVector{r1.mul_dot(*this),
+	                   r2.mul_dot(*this),
+	                   r3.mul_dot(*this)};
 }
 
 template<int Dim, typename Numeric>

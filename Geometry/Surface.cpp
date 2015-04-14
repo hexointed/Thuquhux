@@ -30,112 +30,7 @@ Surface::Surface(Vector<> pos):
 	position(pos)
 {}
 
-Surface::~Surface() {
-}
-
-namespace{
-	std::vector<Triangle> continuous_split(Triangle t, std::vector<Triangle> splits){
-		std::vector<Triangle> tris{t};
-		while(splits.size()){
-			Vector<> normal = splits.back().normal();
-			Vector<> pos = splits.back()[0];
-			splits.pop_back();
-			std::vector<Triangle> tmp_tris;
-			for(Triangle tri : tris){
-				auto new_tri = tri.split(pos, normal);
-				tmp_tris.insert(tmp_tris.end(), new_tri.begin(), new_tri.end());
-			}
-			tris = tmp_tris;
-		}
-		return tris;
-	}
-	
-	std::vector<Triangle> split_many(std::vector<Triangle> t, std::vector<Triangle> splits){
-		std::vector<Triangle> result;
-		for(Triangle tri : t){
-			std::vector<Triangle> intersections;
-			for(Triangle tris : splits){
-				if(tri.intersectionWith(tris).first){
-					intersections.push_back(tris);
-				}
-			}
-			if(intersections.size()==0){
-				result.push_back(tri);
-				continue;
-			}
-			auto tmp = continuous_split(tri, intersections);
-			result.insert(result.end(), tmp.begin(), tmp.end());
-		}
-		return result;
-	}
-}
-
-Surface Surface::unite(Surface a, Surface b){
-	for(auto& v : b.mesh.vertecies()){
-		v.position += b.position - a.position;
-	}
-	Surface ret(a.position + Vector<>{5,0,0});
-	auto a_test = [&](Triangle t){
-	              		Vector<> avg = (t[0] + t[1] + t[2])/3.0;
-	              		return !b.pointIsWithin(avg);
-	                };
-	auto b_test = [&](Triangle t){
-	              		Vector<> avg = (t[0] + t[1] + t[2])/3.0;
-	              		return !a.pointIsWithin(avg);
-	              	};
-	std::vector<Triangle> t_a = a.mesh.all_triangles();
-	std::vector<Triangle> t_b = b.mesh.all_triangles();
-	
-	auto s_a = split_many(t_a, t_b);
-	auto s_b = split_many(t_b, t_a);
-	
-	for(Triangle t : s_a){
-		if(a_test(t)){
-			//ret.mesh.add(t);
-		}
-	}
-	for(Triangle t : s_b){
-		if(b_test(t)){
-			//ret.mesh.add(t);
-		}
-	}
-	return ret;
-}
-
-Surface Surface::intersect(Surface a, Surface b){
-	for(auto& v : b.mesh.vertecies()){
-		v.position += b.position - a.position;
-	}
-	Surface ret(a.position + Vector<>{5,0,0});
-	auto a_test = [&](Triangle t){
-	              		Vector<> avg = (t[0] + t[1] + t[2])/3.0;
-	              		return a.pointIsWithin(avg);
-	                };
-	auto b_test = [&](Triangle t){
-	              		Vector<> avg = (t[0] + t[1] + t[2])/3.0;
-	              		return b.pointIsWithin(avg);
-	              	};
-	std::vector<Triangle> t_a = a.mesh.all_triangles();
-	std::vector<Triangle> t_b = b.mesh.all_triangles();
-	
-	auto s_a = split_many(t_a, t_b);
-	auto s_b = split_many(t_b, t_a);
-	
-	for(Triangle t : s_a){
-		if(a_test(t)){
-			//ret.mesh.add(t);
-		}
-	}
-	for(Triangle t : s_b){
-		if(b_test(t)){
-			//ret.mesh.add(t);
-		}
-	}
-	return ret;
-}
-
 void Surface::Unite(Surface a){
-	/* Deprecated */
 	Vector<> rel_pos = a.position - position;
 	bound_box[0].set_min_comp(a.bound_box[0] + rel_pos);
 	bound_box[1].set_max_comp(a.bound_box[1] + rel_pos);
@@ -271,29 +166,10 @@ Vector<> Geometry::def_param_axis_func(Vector<2> params){
 	return arr;
 }
 
-namespace{
-	void rotate_point(Vector<>& point, Vector<> axis, double angle){
-		axis = axis.normalize();
-		const Vector<> r1{cos(angle) + axis[0]*axis[0]*(1 - cos(angle)),
-		          axis[0]*axis[1]*(1 - cos(angle)) - axis[2]*sin(angle),
-		          axis[0]*axis[2]*(1 - cos(angle)) + axis[1]*sin(angle)};
-		const Vector<> r2{axis[1]*axis[0]*(1 - cos(angle)) + axis[2]*sin(angle),
-		          cos(angle) + axis[1]*axis[1]*(1 - cos(angle)),
-		          axis[1]*axis[2]*(1 - cos(angle)) - axis[0]*sin(angle)};
-		const Vector<> r3{axis[2]*axis[0]*(1 - cos(angle)) - axis[1]*sin(angle),
-		                 axis[2]*axis[1]*(1 - cos(angle)) + axis[0]*sin(angle),
-		                 cos(angle) + axis[2]*axis[2]*(1 - cos(angle))};
-		const Vector<> tmp = point;
-		point = {Vector<>::mul_comp(r1, tmp).sum_comp(),
-		         Vector<>::mul_comp(r2, tmp).sum_comp(),
-		         Vector<>::mul_comp(r3, tmp).sum_comp()};
-	}
-}
-
 void Surface::rotate(Vector<> axis, double angle){
 	bound_box[0] = bound_box[1] = position;
 	for(auto& p: mesh.vertecies()){
-		rotate_point(p.position, axis, angle);
+		p.position = p.position.rotate(angle, axis);
 		bound_box[0].set_min_comp(p.position);
 		bound_box[1].set_max_comp(p.position);
 	}

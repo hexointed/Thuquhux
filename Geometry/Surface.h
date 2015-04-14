@@ -29,20 +29,15 @@ namespace Geometry{
 	class Surface {
 		friend class ::Graphics::DrawHandler;
 	public:
-		Surface() = default;
-		Surface(const Surface&) = default;
 		Surface(Geometry::Vector<> pos);
 		template<typename Functor>
 		Surface(Functor f, Geometry::Vector<> pos, int detail = 10);
-		virtual ~Surface();
 		
 		static Surface unite(Surface a, Surface b);
 		static Surface intersect(Surface a, Surface b);
 		static Surface differatiate(Surface a, Surface b);
 		
 		void Unite(Surface a);
-		
-		Surface& operator=(const Surface& orig) = default;
 		
 		bool is_subset_of(const Surface& v);
 		bool is_superset_of(const Surface& v);
@@ -57,7 +52,8 @@ namespace Geometry{
 		double area();
 		
 		void rotate(Geometry::Vector<> axis, double angle);
-		void drawMesh();
+		
+		Geometry::Triangle_Mesh& getMesh();
 		
 	private:
 		template<typename Functor>
