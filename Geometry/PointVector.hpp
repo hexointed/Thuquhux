@@ -196,7 +196,7 @@ template<int Dim, typename Numeric>
 PointVector<Dim, Numeric> PointVector<Dim, Numeric>::div_comp(PointVector<Dim, Numeric> p) const {
 	PointVector tmp{};	
 	for(int i = 0; i < Dim; i++){
-		tmp = comp[i] / p.comp[i];
+		tmp[i] = comp[i] / p.comp[i];
 	}
 	return tmp;
 }
@@ -205,7 +205,7 @@ template<int Dim, typename Numeric>
 PointVector<Dim, Numeric> PointVector<Dim, Numeric>::div(Numeric d) const {
 	PointVector tmp{};	
 	for(int i = 0; i < Dim; i++){
-		tmp = comp[i] / d;
+		tmp[i] = comp[i] / d;
 	}
 	return tmp;
 }
@@ -250,20 +250,18 @@ PointVector<Dim, Numeric> PointVector<Dim, Numeric>::pow_comp(PointVector p, Poi
 
 template<int Dim, typename Numeric>
 PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::set_min_comp(PointVector<Dim, Numeric> p){
-	PointVector tmp{};
 	for(int i = 0; i < Dim; i++){
-		tmp[i] = comp[i] < p.comp[i] ? comp[i] : p.comp[i];
+		comp[i] = comp[i] < p.comp[i] ? comp[i] : p.comp[i];
 	}
-	return tmp;
+	return *this;
 }
 
 template<int Dim, typename Numeric>
 PointVector<Dim, Numeric>& PointVector<Dim, Numeric>::set_max_comp(PointVector<Dim, Numeric> p){
-	PointVector tmp{};
 	for(int i = 0; i < Dim; i++){
-		tmp[i] = comp[i] < p.comp[i] ? comp[i] : p.comp[i];
+		comp[i] = comp[i] < p.comp[i] ? comp[i] : p.comp[i];
 	}
-	return tmp;
+	return *this;
 }
 
 template<int Dim, typename Numeric>
@@ -327,7 +325,7 @@ PointVector<Dim, Numeric> PointVector<Dim, Numeric>::reflect(PointVector<Dim, Nu
 
 template<int Dim, typename Numeric>
 PointVector<Dim, Numeric> PointVector<Dim, Numeric>::project(PointVector p) const {
-	PointVector<Dim, Numeric>& res = *this;
+	const PointVector<Dim, Numeric>& res = *this;
 	mul_dot(res, p)/mul_dot(p,p) * p;
 	return res;
 }

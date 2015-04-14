@@ -48,7 +48,7 @@ Geometry::Vector<> Acacia::position(){
 	/* All branches must spring away from eachother, to prevent self-intersections */
 	auto self_avoid = [&pos](Geometry::Vector<>& position, double& /*weight*/) -> void {
 		double dist = (pos - position).magnitude();
-		pos = (pos + (pos - position) / (dist * dist)).make_unit() * pos.magnitude();
+		pos = (pos + (pos - position) / (dist * dist)).normalize() * pos.magnitude();
 	};
 	base->foreach(self_avoid);
 	return pos;

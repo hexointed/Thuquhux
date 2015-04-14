@@ -264,7 +264,7 @@ double Surface::area(){
 }
 
 Vector<> Geometry::def_param_axis_func(Vector<2> params){
-	params.mul(2*PI);
+	params = params.mul(2*PI);
 	Vector<> arr = {cos(params[0])*(1 + 0.25*cos(params[1])),
 	                sin(params[0])*(1 + 0.25*cos(params[1])),
 	                0.25*sin(params[1])};
@@ -273,7 +273,7 @@ Vector<> Geometry::def_param_axis_func(Vector<2> params){
 
 namespace{
 	void rotate_point(Vector<>& point, Vector<> axis, double angle){
-		axis.make_unit();
+		axis = axis.normalize();
 		const Vector<> r1{cos(angle) + axis[0]*axis[0]*(1 - cos(angle)),
 		          axis[0]*axis[1]*(1 - cos(angle)) - axis[2]*sin(angle),
 		          axis[0]*axis[2]*(1 - cos(angle)) + axis[1]*sin(angle)};

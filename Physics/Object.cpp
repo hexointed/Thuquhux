@@ -96,20 +96,20 @@ void Physics::Object::collision(Physics::Object& obj1,Physics::Object& obj2, Geo
 	Geometry::Vector<> finalRotation2 = (obj2._rotation.first * obj2._rotation.second)+lambda*cun2;
 
 
-	if(finalRotation1.getMagnitude() == 0){
+	if(finalRotation1.magnitude() == 0){
 		obj1._rotation.first = {1,0,0};
 	}else{
-		obj1._rotation.first = finalRotation1.make_unit();
+		obj1._rotation.first = finalRotation1.normalize();
 	}
-	obj1._rotation.second = finalRotation1.getMagnitude() * (obj1.position - collide_at).getMagnitude()/sqrt(mass1);
-	if(finalRotation2.getMagnitude() == 0){
+	obj1._rotation.second = finalRotation1.magnitude() * (obj1.position - collide_at).magnitude()/sqrt(mass1);
+	if(finalRotation2.magnitude() == 0){
 		obj2._rotation.first = {1,0,0};
 	}else{
-		obj2._rotation.first = finalRotation1.make_unit();
+		obj2._rotation.first = finalRotation1.normalize();
 	}
-	obj2._rotation.second = finalRotation2.getMagnitude() * (obj2.position - collide_at).getMagnitude()/sqrt(mass2);
+	obj2._rotation.second = finalRotation2.magnitude() * (obj2.position - collide_at).magnitude()/sqrt(mass2);
 
-	obj1._velocity = finalVel1 * (obj1.position - collide_at).getMagnitude()/sqrt(mass1);
-	obj2._velocity = finalVel2 * (obj1.position - collide_at).getMagnitude()/sqrt(mass1);
+	obj1._velocity = finalVel1 * (obj1.position - collide_at).magnitude()/sqrt(mass1);
+	obj2._velocity = finalVel2 * (obj1.position - collide_at).magnitude()/sqrt(mass1);
 	
 }
